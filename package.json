@@ -1,0 +1,26 @@
+{
+  "name": "lorawan-twin-workshop",
+  "version": "1.0.0",
+  "description": "LoRaWAN STEP workshop",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "docs:build": "vuepress build docs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/99-bugs/lorawan-twin-workshop.git"
+  },
+  "author": "Sille Van Landschoot <info@sillevl.be>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/99-bugs/lorawan-twin-workshop/issues"
+  },
+  "homepage": "https://github.com/99-bugs/lorawan-twin-workshop#readme",
+  "dependencies": {
+    "vuepress": "^0.14.3"
+  }
+}
