@@ -3,14 +3,14 @@
 #define debugSerial SerialUSB
 #define loraSerial Serial2
 
-static uint8_t DevEUI[8]
-{ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
-const uint8_t AppEUI[8] =
-{ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+//**********************************************************
+// TODO: verander de waarden van DevEUI, AppEUI en APPkey
+//**********************************************************
 
-const uint8_t AppKey[16] =
-{ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+static uint8_t DevEUI[8] = { 0x00, 0x04, 0xA3, 0x0B, 0x00, 0x23, 0xE2, 0x40 };
+const uint8_t AppEUI[8] = { 0x70, 0xB3, 0xD5, 0x7E, 0xD0, 0x01, 0x25, 0x5C };
+const uint8_t AppKey[16] = { 0xF9, 0x1E, 0x4C, 0xCA, 0x99, 0x9E, 0x61, 0x2A, 0x13, 0xBD, 0x94, 0x8E, 0xB5, 0xA7, 0x6A, 0xDC };
 
 void setup()
 {
@@ -48,10 +48,10 @@ void setupLoRa(){
 
 void loop()
 {
-   String hello = "hello world!";
-   debugSerial.println(hello);
+   String value = getValue();
+   debugSerial.println(value);
 
-    switch (LoRaBee.send(1, (uint8_t*)hello.c_str(), hello.length()))
+    switch (LoRaBee.send(1, (uint8_t*)value.c_str(), value.length()))
     {
     case NoError:
       debugSerial.println("Successful transmission.");
@@ -93,4 +93,14 @@ void loop()
     delay(10000); 
 }
 
+//**********************************************************
+// TODO: De waarde van 'value' zal de data zijn die
+//       verzonden wordt via LoRaWAN. Je kan deze
+//       dus aanpassen afhankelijk van je toepassing.
+//**********************************************************
 
+String getValue()
+{
+  String value = "Hello world!";
+  return value;
+}
