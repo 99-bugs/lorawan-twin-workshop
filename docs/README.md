@@ -8,14 +8,14 @@ Tijdens het eerste deel van de deze workshop gaan we de sensoren inlezen en de i
 
 In het tweede deel van deze workshop bouwen we dan zelf een webpagina die de gegevens kan visualiseren. Deze webpagina zullen we zelf gaan hosten op een [Raspberry Pi](https://www.raspberrypi.org/).
 
-[Situatieschets](img/setup_diagram.png)
+![Situatieschets](./img/setup_diagram.png)
 
 Wat gaan we dus allemaal doen:
 
 1. Grove sensoren uitlezen
 2. De uitgelezen sensorwaarden verzenden met LoRaWAN
 3. Deze gegevens opvangen met *The Things Network*
-4. Visualiseren van de sensorwaarden met een AllThingsTalk dashboard
+4. Visualiseren van de sensorwaarden met een *AllThingsTalk* dashboard
 5. Bouwen van een eigen webpagina
 6. Webserver opzetten op de Raspberry Pi
 
