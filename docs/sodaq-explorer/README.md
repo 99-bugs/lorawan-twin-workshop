@@ -1,70 +1,73 @@
 # SODAQ ExpLoRer
 
-![Sodaq ExpLoRer](./img/explorer6b.png)
+Het SODAQ ExpLoRer ontwikkelbord is een Arduino compatibel bord gemaakt voor onderzoeks- en labo doeleinden. Doordat het een Arduino compatibel bord is, is het natuurlijk ook heel toegankelijk voor studenten. Naast een LoRaWAN module voor draadloze communicatie, bevat het bord eveneens een Bluetooth Low Energy (BLE) module. Standaard is het bord voorzien van een oplaadbare batterij die kan worden opgeladen via USB, externe voeding of een zonnepaneel. Externe sensoren kunnen daarbij via de I/O's of het Grove systeem worden aangekoppeld. Kortom heel wat functionaliteit voor zo'n klein bordje.
 
-## Features
+![SODAQ ExpLoRer](./img/explorer6b.png)
 
-| Feature | Value |
+## Eigenschappen
+
+| Eigenschap | Waarde |
 | ------ | ----- |
 | Microcontroller	| ATSAMD21J18, 32-Bit ARM Cortex M0+ |
-| Compatibility	| Arduino M0 Compatible |
-| Size |	93 x 55 mm |
-| Operating | Voltage	3.3V |
-| I/O Pins |	20 |
-| Analog Output Pin |	10-bit DAC |
-| External Interrupts |	Available on all pins |
-| DC Current per I/O pin |	7 mA |
-| Flash Memory |	256 KB and  4MB (external flash) |
-| SRAM |	32KB |
-| EEPROM |	Up to 16KB by emulation |
-| Clock Speed |	48 MHz |
-| Power |	5V USB power and/or 3.7 LiPo battery |
-| Charging |	Solar charge controller, up to 500mA charge current |
-| LED |	RGB LED, Blue LED |
-| LoRa |	Microchip RN2483 Module |
-| Bluetooth |	Microchip RN4871 Module |
-| Cyptochip |	ATECC508A |
-| Temperature sensor |	MCP9700AT |
+| Compatibiliteit	| Arduino M0 |
+| Grootte |	93 x 55 mm |
+| Voeding | 3.3V |
+| I/O | 20 pinnen |
+| Analoge outputs | 10-bit DAC |
+| Externe interrupts | Mogelijk op alle pinnen |
+| Maximale DC stroom per I/O | 7 mA |
+| Flash geheugen | 256KB en 4MB (externe flash) |
+| SRAM | 32KB |
+| EEPROM | Tot 16KB door emulatie |
+| Kloksnelheid | 48 MHz |
+| Stroomvoorziening |	5V USB power and/or 3.7 LiPo batterij |
+| Opladen |	Via zonnepaneel charger, tot 500mA oplaadstroom |
+| LEDs | RGB LED, Blue LED |
+| LoRa | Microchip RN2483 module |
+| Bluetooth |	Microchip RN4871 module |
+| Cryptochip | ATECC508A |
+| Temperatuursensor |	MCP9700AT |
 | USB |	MicroUSB Port |
 
-## Getting started
+## Starten met de SODAQ ExpLoRer
 
-Download the latest Arduino IDE
-[https://www.arduino.cc/en/Main/Software](https://www.arduino.cc/en/Main/Software)
+Begin met het downloaden van de laatste nieuwe **Arduino IDE** van de website van Arduino [https://www.arduino.cc/en/Main/Software](https://www.arduino.cc/en/Main/Software).
 
-To use the board in the Arduino IDE you need to load a custom board file for the SODAQ SAMD boards.
-`http://downloads.sodaq.net/package_sodaq_samd_index.json`
+> **NOTA** - **Arduino op de Raspberry Pi**
+>
+> Tijdens de workshop moet je Arduino niet meer installeren. Dit werd reeds voor jullie gedaan. Op de Raspberry Pi's kan je niet de standaard Arduino installeren. Hier heb je de `Linux ARM` editie voor nodig.
 
-File→Preferences
+Start de Arduino IDE op.
 
-![](./img/sodaq_samd_boards_url.png)
+Vooraleer er van start kan worden gegaan moet het ontwikkelbord worden toegevoegd aan de board manager van Arduino. Dit doe je door in de Arduino IDE te navigeren naar `File => Preferences` en in het invulvak `Additional Boards Managers URLs` het volgende in te vullen:
 
-Install the latest version of the SODAQ SAMD boards
+```text
+http://downloads.sodaq.net/package_sodaq_samd_index.json
+```
 
-Tools→Boards→Boards Manager…
+![Toevoegen van een Board URL](./img/sodaq_samd_boards_url.png)
 
-![](./img/boards.png)
+Vervolgens dienen we de nieuwste definitie van dit bord te installeren. Ga hiervoor naar `Tools => Board => Boards Manager ...` en type dan `sodaq` in het **filterveld**.
 
-## Bluetooth
+![Lijst van SODAQ Boards](./img/boards.png)
 
-![](./img/bluetooth-4-logo.jpg)
+Klik vervolgens op **Install** voor het bord `SODAQ SAMD Boards by SODAQ`.
 
-To use the RN4871 Bluetooth module (BLE) please download the Arduino library here:
+Zorg er vervolgens voor dat het SODAQ ExpLoRer bord is geselecteerd onder `Tools => Board`.
 
-[Microchip_RN487x](http://support.sodaq.com/wp-content/uploads/2016/11/Microchip_RN487x.zip)
+![Selecteer het SODAQ ExpLoRer bord](./img/board_selection.png)
 
-## Pinout
+## Pin benamingen
 
-![](./img/explorer-pinout.png)
+Onderstaand vind je de benamingen van de pinnen die je kan gebruiken binnen je Arduino sketch.
 
-### Handy pin definitions!
+![Pin benamingen](./img/explorer-pinout.png)
 
-Now that you’re using the SODAQ ExpLoRer board files, you’ll be able to use our handy pin definitions.
-Our pin definitions allow you to address by name instead of pin number.
+### Handige benamingen voor veelgebruikte pinnen
 
-Here are all the pin definitions for the SODAQ ExpLoRer:
+Naast de standaard Arduino benamingen kan je tevens gebruik maken van een aantal handige benamingen voor de veelgebruikte pinnen. Deze worden voorzien door de definitie van het bord dat werd ingeladen.
 
-| Pin description |	Pin number |	Definition |
+| Beschrijving |	Pin nummer |	Benaming |
 | --- | --- | --- |
 | RGB Red  | |LED		LED_RED |
 | RGB Green LED | |		LED_GREEN |
@@ -76,64 +79,83 @@ Here are all the pin definitions for the SODAQ ExpLoRer:
 | LoRa Reset* | |		LORA_RESET |
 | Temperature Sensor |	A6 |	TEMP_SENSOR |
 
-*Rev5 and higher
+*Bord revisie 5 en hoger
 
-## Schematics
+## Hardware seriele poorten
 
-Click here for the latest schema:
+De SODAQ ExpLoRer heeft 4 hardware seriele poorten:
 
-[explorer_schematic_rev6c_868](http://support.sodaq.com/wp-content/uploads/2018/02/explorer_schematic_rev6c_868.pdf)
+* **SerialUSB** – Deze kan je gebruiken om te communiceren met je computer via de seriele monitor in je Arduino IDE.
+* **Serial** – Dit is een seriele poort die naar buiten werd gebracht om te communiceren met andere hardware (via pin D1/TX en D0/RX).
+* **Serial1** – Deze wordt gebruikt om de Bluetooth module aan te sturen.
+* **Serial2** – Deze wordt gebruikt om de RN2483 LoRaWAN module aan te sturen.
 
-[explorer_schematic_rev6c_915](http://support.sodaq.com/wp-content/uploads/2018/02/explorer_schematic_rev6c_915.pdf)
-
-[explorer_schematic_rev5b](http://support.sodaq.com/wp-content/uploads/2016/11/Explorer_schematic_rev5b.pdf)
-
-[explorer_schematic_rev3-3](http://support.sodaq.com/wp-content/uploads/2016/11/Explorer_schematic_rev3-3.pdf)
-
-## Hardware Serials
-
-The SODAQ ExpLoRer has 4 hardware serials:
-* **SerialUSB** – This is for when you are debugging over the USB Cable.
-* **Serial** – Serial is attached to pin D1/TX and D0/RX.
-* **Serial1** – Is connected to the Bluetooth Module.
-* **Serial2** – Is connected to the RN2483 LoRaWAN Module.
+De snelheden (te kiezen uit `9600`, `19200`, `38400`, `57600`, `74880`, `115200`, ...) van de verschillende seriele poorten kan je instellen door dit mee te geven met de `begin()` methode. Hieronder een starter voorbeeld van een sketch die de poort instelt op `115200` en vervolgens om de 5 seconden `Hello World` uitstuurt op de `SerialUSB` (dit kan je zien via de seriele monitor in je Arduino IDE).
 
 ```cpp
 void setup() {
   // put your setup code here, to run once:
-  SerialUSB.begin(57600);
-  Serial.begin(57600);
-  Serial1.begin(57600);
-  Serial2.begin(57600);
+  SerialUSB.begin(115200);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-
+  SerialUSB.println("Hello World");
 }
 ```
 
-### SerialUSB
+Selecteer het *upload* icoon om de sketch te compileren en in het bord te laden. Als je de seriele monitor opent en de snelheid instelt op `115200` zou je volgende output moeten krijgen:
 
-The sketch starts direct after uploading new code or when connected to a power source.
-After opening a Serial Monitor the code will not reset, add the following code to your sketch if you want your sketch to wait for a Serial Monitor.
+![Hello World van SODAQ ExpLoRer](./img/hello_world.png)
+
+### Even wachten
+
+De sketch wordt na het opladen of het inpluggen van de voeding direct gestart. Als je dan een seriele monitor opent zal de code niet herstarten en kan het dus zijn dat je de beginberichten van je sketch niet ziet. Dit kan je oplossen door de sketch te laten wachten tot er een seriele monitor is aangesloten. Door er tevens een timeout op te zetten, zal de sketch toch starten indien binnen de aangegeven tijd geen seriele monitor wordt aangesloten.
 
 ```cpp
+void setup() {
+  // put your setup code here, to run once:
+  SerialUSB.begin(115200);
   while ((!SerialUSB) && (millis() < 30000)) {
     // Wait for SerialUSB or start after 30 seconds
   }
+  SerialUSB.println("Starting sketch now");
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  SerialUSB.println("Hello World");
+  delay(5000);
+}
 ```
 
-## Battery management
+Je zou dan volgende output moeten krijgen:
 
-The ExpLoRer can run on a battery. By default the ExpLoRer is delivered with a coincell battery.
-To charge the battery you need to connect an usb and/or solar panel.
+![Hello World van SODAQ ExpLoRer met wachten op seriele monitor](./img/hello_world_wait_monitor.png)
 
-The ExpLoRer can only run on one battery at the same time, move the jumper to connect the internal (coincell) or external battery. It will only charge the battery connected with this jumper.
+## Batterijbeheer
 
-Connect any 3.3v – 5.2v power to the solar connector, this source will charge to battery.
+De ExpLoRer werkt op een oplaadbare knoopcel batterij die er standaard wordt bijgeleverd. Om de batterij op te laden, kan de ExpLoRer op USB en/of op een zonnepaneel worden aangesloten.
+
+De ExpLoRer kan echter maar 1 batterij tegelijkertijd gebruiken. Verplaats de schakelaar om te kiezen tussen de interne knoopcel batterij of een externe batterij. Enkel de geselecteerd batterij wordt opgeladen.
+
+Je kan eveneens een 3,3V tot 5,2V voeding aansluiten op de zonnepaneel-connector om de batterij op de laden.
 
 ## Bootloader mode
 
-To safe power it is possible to disable the usb connection.
-If the **reset button** is **pressed twice within a second** the current sketch will not start and the board will go into bootloader mode and is expecting a new sketch. On your computer you will see a different com port.
+Om stroom uit te sparen is het eveneens mogelijk om de USB-verbinding uit te schakelen. Als de **reset-knop** dan binnen een seconde tweemaal wordt ingedrukt, wordt er de bootloader gestart in plaats van de Arduino sketch. Dit laat dan toe om een nieuwe sketch in te laden. Merk wel op dat je een andere COM-poort zal zien op de computer.
+
+## Bluetooth
+
+Het ExpLoRer bord bevat eveneens een Bluetooth Low Energy module (RN4871) die je kan gebruiken om draadloos te communiceren met andere apparaten zoals bv. een GSM of laptop. Indien je dit wil doen dien je wel de Bluetooth bibliotheek voor Arduino te downloaden.
+
+Deze kan je vinden op [Microchip_RN487x](http://support.sodaq.com/wp-content/uploads/2016/11/Microchip_RN487x.zip).
+
+## Bord schema's
+
+Indien je dit ooit nodig heb, kan je hieronder ook de schema's van de verschillende bord revisies downloaden.
+
+* [explorer_schematic_rev6c_868](http://support.sodaq.com/wp-content/uploads/2018/02/explorer_schematic_rev6c_868.pdf)
+* [explorer_schematic_rev6c_915](http://support.sodaq.com/wp-content/uploads/2018/02/explorer_schematic_rev6c_915.pdf)
+* [explorer_schematic_rev5b](http://support.sodaq.com/wp-content/uploads/2016/11/Explorer_schematic_rev5b.pdf)
+* [explorer_schematic_rev3-3](http://support.sodaq.com/wp-content/uploads/2016/11/Explorer_schematic_rev3-3.pdf)
