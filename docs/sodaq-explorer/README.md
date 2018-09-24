@@ -1,6 +1,8 @@
 # SODAQ ExpLoRer
 
-Het SODAQ ExpLoRer ontwikkelbord is een Arduino compatibel bord gemaakt voor onderzoeks- en labo doeleinden. Doordat het een Arduino compatibel bord is, is het natuurlijk ook heel toegankelijk voor studenten. Naast een LoRaWAN module voor draadloze communicatie, bevat het bord eveneens een Bluetooth Low Energy (BLE) module. Standaard is het bord voorzien van een oplaadbare batterij die kan worden opgeladen via USB, externe voeding of een zonnepaneel. Externe sensoren kunnen daarbij via de I/O's of het Grove systeem worden aangekoppeld. Kortom heel wat functionaliteit voor zo'n klein bordje.
+Het SODAQ ExpLoRer ontwikkelbord is een Arduino compatibel bord gemaakt voor onderzoeks- en labo doeleinden. Doordat het een Arduino compatibel bord is, is het natuurlijk ook heel toegankelijk voor studenten.
+
+Naast een **LoRaWAN module** voor draadloze communicatie, bevat het bord eveneens een **Bluetooth Low Energy** (BLE) module. Standaard is het bord voorzien van een **oplaadbare batterij** die kan worden opgeladen via USB, externe voeding of een **zonnepaneel**. **Externe sensoren** kunnen daarbij via de I/O's of het **Grove systeem** worden aangekoppeld. Kortom heel wat functionaliteit voor zo'n klein bordje.
 
 ![SODAQ ExpLoRer](./img/explorer6b.png)
 
