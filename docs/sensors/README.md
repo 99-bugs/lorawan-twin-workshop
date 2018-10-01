@@ -18,8 +18,10 @@ Niet elke module maakt gebruik van dezelfde communicatiestandaard. Het is dus we
 
 * **I2C**, een **bus-communicatiesysteem** dat bestaat uit een master (het ontwikkelbord) en slaves (de modules). Doordat het een bussysteem is kan je ook meerdere modules aansluiten.
 * **UART**, een **seriele punt-tot-punt communicatiestandaard** die toelaat om 2 dingen met elkaar te laten communiceren.
+* een **analoge** connectie (aangeduid met de letter `A`), waarbij het signaal van de module een analoge waarde is die meestal gelegen is tussen 0 en 5V.
+* een **digitale** connectie (aangeduid met de letter `D`), waarbij het signaal van de module een digitaal TTL signaal is.
 
-Daarbovenop is elke module voorzien van documentatie en voorbeelden om snel aan de slag te kunnen. Al deze informatie is te vinden op [http://wiki.seeedstudio.com/Grove_System/](http://wiki.seeedstudio.com/Grove_System/).
+Elke module is voorzien van documentatie en voorbeelden om snel aan de slag te kunnen. Al deze informatie is te vinden op [http://wiki.seeedstudio.com/Grove_System/](http://wiki.seeedstudio.com/Grove_System/).
 
 ## Sensoren
 
