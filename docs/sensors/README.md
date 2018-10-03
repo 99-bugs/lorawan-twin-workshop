@@ -25,6 +25,7 @@ Elke module is voorzien van documentatie en voorbeelden om snel aan de slag te k
 
 ## Sensoren
 
+* [Switch (P)](./switch/README.md)
 * [Lichtsensor](./light-sensor)
 * [Geluidsintensiteitsensor](./loudness-sensor)
 * [Bewegingssensor](./motion-sensor)
