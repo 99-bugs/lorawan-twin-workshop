@@ -9,6 +9,8 @@ Wanneer we een moderne website op een Raspberry Pi (of elke andere machine) will
 
 Deze combinatie van componenten wordt in de webdeveloper wereld een LAMP stack genoemd.
 
+![LAMP](./img/LAMP-stack.jpg)
+
 Linux is reeds aanwezig op onze Raspberry Pi onder de vorm van Raspbian. Dus dit hoeven we niet meer te installeren. Voor deze workshop heb je in principe enkel Linux en de Webserver (Apache) nodig. De andere componenten worden ook besproken voor het geval je deze later zelf zou nodig hebben.
 
 In volgende paragrafen staan er hoofdzakelijk commando's die dienen te worden uitgevoerd in de terminal. Deze kan je op Raspbian openen door te navigeren naar `Start => Tools => Terminal`. Je krijgt dan volgend scherm te zien. Hier type je de commando's dan gewoon in waarna je op `ENTER` duwt.
@@ -110,3 +112,48 @@ sudo service apache2 restart
 Surf nu naar `http://localhost/` en dan zou je de "Hello World" tekst moeten krijgen.
 
 ![Hello World in PHP](./img/hello_world_php.png)
+
+## Installeren van MySQL
+
+MySQL is een veelvoorkomende database manager (DBMS). Naast MySQL dien je ook een bibliotheek voor PHP te installeren. Vervolgens best even de webserver herstarten.
+
+```shell
+sudo apt install mysql-server php-mysql -y
+sudo service apache2 restart
+```
+
+Vervolgens dient de DBMS verder te worden beveiligd. Voer hiervoor onderstaand commando uit:
+
+```shell
+sudo mysql_secure_installation
+```
+
+Beantwoord hierbij de vragen als volgt:
+
+* Het huidige root wachtwoord: duw gewoon op `ENTER`
+* Het instellen van een nieuw root wachtwoord: kies hier voor `Y` (yes).
+* Nieuw wachtwoord: kies hier een sterk wachtwoord. Laat dit niet leeg. Zorg dat je dit niet kwijtraakt.
+* Verwijderen anonieme gebruiker: kies `Y` (yes)
+* Niet toelaten om root user van buitenaf aan te melden: kies `Y` (yes)
+* Verwijderen test database: kies `Y` (yes)
+* Herladen privileges: kies `Y` (yes)
+
+### Beheren database
+
+Voor het beheren van je databases kan je gebruik maken van een PHP webapplicatie die `phpMyAdmin` noemt. Hier kan je grafisch je databases mee benaderen, backups nemen, data importeren, ...
+
+Je kan deze app installeren aan de hand van het volgende commando:
+
+```shell
+sudo apt install phpmyadmin -y
+```
+
+Tijdens de installatie zal je een aantal vragen krijgen waaronder:
+
+* Welke webserver je wil configureren: kies hier voor *apache2* (selecteer door op `SPATIE` te drukken)
+* Of je de `dbconfig-common` configuratie wil voorzien: kies hier voor `Yes`
+* Het phpmyadmin configuratie wachtwoord: kies hier opnieuw een sterk wachtwoord. Dit wordt gebruikt voor de `phpmyadmin` gebruiker.
+
+Als alles goed gaat kan je nu surfen naar `http://localhost/phpmyadmin` en krijg je de inlogpagina te zien. Je kan nu inloggen met de `root` user of met de `phpmyadmin` user (deze heeft enkel rechten op de phpmyadmin database).
+
+![Phpmyadmin web interface](./img/phpmyadmin.png)
