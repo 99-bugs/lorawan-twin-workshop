@@ -33,5 +33,11 @@ TODO: Introductie sensoren
 
 ## Eigen webpagina
 
-## Server opzetten
+## Opzetten van een Webserver
+
+TODO: Introductie 
+
+[Opzetten van een LAMP server](./lamp/README.md)
+
+
 
