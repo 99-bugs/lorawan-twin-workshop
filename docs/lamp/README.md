@@ -9,7 +9,7 @@ Wanneer we een moderne website op een Raspberry Pi (of elke andere machine) will
 
 Deze combinatie van componenten wordt in de webdeveloper wereld een LAMP stack genoemd.
 
-Linux is reeds aanwezig op onze Raspberry Pi onder de vorm van Raspbian. Dus dit hoeven we niet meer te installeren. De andere componenten gaan we wel opzetten.
+Linux is reeds aanwezig op onze Raspberry Pi onder de vorm van Raspbian. Dus dit hoeven we niet meer te installeren. Voor deze workshop heb je in principe enkel Linux en de Webserver (Apache) nodig. De andere componenten worden ook besproken voor het geval je deze later zelf zou nodig hebben.
 
 In volgende paragrafen staan er hoofdzakelijk commando's die dienen te worden uitgevoerd in de terminal. Deze kan je op Raspbian openen door te navigeren naar `Start => Tools => Terminal`. Je krijgt dan volgend scherm te zien. Hier type je de commando's dan gewoon in waarna je op `ENTER` duwt.
 
@@ -55,3 +55,58 @@ wlan0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
 ```
 
 Je kan in dit geval dan surfen naar `http://172.16.1.228` waar je het IP adres vervang door dit van de Pi.
+
+## Installeren van PHP
+
+Naast de PHP engine moeten we ook een module installeren die Apache toelaat om PHP aan te roepen. Dit kan allemaal via onderstaand commando.
+
+```shell
+sudo apt install php libapache2-mod-php -y
+```
+
+### Testen van PHP
+
+Test of PHP werkt kan worden gerealiseerd door een kleine "Hello World" pagina te maken. Voer onderstaande commando's uit om een editor te openen waarin we een klein PHP script maken.
+
+```shell
+cd /var/www/html
+sudo nano index.php
+```
+
+Plaats hier de onderstaande code:
+
+```php
+<?php echo "Hello World";
+```
+
+Sla de wijzigingen op door eerst de toetsencombinatie `CTRL-o` in te drukken en vervolgens `CTRL-x` om af te sluiten.
+
+Vervolgens dienen we aan Apache duidelijk te maken dat de PHP index pagina (de startpagina als het ware) voorrang moet krijgen bij het openen van de website op de statische HTML index pagina. Dit doen we door eerste configuratie te openen van Apache.
+
+```shell
+cd /etc/apache2
+sudo nano apache2.conf
+```
+
+Scroll nu naar beneden en voeg `DirectoryIndex index.php` toe aan de Directory `/var/www` sectie zoals hieronder aangegeven.
+
+```conf
+<Directory /var/www/>
+        Options Indexes FollowSymLinks
+        AllowOverride None
+        Require all granted
+        DirectoryIndex index.php
+</Directory>
+```
+
+Sla de wijzigingen op door eerst de toetsencombinatie `CTRL-o` in te drukken en vervolgens `CTRL-x` om af te sluiten.
+
+De server moet nu worden herstart:
+
+```shell
+sudo service apache2 restart
+```
+
+Surf nu naar `http://localhost/` en dan zou je de "Hello World" tekst moeten krijgen.
+
+![Hello World in PHP](./img/hello_world_php.png)
