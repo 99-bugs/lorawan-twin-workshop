@@ -19,8 +19,11 @@ Wat gaan we dus allemaal doen:
 5. Bouwen van een eigen webpagina
 6. Webserver opzetten op de Raspberry Pi
 
-
 ## Sensoren
+
+TODO: Introductie sensoren
+
+[Grove sensoren uitlezen](./sensors/README.md)
 
 ## LoRaWAN
 
