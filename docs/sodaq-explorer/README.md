@@ -59,6 +59,8 @@ Zorg er vervolgens voor dat het SODAQ ExpLoRer bord is geselecteerd onder `Tools
 
 ![Selecteer het SODAQ ExpLoRer bord](./img/board_selection.png)
 
+Als laatste dien je ook aan te duiden op welke COM-poort het bord is aangesluiten. Ga naar `Tools => Port` en selecteer de correcte COM-poort.
+
 ## Pin benamingen
 
 Onderstaand vind je de benamingen van de pinnen die je kan gebruiken binnen je Arduino sketch.
