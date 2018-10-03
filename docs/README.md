@@ -37,7 +37,7 @@ TODO: Introductie sensoren
 
 TODO: Introductie 
 
-[Opzetten van een LAMP server](./lamp/README.md)
+[Opzetten van een LAMP stack](./lamp/README.md)
 
 
 
