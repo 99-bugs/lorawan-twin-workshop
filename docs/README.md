@@ -12,12 +12,19 @@ In het tweede deel van deze workshop bouwen we dan zelf een webpagina die de geg
 
 Wat gaan we dus allemaal doen:
 
-1. Grove sensoren uitlezen
-2. De uitgelezen sensorwaarden verzenden met LoRaWAN
-3. Deze gegevens opvangen met *The Things Network*
-4. Visualiseren van de sensorwaarden met een *AllThingsTalk* dashboard
-5. Bouwen van een eigen webpagina
-6. Webserver opzetten op de Raspberry Pi
+1. Arduino en SODAQ ExpLoRer
+2. Grove sensoren uitlezen
+3. De uitgelezen sensorwaarden verzenden met LoRaWAN
+4. Deze gegevens opvangen met *The Things Network*
+5. Visualiseren van de sensorwaarden met een *AllThingsTalk* dashboard
+6. Bouwen van een eigen webpagina
+7. Webserver opzetten op de Raspberry Pi
+
+## Arduino en SODAQ ExpLoRer
+
+TODO: Introductie
+
+[Arduino opzetten voor SODAQ ExpLoRer](./sodaq-explorer/README.md)
 
 ## Sensoren
 
