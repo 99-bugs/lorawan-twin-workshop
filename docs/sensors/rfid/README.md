@@ -1,6 +1,5 @@
 # RFID 125kHz Reader
 
-
 De Grove RFID 125kHz Reader is een module die kan worden gebruikt om RFID kaarten draadloos uit te lezen. Dit soort sensoren wordt typisch toegepast voor toegangscontrole, track-en-trace van materiaal, ... Deze lezer kan kaarten uitlezen tot een maximaal theoretische afstand van 7cm (circa 5cm in de praktijk).
 
 ![RFID 125kHz Reader](./img/Grove-125KHz_RFID_Reader.jpg)
@@ -40,7 +39,7 @@ Verbind vervolgens de terminals als volgt:
 
 Zorg er ook voor dat de jumper op de lezer in volgende positie staat (TTL configuratie).
 
-![TTL mode](./img/ttl_mode.jpg)
+![TTL mode](./img/jumper_ttl.png)
 
 Vervolgens kan je ook de antenne aansluiten aan de 2-polige connector.
 
