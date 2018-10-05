@@ -23,6 +23,8 @@ listener 9001
 protocol websockets
 ```
 
+![Mosquitto configuratie](./img/mosquitto-config.png)
+
 restart mosquitto
 
 ```
