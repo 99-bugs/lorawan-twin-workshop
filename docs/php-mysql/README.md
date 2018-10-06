@@ -1,0 +1,1 @@
+# Dynamische sensorlijst met PHP en MySQL
