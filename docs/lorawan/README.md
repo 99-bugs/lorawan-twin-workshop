@@ -4,33 +4,32 @@
 
 ## Wat is LoRaWAN
 
-LoRaWAN (Long Range Wide Area Network) is een specificatie voor telecommunicatie geschikt voor langeafstandscommunicatie met weinig vermogen. De technologie wordt gebruikt vooro machine-to-machinecommunicatie en het Internet of Things.
+LoRaWAN (Long Range Wide Area Network) is een specificatie voor telecommunicatie geschikt voor langeafstandscommunicatie met weinig vermogen. De technologie wordt gebruikt voor machine-naar-machine communicatie en het Internet of Things.
 
-De architectuur bestaat uit *gateways*, *netwerkservers* en *applicatieservers*. Er worden RF-chips van Semtech gebruikt die een spread spectrum uitzenden. De Nodes versturen een versleuteld bericht via radio. In Europa is deze frequentie 868 MHz. Dit bericht wordt ontvangen door de gateway. De gateway is verbonden met het internet en stuurt het bericht door naar de netwerkservers. De berichten kunnen worden opgehaald door een applicatieserver. Die kan bepalen of er data teruggezonden moet worden, of de data opslaan in een database. Een webserver fungeert als interface voor de Node.
+De architectuur bestaat uit *gateways*, *netwerkservers* en *applicatieservers*. Er worden RF-chips van Semtech gebruikt die een spread spectrum uitzenden. De nodes versturen een versleuteld bericht via radio. In Europa is deze frequentie 868 MHz. Dit bericht wordt ontvangen door de gateway. De gateway is verbonden met het Internet en stuurt het bericht door naar de netwerkservers. De berichten kunnen worden opgehaald door een applicatieserver. Die kan bepalen of er data teruggezonden moet worden, of de data dient opslagen te worden in een database, ... . Een webapplicatie doet dan dienst als interface voor de gebruiker.
 
 ## The Things Network
 
-
-The Things Network bouwt een globaal gedistribueerd, crowd-sourced en open IoT datanetwerk dat eigendom is, en opgezet wordt door zijn gebruikers. Door gebruik te maken van LoRaWAN technologie voorziet The Things Network een end-to-end stack: van sensoren, gateways, netwerk servers, sensor beheer en integratie met cloud providers en IoT platfromen. Alles is volledig veilig geimplementeerd en configureerbaar door de eindgebruiker.
+The Things Network bouwt een globaal gedistribueerd, crowd-sourced en open IoT datanetwerk dat eigendom is, en opgezet wordt door zijn gebruikers. Door gebruik te maken van LoRaWAN technologie voorziet The Things Network een end-to-end stack: van sensoren (de nodes), gateways, netwerk servers, sensor beheer en integratie met cloud providers en IoT platformen. Alles is volledig veilig geïmplementeerd en configureerbaar door de eindgebruiker.
 
 ### Nieuwe TTN applicatie bouwen
 
-Sensoren kunnen communiceren met een The Things Network `applicatie` waarin ze geregistreerd worden. Om sensoren te registreren moet er eerst een applicatie gebouwd worden.
+Sensoren kunnen communiceren met een `applicatie` van The Things Network waarin ze geregistreerd worden. Om sensoren te registreren moet er eerst een applicatie gebouwd worden.
 
-Je kan een applicatie bouwen door te surfen naar de The Things Network [console](https://console.thethingsnetwork.org/applications/add). Daar dien je een aantal gegevens in te geven:
+Je kan een applicatie bouwen door te surfen naar The Things Network [console](https://console.thethingsnetwork.org/applications/add). Daar dien je een aantal gegevens in te geven:
 
 * **Application ID**: Hier kies je zelf een uniek *ID* dat bestaat uit kleine alfanumerieke letters. Spaties zijn niet toegestaan, maar een `-` teken wel.
 * **Application description**: Hier kan je een kleine beschrijving plaatsen over de applicatie die je wil toevoegen.
 
 ![Applicatie toevoegen](./img/add-application.png)
 
-Klik dan op **Add Application** om te eindigen. Je zal doorverwezen worden naar de toegevoegde applicatie pagina. Hier zal je de gegenereerde **App EUI** en **Access Keys** terugvinden. (deze hebben we later nog nodig)
+Klik dan op **Add Application** om te eindigen. Je zal doorverwezen worden naar de toegevoegde applicatie pagina. Hier zal je de gegenereerde **App EUI** en **Access Keys** terugvinden (deze hebben we later nog nodig).
 
 ### Nieuwe sensor toevoegen
 
 Vooralleer een sensor kan communiceren met The Things Network moeten we deze registreren in een applicatie.
 
-Open de applicatie in de The Things Network [console](https://console.thethingsnetwork.org/applications/) en klik op **Register device**. Er zullen een aantal gegevens gevraagd worden:
+Open de applicatie in The Things Network [console](https://console.thethingsnetwork.org/applications/) en klik op **Register device**. Er zullen een aantal gegevens gevraagd worden:
 
 * **Device ID**: Hier kies je zelf een uniek *ID* dat bestaat uit kleine alfanumerieke letters. Spaties zijn niet toegestaan, maar een `-` teken wel.
 * **Device EUI**: Druk op het :twisted_rightwards_arrows: icoontje om een willekeurige EUI te berekenen bij het aanmaken van de sensor.
@@ -50,13 +49,13 @@ In de code staat hier en daar wat commentaar met de tekst `TODO:`. Deze tekst wo
 
 ## DevEUI, AppEUI en AppKey
 
-Elke LoRaWAN toepassing heeft een aantal instellingen die in de code juist ingesteld moeten worden. 
+Elke LoRaWAN toepassing heeft een aantal instellingen die in de code juist ingesteld moeten worden.
 
 * **DevEUI**: Unieke identificatie van de sensor.
 * **AppEUI**: Identificatie van de `App` waartoe de sensor behoort.
 * **AppKey**: Encryptiesleutel voor de `App` zodat niemand jouw gegevens kan zien.
 
-Zonder de jusite gegevens komen Vergeet deze dus zeker niet aan te passen in je code. De exacte waarden kan je terug vinden in de console van de Things Network. 
+Zonder de juiste gegevens komen jouw sensorwaarden niet aan bij de juist applicatie. Vergeet deze dus zeker niet aan te passen in je code. De exacte waarden kan je terug vinden in de console van de Things Network. 
 
 Nu de sensor geconfigureerd is kunnen we deze ook gaan programmeren. Dit doen we in de Arduino IDE.
 
