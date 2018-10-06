@@ -27,9 +27,11 @@ Elke module is voorzien van documentatie en voorbeelden om snel aan de slag te k
 
 * [Switch (P)](./switch/README.md)
 * [RFID 125kHz Reader](./rfid/README.md)
-* [Lichtsensor](./light-sensor)
-* [Geluidsintensiteitsensor](./loudness-sensor)
-* [Bewegingssensor](./motion-sensor)
-* [Rotatiesensor](./rotary-sensor)
-* [Temperatuur, druk en vochtigheissensor](./tph-sensor)
+* [Q Touch Sensor](./q_touch/README.md)
+* [Push Button](./push_button/README.md)
+* [Lichtsensor - TODO](./light-sensor)
+* [Geluidsintensiteitsensor - TODO](./loudness-sensor)
+* [Bewegingssensor - TODO](./motion-sensor)
+* [Rotatiesensor - TODO](./rotary-sensor)
+* [Temperatuur, druk en vochtigheissensor - TODO](./tph-sensor)
   

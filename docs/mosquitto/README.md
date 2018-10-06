@@ -1,16 +1,16 @@
 # Mosquitto
 
-Mosquitto is een MQTT broker, ook wel server genoemd. Het laat toe verschillende toestellen met elkaar te laten communiceren. 
+Mosquitto is een MQTT broker, ook wel server genoemd. Het laat toe verschillende toestellen met elkaar te communiceren.
 
 ## MQTT
 
-MQTT is één van de meest gebruikte protocollen voor Internet of Things projectend. MQTT staat voor Message Queuing Telemetry Transport. Het is een zeer lichtgewicht berichten protocol dat gebruik maakt van **publish/subscribe** mechanisme om gegevens tussen verschillende clients uit te wisselen. Het is klein in formaat, laag in vermogenverbruik en gebruikt geminimaliseerde data paketten, ideaal voor 'machine tot machine' of Internet of Things.
+MQTT is één van de meest gebruikte protocollen voor Internet of Things apparaten te laten communiceren met elkaar. MQTT staat voor Message Queuing Telemetry Transport. Het is een zeer lichtgewicht berichten protocol dat gebruik maakt van **publish/subscribe** mechanisme om gegevens tussen verschillende clients uit te wisselen. Het is klein in formaat, laag in vermogenverbruik en gebruikt geminimaliseerde data paketten, ideaal voor 'machine tot machine' of Internet of Things.
 
 ![MQTT](./img/mqtt.png)
 
 ### Publiceren en abonneren
 
-Stel dat je een temperatuur sensor hebt. Deze wil zijn waarden doorsturen naar een broker. Aan de andere kant hebben we toestellen zoals computers en smartphones die deze waarden willen ontvangen om het weer te geven of te verwerken. Dan zijn er twee dingen die gebeuren.
+Stel dat je een temperatuur sensor hebt. Deze wil zijn waarden doorsturen naar een MQTT broker. Aan de andere kant hebben we toestellen zoals computers en smartphones die deze waarden willen ontvangen om ze weer te geven of te verwerken. Dan zijn er twee dingen die gebeuren.
 
 * De sensor geeft een **topic** op waaronder het zijn gegevens zal publiceren. Bijvoorbeeld `temperatuur`. Dan zal het zijn temperatuurwaarde **publiceren**.
 * Iedereen die de gegevens wil ontvangen kan zich dan gaan **abonneren** op `temperatuur`. Elke keer dat de sensor nieuwe gegevens publiceert worden alle abonnees automatisch verwittigd met de nieuwe temperatuur waarde.
@@ -23,21 +23,21 @@ Stel dat je een temperatuur sensor hebt. Deze wil zijn waarden doorsturen naar e
 
 ## Installatie
 
-Het installen van Mosquitto is zeer eenvoudig en is beschikbaar met `apt-get`. Voer volgende commando uit in de commandolijn om Mosquitto te installeren.
+Het installeren van Mosquitto is zeer eenvoudig en is beschikbaar met `apt`. Voer volgende commando uit in de commandolijn om Mosquitto te installeren.
 
 ```shell
-sudo apt-get install mosquitto
+sudo apt install mosquitto
 ```
 
-Als alles goed verlopen is dan is Mosquitto geïnstalleerd op je Raspberry Pi.
+Als alles goed verlopen is, dan is Mosquitto geïnstalleerd op je Raspberry Pi.
 
 ### Configuratie
 
 Omdat we de waarden van onze toepassing wensen binnen te lezen met een browser, moeten we ook gebruik gaan maken van het *websocket* protocol. Andere protocollen worden uit veiligheidsoverwegingen niet ondersteund door browsers. Gelukkig heeft Mosquitto ingebakken ondersteuning om MQTT communicatie op te zetten via het websocket protocol. We moeten deze ondersteuning enkel nog activeren aan de hand van een configuratie bestand.
 
-Je kan een nieuw configuratie bestand creëren met onderstaande commando's. 
+Je kan een nieuw configuratie bestand creëren met onderstaande commando's.
 
-```
+```shell
 sudo touch /etc/mosquitto/conf.d/websocket.conf
 sudo leafpad /etc/mosquitto/conf.d/websocket.conf
 ```
@@ -58,7 +58,7 @@ De instellingen activeren het mqtt-protocol op poort `1883`, en het websocket-pr
 
 Om de instellingen toe te passen moeten we enkel nog Mosquitto heropstarten. Dit kan met volgende commando:
 
-```
+```shell
 sudo systemctl restart mosquitto
 ```
 
