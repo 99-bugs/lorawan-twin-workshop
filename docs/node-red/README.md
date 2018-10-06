@@ -25,7 +25,7 @@ De installatie zal daarna van start gaan. Dit kan een aantal minuten duren. De v
 
 ### The Things Network integratie
 
-Node-RED heeft een plug-in die toelaat elementen van The Things Network te gebruiken. De installatie van deze plugin gebeurt terug via de commandolijn. Voer volgende commando's uit.
+Node-RED heeft een plug-in dat toelaat elementen van The Things Network te gebruiken. De installatie van deze plugin gebeurt terug via de commandolijn. Voer volgende commando's uit.
 
 ```shell
 cd $HOME/.node-red
