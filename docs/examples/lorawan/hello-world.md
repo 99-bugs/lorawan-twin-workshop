@@ -16,9 +16,9 @@ Elke LoRaWAN toepassing heeft een aantal instellingen die in de code juist inges
 
 Zonder de jusite gegevens komen Vergeet deze dus zeker niet aan te passen in je code. De exacte waarden kan je terug vinden in de console van de Things Network. 
 
-## De `getValue` functie
+## De `getValue()` functie
 
-Onderaan het programma vind je de `getValue` functie. Wanneer deze functie aangeroepen wordt in het hoofdprogramma, dan zal deze functie een `String` of tekstwaarde teruggeven. Deze teruggeven waarde - die je dus krijgt bij het aanroepen van de functie - zal de waarde zijn die via LoRaWAN verzonden wordt.
+Onderaan het programma vind je de `getValue()` functie. Wanneer deze functie aangeroepen wordt in het hoofdprogramma, dan zal deze functie een `String` of tekstwaarde teruggeven. Deze teruggeven waarde - die je dus krijgt bij het aanroepen van de functie - zal de waarde zijn die via LoRaWAN verzonden wordt.
 
 Pas deze tekst gerust eens aan, en kijk of je deze waarde kunt verzenden. Let wel op, LoRaWAN kan maar een beperkt aantal tekens verzenden. Hou je bericht dus korter dan 50 tekens. Meer tekens kunnen onder bepaalde omstandigheden verzonden worden.
 

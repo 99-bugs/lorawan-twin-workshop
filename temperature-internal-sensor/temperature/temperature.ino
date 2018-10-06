@@ -10,7 +10,7 @@ const uint8_t AppEUI[8] =
 { 0x70, 0xB3, 0xD5, 0x7E, 0xD0, 0x01, 0x25, 0x5C };
 
 const uint8_t AppKey[16] =
-{ 0xF9, 0x1E, 0x4C, 0xCA, 0x99, 0x9E, 0x61, 0x2A, 0x13, 0xBD, 0x94, 0x8E, 0xB5, 0xA7, 0x6A, 0xDC };
+{ 0xC3, 0xD1, 0x6B, 0xFC, 0xAD, 0x52, 0xBC, 0xA1, 0xD6, 0xFB, 0xE6, 0xFA, 0x1F, 0xD2, 0xD2, 0x17 };
 
 void setup()
 {
@@ -48,10 +48,14 @@ void setupLoRa(){
 
 void loop()
 {
-   String reading = getTemperature();
+   float reading = getTemperature();
    debugSerial.println(reading);
 
-    switch (LoRaBee.send(1, (uint8_t*)reading.c_str(), reading.length()))
+   uint8_t buffer[2];
+   buffer[0] = ((int)(reading * 100) >> 8) & 0xFF;
+   buffer[1] = ((int)(reading * 100) >> 0) & 0xFF;
+
+    switch (LoRaBee.send(1, buffer, 2))
     {
     case NoError:
       debugSerial.println("Successful transmission.");
@@ -93,12 +97,12 @@ void loop()
     delay(10000); 
 }
 
-String getTemperature()
+float getTemperature()
 {
   //10mV per C, 0C is 500mV
   float mVolts = (float)analogRead(TEMP_SENSOR) * 3300.0 / 1023.0;
   float temp = (mVolts - 500.0) / 10.0;
   
-  return String(temp);
+  return temp;
 }
 
