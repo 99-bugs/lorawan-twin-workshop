@@ -38,8 +38,6 @@ TODO: Introductie sensoren
 
 ## Dashboard
 
-## Eigen webpagina
-
 ## Opzetten van een Webserver
 
 TODO: Introductie 
@@ -54,6 +52,8 @@ TODO: Introductie
 
 [Node-RED](./node-red/README.md)
 
+## Eigen webpagina
 
+[IoT Dashboard](./iot-dashboard/README.md)
 
 
