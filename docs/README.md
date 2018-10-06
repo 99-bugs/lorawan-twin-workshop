@@ -34,9 +34,7 @@ TODO: Introductie sensoren
 
 ## LoRaWAN
 
-## The Things Network
-
-## Dashboard
+[LoRaWAN](./lorawan/README.md)
 
 ## Opzetten van een Webserver
 
@@ -55,5 +53,9 @@ TODO: Introductie
 ## Eigen webpagina
 
 [IoT Dashboard](./iot-dashboard/README.md)
+
+## PHP en MySQL
+
+[PHP en MySQL](./php-mysql/README.md)
 
 
