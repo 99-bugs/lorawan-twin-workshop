@@ -124,3 +124,5 @@ Belangrijk is dat we ook de `Retain` correct instellen op `true`. Dit zal er voo
 Wanneer alles correct geconfigureerd is zou de flow er als volgt moeten uitzien.
 
 ![Temperatuur flow](./img/node-red-configuration-ready.png)
+
+Je kan de flow activeren door bovenaan rechts op de knop `Deploy` te drukken. De flow zal nu uitgevoerd worden. Node-RED zal deze ook op de achtergrond blijven uitvoeren. Dat wil dus zeggen dat je de webbrowser gerust mag afsluiten en alles al blijven werken. 
