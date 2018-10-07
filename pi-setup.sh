@@ -44,7 +44,7 @@ sudo apt -y install mosquitto
 echo "-------------------------------------------"
 echo "Installing node-RED"
 echo "-------------------------------------------"
-bash <(curl -sL https://raw.githubusercontent.com/node-red/raspbian-deb-package/master/resources/update-nodejs-and-nodered)
+yes | bash <(curl -sL https://raw.githubusercontent.com/node-red/raspbian-deb-package/master/resources/update-nodejs-and-nodered)
 cd $HOME/.node-red
 npm install node-red-contrib-ttn
 sudo systemctl enable nodered.service
