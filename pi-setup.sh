@@ -13,10 +13,10 @@ echo "                                        |_|   ";
 echo "----------------------------------------------";
 echo "Setting up Raspberry Pi for the LoRaWAN workshop"
 
-apt update
-apt upgrade -y
+sudo apt update
+sudo apt upgrade -y
 
-apt install arduino mosquitto apache2 php libapache2-mod-php mysql-server php-mysql -y
+sudo apt install arduino mosquitto apache2 php libapache2-mod-php mysql-server php-mysql -y
 
 # Node-RED
 bash <(curl -sL https://raw.githubusercontent.com/node-red/raspbian-deb-package/master/resources/update-nodejs-and-nodered)
