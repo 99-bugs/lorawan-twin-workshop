@@ -59,6 +59,46 @@ void loop()
 
 ```
 
+## Event Driven
+
+De starter applicatie is goed om aan te tonen hoe de Touch sensor werkt, maar is niet zo praktisch voor te verzenden met LoRaWAN. We kunnen niet 10 maal per seconde de staat doorsturen. Om dit met LoRaWAN te combineren zou er beter worden gewerkt met detectie van verandering. Zo zou je onderstaande code kunnen aanpassen om via LoRaWAN de staat kunnen doorsturen nadat de user een pad heeft aangeraakt of losgelaten.
+
+```c++
+#include <Wire.h>
+#include <Seeed_QTouch.h>
+
+// Vorige staat van de touch pads (geen aangeraakt)
+int previousKey = -1;
+
+void setup()
+{
+    // put your setup code here, to run once:
+    SerialUSB.begin(115200);
+    while ((!SerialUSB) && (millis() < 30000));
+    SerialUSB.println("Starten van Q Touch demo");
+    Wire.begin();      //Sommige borden hebben dit nodig (ook SODAQ)
+}
+
+void loop()
+{
+    // put your main code here, to run repeatedly:
+    int key = QTouch.touchNum();
+
+    if (key != previousKey) {
+      if (key == 0) {
+        SerialUSB.println("Key 0 is touched");
+      } else if (key == 1) {
+        SerialUSB.println("Key 1 is touched");
+      } else if (key == 2) {
+        SerialUSB.println("Key 2 is touched");
+      } else {
+        SerialUSB.println("Key released");
+      }
+      previousKey = key;
+    }
+}
+```
+
 ## Meer informatie
 
 Meer informatie is beschikbaar op [http://wiki.seeedstudio.com/Grove-Q_Touch_Sensor/](http://wiki.seeedstudio.com/Grove-Q_Touch_Sensor/).

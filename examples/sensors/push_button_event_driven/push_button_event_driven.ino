@@ -1,5 +1,8 @@
 const int pushPin = 15;   // Pin van de drukknop
 
+// Vorige staat van de drukknop (niet ingedrukt)
+int previousState = LOW;
+
 void setup()
 {
   // put your setup code here, to run once:
@@ -18,17 +21,17 @@ void loop()
   // Lees de huidige stand van de drukknop in
   int pushState = digitalRead(pushPin);
 
-  if (pushState == HIGH) {
-    // LED aan
-    digitalWrite(LED_BLUE, LOW);    // Geinverteerd
-    SerialUSB.println("De drukknop is ingedrukt");
+  if (pushState != previousState) {
+    if (pushState == HIGH) {
+      // LED aan
+      digitalWrite(LED_BLUE, LOW);    // Geinverteerd
+      SerialUSB.println("De drukknop is ingedrukt");
+    }
+    else {
+      // LED uit
+      digitalWrite(LED_BLUE, HIGH);    // Geinverteerd
+      SerialUSB.println("De drukknop is niet ingedrukt");
+    }
+    previousState = pushState;
   }
-  else {
-    // LED uit
-    digitalWrite(LED_BLUE, HIGH);    // Geinverteerd
-    SerialUSB.println("De drukknop is niet ingedrukt");
-  }
-
-  // 100 milliseconden wachten, kan je verhogen of verlagen
-  delay(100);
 }

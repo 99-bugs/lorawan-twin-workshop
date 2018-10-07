@@ -31,6 +31,7 @@ void setup()
   SerialUSB.println("Starten van push button demo");
   pinMode(pushPin, INPUT);          // Digitale pin als ingang
   pinMode(LED_BLUE, OUTPUT);        // Blauwe LED als uitgang
+  digitalWrite(LED_BLUE, HIGH);     // LED uit (geinverteerd)
 }
 
 void loop()
@@ -57,6 +58,50 @@ void loop()
 ```
 
 Merk op dat de LED wordt aangezet door de digitale uitgang `LOW` te zetten.
+
+## Event Driven
+
+De starter applicatie is goed om aan te tonen hoe de drukknop werkt, maar is niet zo praktisch voor te verzenden met LoRaWAN. We kunnen niet 10 maal per seconde de staat doorsturen. Om dit met LoRaWAN te combineren zou er beter worden gewerkt met detectie van verandering. Zo zou je onderstaande code kunnen aanpassen om via LoRaWAN de staat kunnen doorsturen nadat de user de knop heeft ingedrukt.
+
+```c++
+const int pushPin = 15;   // Pin van de drukknop
+
+// Vorige staat van de drukknop (niet ingedrukt)
+int previousState = LOW;
+
+void setup()
+{
+  // put your setup code here, to run once:
+  SerialUSB.begin(115200);
+  while ((!SerialUSB) && (millis() < 30000));
+  SerialUSB.println("Starten van push button demo");
+  pinMode(pushPin, INPUT);          // Digitale pin als ingang
+  pinMode(LED_BLUE, OUTPUT);        // Blauwe LED als uitgang
+  digitalWrite(LED_BLUE, HIGH);     // LED uit (geinverteerd)
+}
+
+void loop()
+{
+  // put your main code here, to run repeatedly:
+
+  // Lees de huidige stand van de drukknop in
+  int pushState = digitalRead(pushPin);
+
+  if (pushState != previousState) {
+    if (pushState == HIGH) {
+      // LED aan
+      digitalWrite(LED_BLUE, LOW);    // Geinverteerd
+      SerialUSB.println("De drukknop is ingedrukt");
+    }
+    else {
+      // LED uit
+      digitalWrite(LED_BLUE, HIGH);    // Geinverteerd
+      SerialUSB.println("De drukknop is niet ingedrukt");
+    }
+    previousState = pushState;
+  }
+}
+```
 
 ## Meer informatie
 
