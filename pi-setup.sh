@@ -14,14 +14,16 @@ echo "----------------------------------------------";
 echo "Setting up Raspberry Pi for the LoRaWAN workshop"
 
 sudo apt update
-sudo apt upgrade -y
+sudo apt -y upgrade
 
-sudo apt install arduino mosquitto apache2 php libapache2-mod-php mysql-server php-mysql -y
+sudo apt -y install arduino mosquitto apache2 php libapache2-mod-php mysql-server php-mysql
 
 # Node-RED
-bash <(curl -sL https://raw.githubusercontent.com/node-red/raspbian-deb-package/master/resources/update-nodejs-and-nodered)
+yes | bash <(curl -sL https://raw.githubusercontent.com/node-red/raspbian-deb-package/master/resources/update-nodejs-and-nodered)
 
 cd $HOME/.node-red
 npm install node-red-contrib-ttn
 
 sudo systemctl enable nodered.service
+
+cd $HOME
