@@ -49,6 +49,8 @@ cd $HOME/.node-red
 npm install node-red-contrib-ttn
 sudo systemctl enable nodered.service
 
+clear
+
 echo "----------------------------------------------";
 echo "  _          ___      __      __ _    _  _    ";
 echo " | |    ___ | _ \ __ _\ \    / //_\  | \| |   ";
