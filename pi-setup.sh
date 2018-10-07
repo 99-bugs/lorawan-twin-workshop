@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Call me with: 
+#    sudo curl -sL http://bit.do/lorawan-workshop | bash -s --
+
 echo "----------------------------------------------";
 echo "  _          ___      __      __ _    _  _    ";
 echo " | |    ___ | _ \ __ _\ \    / //_\  | \| |   ";
