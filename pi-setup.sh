@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Call me with: 
-#    sudo curl -sL http://bit.do/lorawan-workshop | bash -s --
+#    curl -sL http://bit.do/lorawan-workshop | bash -s --
 
 echo "----------------------------------------------";
 echo "  _          ___      __      __ _    _  _    ";
@@ -19,8 +19,8 @@ echo "Sit back, this is going to take a while ..."
 echo "-------------------------------------------"
 echo "Updating the system"
 echo "-------------------------------------------"
-apt update
-apt upgrade -y
+sudo apt update
+sudo apt upgrade -y
 
 echo "-------------------------------------------"
 echo "Downloading and installing arduino"
