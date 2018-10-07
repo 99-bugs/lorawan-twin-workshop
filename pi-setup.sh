@@ -19,8 +19,8 @@ echo "Sit back, this is going to take a while ..."
 echo "-------------------------------------------"
 echo "Updating the system"
 echo "-------------------------------------------"
-apt-update
-apt-upgrade -y
+apt update
+apt upgrade -y
 
 echo "-------------------------------------------"
 echo "Downloading and installing arduino"
