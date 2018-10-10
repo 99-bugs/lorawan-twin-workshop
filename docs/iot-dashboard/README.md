@@ -360,4 +360,5 @@ function findSensor(topic){
 function parseData(data){
   let json = (new TextDecoder("utf-8").decode(data))    
   return JSON.parse(json)                               
+}
 ```
