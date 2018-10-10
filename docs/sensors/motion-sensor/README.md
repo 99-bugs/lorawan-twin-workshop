@@ -24,13 +24,11 @@ Om de sensor te verbinden met het SODAQ bord dien je eerst en vooral een **4-pin
 
 Als je de markeringen op de PCB van de drukknop bekijkt en vergelijkt met deze op het SODAQ bord, zal je zien dat de output van PIR sensor (aangeduid met `D1`) is aangesloten op `D15`. NC staat voor *Not Connected* of niet aangesloten.
 
-
 ## Starter Applicatie
 
 Onderstaand vind je een demo sketch die de output van de PIR sensor leest om de 500 milliseconden. De resultaten van de bewegingsdetectie wordt vervolgens in de console weergegeven.
 
 De vertraging kan worden aangepast.
-
 
 ```c++
 const int PIR_PIN = 15;   // Pin van de PIR sensor
@@ -104,5 +102,4 @@ void loop()
 
 ## Meer informatie
 
-More information:
-[https://www.seeedstudio.com/Grove-PIR-Motion-Sensor-p-802.html]()
+Meer informatie is beschikbaar op [https://www.seeedstudio.com/Grove-PIR-Motion-Sensor-p-802.html](https://www.seeedstudio.com/Grove-PIR-Motion-Sensor-p-802.html)
