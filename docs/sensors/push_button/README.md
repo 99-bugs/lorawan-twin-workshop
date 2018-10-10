@@ -49,7 +49,7 @@ void loop()
 }
 ```
 
-## Event gebasseerd
+## Event gebaseerd
 
 De starter applicatie is goed om aan te tonen hoe de drukknop werkt, maar is niet zo praktisch voor te verzenden met LoRaWAN. We kunnen niet 10 maal per seconde de staat doorsturen. Om dit met LoRaWAN te combineren zou er beter worden gewerkt met detectie van verandering. Zo zou je onderstaande code kunnen aanpassen om via LoRaWAN de staat te kunnen doorsturen nadat de user de knop heeft ingedrukt (loslaten gaan we geen rekening mee houden).
 
