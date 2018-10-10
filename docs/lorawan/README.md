@@ -84,8 +84,8 @@ const uint8_t AppEUI[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 const uint8_t AppKey[16] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
 //**********************************************************
-// TODO: De port waarop de data wordt verzonden
-//       Anders per soort sensor
+// TODO: De poort waarop de data wordt verzonden
+//       Andere poort per type sensor
 //**********************************************************
 const int port = 1;
 
@@ -107,26 +107,33 @@ void setup()
 
 void loop()
 {
-    float reading = getTemperature();
-    debugSerial.println(reading);
+    // Sensor uitlezen
+    getSensorValue();
 
-    // Buffer vullen met onze data (temperatuur)
-    buffer[0] = ((int)(reading * 100) >> 8) & 0xFF;
-    buffer[1] = ((int)(reading * 100) >> 0) & 0xFF;
-
-    // buffer verzenden met LoRa
+    // Verzenden met LoRa
     sendWithLoRa(2);      // 2 = aantal bytes
 
     // Tijd om te wachten (milliseconden)
     delay(10000); 
 }
 
-float getTemperature()
+void getSensorValue()
 {
+//**********************************************************
+// TODO: Uitlezen van de sensor en vullen van buffer
+//       Dit moet worden aangepast naargelang de sensor
+//**********************************************************
+
     //10mV per C, 0C is 500mV
     float mVolts = (float)analogRead(TEMP_SENSOR) * 3300.0 / 1023.0;
-    float temp = (mVolts - 500.0) / 10.0;
-    return temp;
+    float temperature = (mVolts - 500.0) / 10.0;
+
+    // Uitschrijven in console
+    debugSerial.println(temperature);
+
+    // Buffer vullen met onze data (temperatuur)
+    buffer[0] = ((int)(temperature * 100) >> 8) & 0xFF;
+    buffer[1] = ((int)(temperature * 100) >> 0) & 0xFF;
 }
 
 void setupLoRa()
