@@ -120,5 +120,4 @@ void read_tph_sensor_to_buffer()
 
 ## Meer informatie
 
-More information:
-[https://shop.sodaq.com/tph-v2.html]()
+Meer informatie is beschikbaar op [https://shop.sodaq.com/tph-v2.html](https://shop.sodaq.com/tph-v2.html)

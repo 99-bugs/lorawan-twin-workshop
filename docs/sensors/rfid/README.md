@@ -96,5 +96,3 @@ Bovenstaande demo is reeds event gebaseerd aangezien de `read_rfid_card()` funct
 ## Meer informatie
 
 Meer informatie is beschikbaar op [http://wiki.seeedstudio.com/Grove-125KHz_RFID_Reader/](http://wiki.seeedstudio.com/Grove-125KHz_RFID_Reader/).
-
-

@@ -55,8 +55,6 @@ int get_rotary_value() {
 
 Bovenstaande sensor komt overeen met een temperatuursensor. Je leest gewoon de waarde periodiek en stuurt deze dan door. Dus dit kan zonder veel aanpassing in de LoRaWAN sketch worden overgenomen.
 
-## Meer informatie
+## Meer informatie## Meer informatie
 
-More information:
-[http://wiki.seeedstudio.com/Grove-Rotary_Angle_Sensor/](http://wiki.seeedstudio.com/Grove-Rotary_Angle_Sensor/)
-
+Meer informatie is beschikbaar op [http://wiki.seeedstudio.com/Grove-Rotary_Angle_Sensor/](http://wiki.seeedstudio.com/Grove-Rotary_Angle_Sensor/)
