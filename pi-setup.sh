@@ -49,6 +49,44 @@ cd $HOME/.node-red
 npm install node-red-contrib-ttn
 sudo systemctl enable nodered.service
 
+echo "-------------------------------------------"
+echo "Installing some Arduino libraries"
+echo "-------------------------------------------"
+cd && sudo rm -rf ~/Arduino/libraries
+
+mkdir -p Arduino/libraries
+
+cd ~/Arduino/libraries
+git clone https://github.com/SodaqMoja/Sodaq_wdt.git
+cd Sodaq_wdt
+git checkout v1.0.1
+
+cd ~/Arduino/libraries
+git clone https://github.com/SodaqMoja/Sodaq_RN2483.git
+cd Sodaq_RN2483
+git checkout v1.0.11
+
+cd ~/Arduino/libraries
+git clone https://github.com/Seeed-Studio/Seeed_QTouch.git
+cd Seeed_QTouch
+git checkout 1.0.0
+
+cd ~/Arduino/libraries
+git clone https://github.com/adafruit/Adafruit_Sensor.git
+cd Adafruit_Sensor
+git checkout 1.0.2
+
+cd ~/Arduino/libraries
+git clone https://github.com/adafruit/Adafruit_BME280_Library.git
+cd Adafruit_BME280_Library
+git checkout 1.0.7
+
+cd
+
+echo "-------------------------------------------"
+echo "Done ..."
+echo "-------------------------------------------"
+
 clear
 
 echo "----------------------------------------------";

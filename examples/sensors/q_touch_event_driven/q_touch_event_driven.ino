@@ -1,33 +1,33 @@
 #include <Wire.h>
 #include <Seeed_QTouch.h>
 
-// Vorige staat van de touch pads (geen aangeraakt)
-int previousKey = -1;
-
 void setup()
 {
     // put your setup code here, to run once:
     SerialUSB.begin(115200);
-    while ((!SerialUSB) && (millis() < 30000));
+    while ((!SerialUSB) && (millis() < 5000));
     SerialUSB.println("Starten van Q Touch demo");
     Wire.begin();      //Sommige borden hebben dit nodig (ook SODAQ)
 }
 
 void loop()
 {
-    // put your main code here, to run repeatedly:
-    int key = QTouch.touchNum();
+  // Lees de huidige stand van de pads in
+  int previousState = QTouch.touchNum();
+  int state = previousState;
 
-    if (key != previousKey) {
-      if (key == 0) {
-        SerialUSB.println("Key 0 is touched");
-      } else if (key == 1) {
-        SerialUSB.println("Key 1 is touched");
-      } else if (key == 2) {
-        SerialUSB.println("Key 2 is touched");
-      } else {
-        SerialUSB.println("Key released");
-      }
-      previousKey = key;
-    }
+  SerialUSB.println("Wachten voor event");
+
+  // Wachten op verandering van de staat van de touchpads.
+  // We wachten ook zolang de pad aangeraakt blijft (state == -1)
+  //    (loslaten negeren we dus, enkel indrukken)
+  while (state == previousState || state  == -1) {
+    previousState = state;          // Nieuwe staat opslaan in oude staat
+    state = QTouch.touchNum();      // Nieuwe staat inlezen
+    delay(100);    // Even wachten voor ontdendering
+  }
+
+  SerialUSB.println("Event is gebeurt");
+  SerialUSB.print("Toets aangeraakt met id = ");
+  SerialUSB.println(state);
 }

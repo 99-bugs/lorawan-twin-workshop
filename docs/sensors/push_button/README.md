@@ -16,7 +16,7 @@ Als je de markeringen op de PCB van de drukknop bekijkt en vergelijkt met deze o
 
 ## Starter Applicatie
 
-Onderstaand vind je een demo sketch die de stand van de drukknop om de 100 milliseconden uitleest. De huidige stand van de drukknop wordt vervolgens weergegeven in de console en ook met de blauwe LED op het SODAQ bord.
+Onderstaand vind je een demo sketch die de stand van de drukknop om de 100 milliseconden uitleest. De huidige stand van de drukknop wordt vervolgens weergegeven in de console.
 
 De vertraging kan worden verkleind of er zelfs worden uitgehaald.
 
@@ -27,28 +27,20 @@ void setup()
 {
   // put your setup code here, to run once:
   SerialUSB.begin(115200);
-  while ((!SerialUSB) && (millis() < 30000));
+  while ((!SerialUSB) && (millis() < 5000));
   SerialUSB.println("Starten van push button demo");
   pinMode(pushPin, INPUT);          // Digitale pin als ingang
-  pinMode(LED_BLUE, OUTPUT);        // Blauwe LED als uitgang
-  digitalWrite(LED_BLUE, HIGH);     // LED uit (geinverteerd)
 }
 
 void loop()
 {
-  // put your main code here, to run repeatedly:
-
   // Lees de huidige stand van de drukknop in
   int pushState = digitalRead(pushPin);
 
   if (pushState == HIGH) {
-    // LED aan
-    digitalWrite(LED_BLUE, LOW);    // Geinverteerd
     SerialUSB.println("De drukknop is ingedrukt");
   }
   else {
-    // LED uit
-    digitalWrite(LED_BLUE, HIGH);    // Geinverteerd
     SerialUSB.println("De drukknop is niet ingedrukt");
   }
 
@@ -57,49 +49,40 @@ void loop()
 }
 ```
 
-Merk op dat de LED wordt aangezet door de digitale uitgang `LOW` te zetten.
+## Event gebaseerd
 
-## Event Driven
-
-De starter applicatie is goed om aan te tonen hoe de drukknop werkt, maar is niet zo praktisch voor te verzenden met LoRaWAN. We kunnen niet 10 maal per seconde de staat doorsturen. Om dit met LoRaWAN te combineren zou er beter worden gewerkt met detectie van verandering. Zo zou je onderstaande code kunnen aanpassen om via LoRaWAN de staat kunnen doorsturen nadat de user de knop heeft ingedrukt.
+De starter applicatie is goed om aan te tonen hoe de drukknop werkt, maar is niet zo praktisch voor te verzenden met LoRaWAN. We kunnen niet 10 maal per seconde de staat doorsturen. Om dit met LoRaWAN te combineren zou er beter worden gewerkt met detectie van verandering. Zo zou je onderstaande code kunnen aanpassen om via LoRaWAN de staat te kunnen doorsturen nadat de user de knop heeft ingedrukt (loslaten gaan we geen rekening mee houden).
 
 ```c++
 const int pushPin = 15;   // Pin van de drukknop
-
-// Vorige staat van de drukknop (niet ingedrukt)
-int previousState = LOW;
 
 void setup()
 {
   // put your setup code here, to run once:
   SerialUSB.begin(115200);
-  while ((!SerialUSB) && (millis() < 30000));
+  while ((!SerialUSB) && (millis() < 5000));
   SerialUSB.println("Starten van push button demo");
   pinMode(pushPin, INPUT);          // Digitale pin als ingang
-  pinMode(LED_BLUE, OUTPUT);        // Blauwe LED als uitgang
-  digitalWrite(LED_BLUE, HIGH);     // LED uit (geinverteerd)
 }
 
 void loop()
 {
-  // put your main code here, to run repeatedly:
+  // Lees de huidige stand van de drukknop
+  int previousState = digitalRead(pushPin);
+  int state = previousState;
 
-  // Lees de huidige stand van de drukknop in
-  int pushState = digitalRead(pushPin);
+  SerialUSB.println("Wachten voor event");
 
-  if (pushState != previousState) {
-    if (pushState == HIGH) {
-      // LED aan
-      digitalWrite(LED_BLUE, LOW);    // Geinverteerd
-      SerialUSB.println("De drukknop is ingedrukt");
-    }
-    else {
-      // LED uit
-      digitalWrite(LED_BLUE, HIGH);    // Geinverteerd
-      SerialUSB.println("De drukknop is niet ingedrukt");
-    }
-    previousState = pushState;
+  // Wachten op verandering van de staat van de knop.
+  // We wachten ook zolang de knop ingedrukt is (state == LOW)
+  //    (loslaten negeren we dus, enkel indrukken)
+  while (state == previousState || state  == LOW) {
+    previousState = state;          // Nieuwe staat opslaan in oude staat
+    state = digitalRead(pushPin);    // Nieuwe staat inlezen
+    delay(10);    // Even wachten voor ontdendering
   }
+
+  SerialUSB.println("Event is gebeurt");
 }
 ```
 

@@ -78,26 +78,44 @@ Zorg er ook voor dat het juiste `Board` geselecteerd (`SODAQ Explorer`) is onder
 //**********************************************************
 // TODO: verander de waarden van DevEUI, AppEUI en APPkey
 //**********************************************************
-
 static uint8_t DevEUI[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 const uint8_t AppEUI[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 const uint8_t AppKey[16] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
 //**********************************************************
-// TODO: De port waarop de data wordt verzonden
-//       Anders per soort sensor
+// TODO: De poort waarop de data wordt verzonden
+//       Andere poort per type sensor
 //**********************************************************
-const int port = 1;
+const int LORAWAN_PORT = 1;
 
-// Buffer die data kan bevatten
-uint8_t buffer[16];
+//**********************************************************
+// WARNING:   Niet aanpassen. Maakt de buffer voor data.
+//**********************************************************
+const int SIZE_OF_BUFFER = 32;
+uint8_t buffer[SIZE_OF_BUFFER];
+uint8_t numberOfDataBytes = 1;
 
+//**********************************************************
+// TODO: De setup van Arduino, wordt in het begin van je
+//       sketch 1x uitgevoerd.
+//       Als je sensor moet initializeren, doe je dit hier
+//**********************************************************
 void setup()
 {
-    delay(1000);
+    pinMode(LED_BLUE, OUTPUT);         // Blauwe LED als uitgang
+    pinMode(LED_RED, OUTPUT);          // Rode LED als uitgang
+    pinMode(LED_GREEN, OUTPUT);        // Groene LED als uitgang
+
+    digitalWrite(LED_BLUE, HIGH);
+    digitalWrite(LED_GREEN, HIGH);
+    digitalWrite(LED_RED, LOW);
+    
     SerialUSB.begin(115200);
-    while ((!SerialUSB) && (millis() < 30000));
+    while ((!SerialUSB) && (millis() < 5000));
     debugSerial.println("Starting LoRaWAN");
+
+    // Configuratie button op Sodaq
+    pinMode(BUTTON, INPUT);        // Digitale pin als ingang
 
     // Configuratie van LoRaWAN
     loraSerial.begin(LoRaBee.getDefaultBaudRate());
@@ -105,34 +123,85 @@ void setup()
     setupLoRa();
 }
 
+//**********************************************************
+// TODO: De loop van Arduino, deze blijft telkens herhalen
+//       Hier kies je een type sensor:
+//           - perdiodiek uitgelezen (met delay erin)
+//           - event gebasseerde sensoren (zonder delay erin)
+//**********************************************************
 void loop()
 {
-    float reading = getTemperature();
-    debugSerial.println(reading);
+    // Periodiek sensor uitlezen
+    getSensorValue();
+    // OF
+    // Event gebasseerde sensor, blocking - delay in commentaar zetten!
+    // waitForEvent();
 
-    // Buffer vullen met onze data (temperatuur)
-    buffer[0] = ((int)(reading * 100) >> 8) & 0xFF;
-    buffer[1] = ((int)(reading * 100) >> 0) & 0xFF;
+    // Verzenden met LoRa
+    sendWithLoRa();
 
-    // buffer verzenden met LoRa
-    sendWithLoRa(2);      // 2 = aantal bytes
-
-    // Tijd om te wachten (milliseconden)
-    delay(10000); 
+    // Delay verwijderen bij event-gebasseerde sensoren
+    delay(10000);     // Tijd om te wachten (milliseconden)
 }
 
-float getTemperature()
+//**********************************************************
+// TODO: Uitlezen van een periodieke sensor en vullen van buffer.
+//       Dit moet worden aangepast naargelang de sensor
+//**********************************************************
+void getSensorValue()
 {
     //10mV per C, 0C is 500mV
     float mVolts = (float)analogRead(TEMP_SENSOR) * 3300.0 / 1023.0;
-    float temp = (mVolts - 500.0) / 10.0;
-    return temp;
+    float temperature = (mVolts - 500.0) / 10.0;
+
+    // Uitschrijven in console
+    debugSerial.println(temperature);
+
+    // Buffer vullen met onze data (temperatuur)
+    buffer[0] = ((int)(temperature * 100) >> 8) & 0xFF;
+    buffer[1] = ((int)(temperature * 100) >> 0) & 0xFF;
+    numberOfDataBytes = 2;
 }
 
+//**********************************************************
+// TODO: Wachten op een verandering voor een event gebasseerde
+//       sensor.
+//**********************************************************
+void waitForEvent()
+{
+  // Lees de huidige stand van de drukknop
+  int previousState = digitalRead(BUTTON);
+  int state = previousState;
+
+  debugSerial.println("Wachten voor event");
+
+  // Wachten op verandering van de staat van de knop.
+  // We wachten ook zolang de knop ingedrukt is (state == HIGH)
+  //    (loslaten negeren we dus, enkel indrukken)
+  while (state == previousState || state  == HIGH) {
+    previousState = state;          // Nieuwe staat opslaan in oude staat
+    state = digitalRead(BUTTON);    // Nieuwe staat inlezen
+    delay(10);    // Even wachten voor ontdendering
+  }
+
+  debugSerial.println("Event is gebeurt");
+
+  // Opslaan in buffer om te verzenden
+  buffer[0] = HIGH;
+  numberOfDataBytes = 1;
+}
+
+//**********************************************************
+// WARNING:   Vanaf hier dien je niets meer aan te passen.
+//            Dit zijn de functies die de LoRa data verzenden.
+//**********************************************************
 void setupLoRa()
 {
     if (LoRaBee.initOTA(loraSerial, DevEUI, AppEUI, AppKey, true)) {
         debugSerial.println("Network connection successful.");
+        digitalWrite(LED_BLUE, HIGH);
+        digitalWrite(LED_GREEN, LOW);
+        digitalWrite(LED_RED, HIGH);
     }
     else {
         debugSerial.println("Network connection failed!");
@@ -140,8 +209,8 @@ void setupLoRa()
     LoRaBee.setSpreadingFactor(7);
 }
 
-void sendWithLoRa(int numberOfBytes) {
-    switch (LoRaBee.send(port, buffer, numberOfBytes))
+void sendWithLoRa() {
+    switch (LoRaBee.send(LORAWAN_PORT, buffer, numberOfDataBytes))
     {
         case NoError:
           debugSerial.println("Successful transmission.");

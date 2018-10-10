@@ -14,7 +14,7 @@ Als je de markeringen op de PCB van de switch bekijkt en vergelijkt met deze op 
 
 ## Starter Applicatie
 
-Onderstaand vind je een demo sketch die de stand van de switch om de 100 milliseconden uitleest. De huidige stand van de schakelaar wordt vervolgens weergegeven in de console en ook met de blauwe LED op het SODAQ bord.
+Onderstaand vind je een demo sketch die de stand van de switch om de 100 milliseconden uitleest. De huidige stand van de schakelaar wordt vervolgens weergegeven in de console.
 
 De vertraging kan worden verkleind of er zelfs worden uitgehaald.
 
@@ -25,10 +25,9 @@ void setup()
 {
   // put your setup code here, to run once:
   SerialUSB.begin(115200);
-  while ((!SerialUSB) && (millis() < 30000));
+  while ((!SerialUSB) && (millis() < 5000));
   SerialUSB.println("Starten van switch demo");
   pinMode(switchPin, INPUT);        // Digitale pin als ingang
-  pinMode(LED_BLUE, OUTPUT);        // Blauwe LED als uitgang
 }
 
 void loop()
@@ -39,13 +38,9 @@ void loop()
   int switchState = digitalRead(switchPin);
 
   if (switchState == HIGH) {
-    // LED aan
-    digitalWrite(LED_BLUE, LOW);    // Geinverteerd
     SerialUSB.println("De schakelaar staat in de AAN stand");
   }
   else {
-    // LED uit
-    digitalWrite(LED_BLUE, HIGH);    // Geinverteerd
     SerialUSB.println("De schakelaar staat in de UIT stand");
   }
 
@@ -54,27 +49,20 @@ void loop()
 }
 ```
 
-Merk op dat de LED wordt aangezet door de digitale uitgang `LOW` te zetten.
+## Event gebaseerd
 
-## Event Driven
-
-De starter applicatie is goed om aan te tonen hoe de schakelaar werkt, maar is niet zo praktisch voor te verzenden met LoRaWAN. We kunnen niet 10 maal per seconde de staat doorsturen. Om dit met LoRaWAN te combineren zou er beter worden gewerkt met detectie van verandering. Zo zou je onderstaande code kunnen aanpassen om via LoRaWAN de staat kunnen doorsturen nadat de user de knop heeft ingedrukt.
+De starter applicatie is goed om aan te tonen hoe de schakelaar werkt, maar is niet zo praktisch voor te verzenden met LoRaWAN. We kunnen niet 10 maal per seconde de staat doorsturen. Om dit met LoRaWAN te combineren zou er beter worden gewerkt met detectie van verandering. Zo zou je onderstaande code kunnen aanpassen om via LoRaWAN de staat kunnen doorsturen nadat de user de knop heeft verschoven.
 
 ```c++
 const int switchPin = 15;   // Pin van Switch
-
-// Vorige staat van de schakelaar (uit)
-int previousState = LOW;
 
 void setup()
 {
   // put your setup code here, to run once:
   SerialUSB.begin(115200);
-  while ((!SerialUSB) && (millis() < 30000));
+  while ((!SerialUSB) && (millis() < 5000));
   SerialUSB.println("Starten van switch demo");
   pinMode(switchPin, INPUT);        // Digitale pin als ingang
-  pinMode(LED_BLUE, OUTPUT);        // Blauwe LED als uitgang
-  digitalWrite(LED_BLUE, HIGH);     // LED uit (geinverteerd)
 }
 
 void loop()
@@ -82,21 +70,23 @@ void loop()
   // put your main code here, to run repeatedly:
 
   // Lees de huidige stand van de schakelaar
-  int switchState = digitalRead(switchPin);
+  int previousState = digitalRead(switchPin);
+  int state = previousState;
 
-  if (switchState != previousState) {
-    if (switchState == HIGH) {
-      // LED aan
-      digitalWrite(LED_BLUE, LOW);    // Geinverteerd
-      SerialUSB.println("De schakelaar staat in de AAN stand");
-    }
-    else {
-      // LED uit
-      digitalWrite(LED_BLUE, HIGH);    // Geinverteerd
-      SerialUSB.println("De schakelaar staat in de UIT stand");
-    }
-    previousState = switchState;
+  SerialUSB.println("Wachten voor event");
+
+  // Wachten op verandering van de staat van de schakelaar.
+  while (state == previousState) {
+    previousState = state;          // Nieuwe staat opslaan in oude staat
+    state = digitalRead(switchPin);    // Nieuwe staat inlezen
+    delay(10);    // Even wachten voor ontdendering
   }
+
+  SerialUSB.println("Event is gebeurt");
+
+  SerialUSB.println("De schakelaar is ");
+  SerialUSB.println(state);
+  
 }
 ```
 

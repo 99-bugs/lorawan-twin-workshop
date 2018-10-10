@@ -5,7 +5,7 @@ void setup()
 {
     // put your setup code here, to run once:
     SerialUSB.begin(115200);
-    while ((!SerialUSB) && (millis() < 30000));
+    while ((!SerialUSB) && (millis() < 5000));
     SerialUSB.println("Starten van Q Touch demo");
     Wire.begin();      //Sommige borden hebben dit nodig (ook SODAQ)
 }
