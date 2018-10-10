@@ -22,40 +22,48 @@ Wat gaan we dus allemaal doen:
 
 ## Arduino en SODAQ ExpLoRer
 
-TODO: Introductie
+We starten hier met het opzetten van Arduino en het SODAQ ExpLoRer ontwikkelingsbord.
 
 [Arduino opzetten voor SODAQ ExpLoRer](./sodaq-explorer/README.md)
 
 ## Sensoren
 
-TODO: Introductie sensoren
+Grove sensoren uitlezen is een koud kunstje. We hebben hier voor jullie een aantal sensoren voorzien met bijhorende starter sketches. Op deze manier kan je heel snel aan de slag.
 
 [Grove sensoren uitlezen](./sensors/README.md)
 
 ## LoRaWAN
 
+Onze sensorwaarden dienen draadloos verstuurd te worden naar The Things Network, als het ware "The Cloud" voor onze sensordata. Dit doen we via LoRaWAN, een Internet of Things communicatietechnologie gemaakt voor low-power devices.
+
 [LoRaWAN](./lorawan/README.md)
 
 ## Opzetten van een Webserver
 
-TODO: Introductie 
+Door onze data af te beelden op een web dashboard kunnen we een mooi overzicht maken. Daarvoor hebben we natuurlijk een webserver nodig.
 
 [Opzetten van een LAMP stack](./lamp/README.md)
 
 ## MQTT Broker
 
+Als we onze data ter beschikking stellen via MQTT kan elke geïnteresseerde partij (web app, mobiele app, ...) deze raadplegen.
+
 [Mosquitto](./mosquitto/README.md)
 
 ## Node-RED
+
+Node-RED, een grafische flow programmatie, legt de connectie tussen The Things Network en onze MQTT broker.
 
 [Node-RED](./node-red/README.md)
 
 ## Eigen webpagina
 
+Hier maken we gebruik van een klein framework om een mooi dashboard te bouwen waar onze data ter beschikking wordt gesteld. Deze hosten we dan natuurlijk op onze eigen Raspberry Pi's.
+
 [IoT Dashboard](./iot-dashboard/README.md)
 
 ## PHP en MySQL
 
+Als er tijd over is kunnen we onze data ook opslaan in een database.
+
 [PHP en MySQL](./php-mysql/README.md)
-
-
