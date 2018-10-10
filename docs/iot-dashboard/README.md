@@ -45,6 +45,7 @@ Wij zullen voor deze toepassing de volgende bibliotheken en raamwerken gebruiken
 * **[Material Icons](https://materializecss.com/icons.html)**: Een set met kant en klare iconen die we in onze toepassing kunnen gebruiken.
 * **[vue.js](https://vuejs.org/)**: Is een JavaScript raamwerk dat het eenvoudig maakt om interactieve toepassingen te bouwen in de browser.
 * **[Vue-Mqtt](https://github.com/nik-zp/Vue-Mqtt)**: Is een bibliotheek die MQTT integreert in een Vue toepassing.
+* **Axios**: Is een bibliotheek die toelaat op de achtergrond extra bestanden in te laden, bijvoorbeeld configuratie.
 * **App.js**: Is het bestand waar wij onze eigen JavaScript code zullen in plaatsen die eigen is aan deze toepassing.
 
 ```html
@@ -52,6 +53,7 @@ Wij zullen voor deze toepassing de volgende bibliotheken en raamwerken gebruiken
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <script src="https://vuejs.org/js/vue.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue-mqtt@2.0.2/dist/build.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js"></script>
 <script src="js/app.js"></script>
 ```
 
@@ -126,6 +128,7 @@ Als we alles goed samenvoegen dan krijgen we onderstaande resultaat. Deze code z
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <script src="https://vuejs.org/js/vue.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue-mqtt@2.0.2/dist/build.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js"></script>
   <script src="js/app.js"></script>
   <title>IoT Dasboard</title>
 </head>
@@ -148,27 +151,173 @@ Als we alles goed samenvoegen dan krijgen we onderstaande resultaat. Deze code z
 
 ## Webpagina dynamisch maken met JavaScript
 
-HTML definities zijn héél statisch. Ze geven betekenis aan inhoud. Waarden van sensoren binnenlezen en communiceren met andere elementen is dus niet mogelijk. JavaScript biedt daarbij een oplossing. Het maakt mogelijk HTML documenten aan te passen eens ze geladen zijn.  We dienen dus nog een extra bestand toe te voegen aan ons project. We zullen een `app.js` bestand moeten maken in een submap `js` van ons project. 
+HTML definities zijn héél statisch. Ze geven betekenis aan inhoud. Waarden van sensoren binnenlezen en communiceren met andere elementen is dus niet mogelijk. JavaScript biedt daarbij een oplossing. Het maakt mogelijk HTML documenten aan te passen eens ze geladen zijn. Voor dit project zullen we twee extra bestanden toevoegen. De belangrijkste reden om dit op te splitsen is de code overzichtelijk te houden en structuur in het project te steken.
 
-Onderstaande code zullen we dus programmeren in een bestand `/var/www/html/js/app.js`
+* `/var/www/html/js/app.js` met de JavaScript code die de verwerking van de gegevens zal voorzien
+* `/var/www/html/config.json` met de configuratie van de verschillende sensoren die we wensen te visualiseren.
 
-### App voorbereiden
+We zullen eerst de verwerking van de gegevens opbouwen. Onderstaande code zullen we dus programmeren in een bestand `/var/www/html/js/app.js`
 
-We zullen een `app` object moeten maken in onze applicatie. We kunnen deze variable reeds declareren, maar nog geen object aan toekennen. 
+### Wachten op de browser tot alles geladen is
 
-Variabelen in JavaScript kunnen worden gedeclareerd met het `let` sleutelwoord.
+Het is belangrijk te wachten op de browser tot deze alle bestanden geladen heeft om code te gaan uitvoeren. We doen dit door te wachten op een *event* waarmee de browser ons verwittigd dat alles klaar is. Dit event heet `DOMContentLoaded`.
+
+```javascript
+document.addEventListener('DOMContentLoaded', () => {
+
+});
+```
+
+De code die ons effectieve programma zal uitvoeren dienen we tussen de `{` `}` tekens te plaatsen.
+
+### Configuratiebestand ophalen
+
+Het eerste wat we nu dienen te doen is het configuratiebestand gaan ophalen. Dit bestand bevat de informatie over de MQTT broker, maar ook over welke sensoren weergegeven kunnen worden op ons IoT Dashboard.
+
+We maken hiervoor gebruik van de `axios` bibliotheek die voor ons het bestand zal ophalen en de inhoud zal teruggeven als het het bestand gevonden heeft.
+
+De configuratie kunnen we dan in de `data` eigenschap van de `response` terugvinden. We kunnen dit opslaan in een constante (variabele die niet zal veranderen) `config`. We kunnen later dan deze configuratie uitlezen wanneer we deze nodig hebben.
+
+```javascript
+...
+  axios.get('sensors.json').then((response) => {
+    const config = response.data;
+
+  });
+...
+```
+
+### Nieuwe app bouwen
+
+Nu zijn we klaar met het voorbereiden van onze Vue applicatie. We kunnen deze nu opbouwen met onderstaande code.
+
+We moeten nog vertellen dat `Vue` de `Vue-Mqtt` bibliotheek moet gebruiken met onze instellingen voor onze MQTT server. De effectieve instellingswaarden geven we hier nog niet op, maar zullen we later in ons configuratiebestand opgeven. Als we dan ooit een aanpassing moeten doen moeten we geen code uit dit bestand meer aanpassen, maar enkel in de configuratie.
+
+Daarna kunnen we een nieuwe Vue applicatie bouwen (`new Vue()`)
 
 ```js
-let app = null;
+...
+  Vue.use(VueMqtt.default, `mqtt://${config.mqtt.broker}:${config.mqtt.port}`)
+  let app = new Vue({
+    el: '#app',
+
+    ...
+
+  })
+...
 ```
+
+Elke Vue app moet een HTML element hebben waarin het werkzaam is. Dit geven we hier op door te vertellen dat er in de `index.html` een element bestaat met een `id` attribuut dat de waarde `app` heeft (`#app`).
+
+#### App data
+
+Onze Vue applicatie bestaat uit een aantal onderdelen. 
+
+* **data**: Dit onderdeel bevat alle gegevens die door onze applicatie beheerd moeten worden. In ons geval is dit een lijst met sensoren.
+* **mounted**: Dit onderdeel bevat de code die uitgevoerd moet worden bij het opstarten van onze Vue applicatie. Hier gaan we ons gaan abonneren op het MQTT topic waarop we de gegevens wensen te ontvangen.
+* **mqtt**: Hier staat de code die we willen uitvoeren wanneer een nieuw pakket met data via MQTT ontvangen is. Hier roepen we de functies aan de we eerder gedefinieerd hebben.
+
+#### Lijst met data in onze app
+
+Hier geven we op dat de sensoren in de Vue app moeten geladen worden uit ons configuratiebestand.
+
+```js
+data: {
+  sensors: config.sensors,
+},
+```
+
+#### Na het opstarten van de app
+
+Eens de Vue app volledig opgestart is kunnen we alle sensoren uit de lijst overlopen en kunnen we ons gaan *abonneren* via MQTT op updates van hun gegevens. We zullen dan automatisch verwittigd worden van nieuwe waarden.
+
+```js
+mounted () {
+  this.sensors.forEach((sensor) => {
+    this.$mqtt.subscribe(sensor.topic);
+  });
+},
+```
+
+#### Ontvangen van MQTT gegevens
+
+Wanneer we dan effectief ook gegevens gaan ontvangen van de verschillende sensoren moeten we deze nog gaan verwerken. 
+
+```js
+mqtt: {
+  '#': function mqttResponse(data, topic) {
+    const value = new TextDecoder('utf-8').decode(data);
+    const sensor = this.sensors.find(s => s.topic === topic);
+    if (sensor) {
+      sensor.value = value.toString();
+    }
+  },
+},
+```
+
+De `#` duid op het feit dat deze functie gegevens van alle *topics* zal gaan verwerken, dit wil zeggen van elke sensor, ongeacht het type, soort of toepassing. Wanneer een sensor nieuwe informatie gaat gaan publiceren, dan worden we verwittigd van die `data`, maar ook van het `topic` waarop de informatie gepubliceerd is.
+
+De data is binair en wordt aan de hand van bytes ter beschikking gesteld in de applicatie. We dienen deze bytes nog om te zetten naar een leesbaar formaat zoals tekst. Dit doen we aan de hand van een `TextDecoder`.
+
+Daarna gaan we in de lijst met sensoren op zoek naar het topic dat overeenkomt met het topic waarop we net informatie verkregen hebben. 
+
+Als er een sensor gevonden is met een overeenkomstig topic, dan kunnen we de waarde (`value`) van deze sensor gaan aanpassen met de nieuwe waarde.
+
+### Resultaat
+
+Wanneer we alles samengooien zouden we een code bestand moeten krijgen zoals hieronder voorgesteld. Deze code komt dan terecht in het `/var/www/html/js/app.js` bestand.
+
+```js
+document.addEventListener('DOMContentLoaded', () => {
+  axios.get('sensors.json').then((response) => {
+    const config = response.data;
+    Vue.use(VueMqtt.default, `mqtt://${config.mqtt.broker}:${config.mqtt.port}`)
+    let app = new Vue({
+      el: '#app',
+      data: {
+        sensors: config.sensors,
+      },
+      mounted() {
+        this.sensors.forEach((sensor) => {
+          this.$mqtt.subscribe(sensor.topic);
+        });
+      },
+      mqtt: {
+        '#': function mqttResponse(data, topic) {
+          const value = new TextDecoder('utf-8').decode(data);
+          const sensor = this.sensors.find(s => s.topic === topic);
+          if (sensor) {
+            sensor.value = value.toString();
+          }
+        },
+      },
+    });
+  });
+});
+```
+
+## Configuratie
+
+Als laatste dienen we nog wat informatie in een configuratiebestand te plaatsen. Deze configuratie wordt dan door onze applicatie gebruikt om zijn werk te kunnen uitvoeren.
+
+Er zijn twee belangrijke zaken die we in deze configuratie moeten verwerken:
+
+* Instellingen voor de MQTT broker
+* Informatie over welke sensoren we wensen weer te geven
+
+Deze configuratie zullen we plaatsen in het `/var/www/html/config.json` bestand.
 
 ### Instellingen
 
 We zullen een MQTT topic, en het ip-adres met poort moeten instellen in onze toepassing. Hiervoor kunnen we twee constanten declareren en een waarde toekennen. Het ip-adres zal je wel moeten aanpassen naar het ip-adres dat jouw eigen Raspberry Pi gekregen heeft (je kan dit nagaan met het `ifconfig` commando. Het ip-address staat dan vermeld bij `eth0` en `inet`).
 
 ```js
-const topic = 'workshop/+'
-const mqttServer = 'mqtt://192.168.1.158:9001'
+...
+  "mqtt": {
+    "broker": "mqtt.labict.be",
+    "port": "1884"
+  },
+...
 ```
 
 ### Lijst met sensoren
@@ -180,185 +329,53 @@ We kunnen het aantal sensoren aan de hand van een sensorlijst opmaken. Elke sens
 * **unit**: Verschillende sensoren hebben verschillende eenheden. Deze informatie kunnen we hier invullen. Bijvoorbeeld thermometer: `°C`, druk: `hPa`,... Indien je geen eenheid hebt, kan je gewoon de waarde `""` opgeven.
 * **topic**: Dit is het MQTT topic dat de sensor gebruikt om zijn waarde te publiceren. Dit is wat we reeds eerder in Node-RED opgegeven hebben.
 
-Het configuratiebestand kan er dan bijvoorbeeld zo gaan uitzien:
+De sensorconfiguratie kan er dan bijvoorbeeld zo gaan uitzien:
 
 ```js
-const sensorList = [
-        {
-          name: "hello",
-          value: "-",
-          unit: '°C',
-          topic: 'workshop/temperature'
-        },
-        {
-          name: "foo",
-          value: "-",
-          unit: '%',
-          topic: 'workshop/foo'
-        },
-        {
-          name: "bar",
-          value: "-",
-          unit: "hPa",
-          topic: 'workshop/bar'
-        }
-      ]  
+...
+  "sensors": [
+    {
+      "name": "Foo",
+      "value": "-",
+      "unit": "°C",
+      "topic": "workshop/foo/1"
+    },
+  ...
+  ]
+...
 ```
 
-### Sensor informatie updaten
-
-Om de sensorwaarden te kunnen weergeven op onze pagina hebben we een aantal functies nodig om ons te helpen. 
-
-Waarde van een sensor aanpassen:
-
-```js
-function updateSensorValue(sensor, value) {
-  sensor.value = value.toString()
-}
-```
-
-De juiste sensor uit de weergegeven sensoren gaan ophalen:
-
-```js
-function findSensor(topic){
-  return app.$data.sensors.find(sensor => {
-    return sensor.topic == topic
-  })
-}
-```
-
-Data dat via MQTT ontvangen is gaan verwerken (byts omzetten naar JavaScript variabelen)
-
-```js
-function parseData(data){
-  let json = (new TextDecoder("utf-8").decode(data))    
-  return JSON.parse(json)                               
-}
-```
-
-### Nieuwe app bouwen
-
-Nu zijn we klaar met het voorbereiden van onze Vue applicatie. We kunnen deze nu opbouwen met onderstaande code.
-
-```js
-document.addEventListener("DOMContentLoaded",function(){
-
-  Vue.use(VueMqtt.default, mqttServer)
-
-  // Create a new Vue application. 
-  app = new Vue({
-    el: '#app',
-
-  });
-});
-```
-
-We vertellen hier dat we moeten wachten tot alle code geladen is door de browser (`DOMContentLoaded` event).
-
-We vertellen Vue ook dat we de Vue-Mqtt bibliotheek willen gebruiken met onze ingestelde server.
-
-Daarna kunnen we een nieuwe Vue applicatie bouwen (`new Vue()`)
-
-#### App data
-
-Onze Vue applicatie bestaat uit een aantal onderdelen. 
-
-* **data**: Dit onderdeel bevat alle gegevens die door onze applicatie beheerd moeten worden. In ons geval is dit een lijst met sensoren.
-* **mounted**: Dit onderdeel bevat de code die uitgevoerd moet worden bij het opstarten van onze Vue applicatie. Hier gaan we ons gaan abonneren op het MQTT topic waarop we de gegevens wensen te ontvangen.
-* **mqtt**: Hier staat de code die we willen uitvoeren wanneer een nieuw pakket met data via MQTT ontvangen is. Hier roepen we de functies aan de we eerder gedefinieerd hebben.
-
-Lijst met data in onze app:
-
-```js
-data: {
-  sensors: sensorList 
-},
-```
-
-Opstarten van de app:
-
-```js
-mounted () {
-  this.$mqtt.subscribe(topic) 
-},
-```
-
-Ontvangen van MQTT gegevens:
-
-```js
-mqtt: {
-  [topic]: function (data, topic){        
-    let message = parseData(data)
-    let sensor = findSensor(topic)
-    updateSensorValue(sensor, message)
-  }
-}
-```
+Voor elke sensor die we wensen weer te geven dienen we het deel tussen `{` en `}` te herhalen met de eigenschappen voor die sensor.
 
 ### Resultaat
 
-Wanneer we alles samengooien zouden we een code bestand moeten krijgen zoals hieronder voorgesteld. Deze code komt dan terecht in het `/var/www/html/js/app.js` bestand.
+Als we alles goed samenvoegen krijgen we bijvoorbeeld volgende configuratiebestand `/var/www/html/config.json`:
 
-```js
-let app = null;
-
-const topic = 'workshop/+'
-const mqttServer = 'mqtt://192.168.1.158:9001'
-const sensorList = [
-        {
-          name: "hello",
-          value: "-",
-          unit: '°C',
-          topic: 'workshop/temperature'
-        },
-        {
-          name: "foo",
-          value: "-",
-          unit: '%',
-          topic: 'workshop/foo'
-        },
-        {
-          name: "bar",
-          value: "-",
-          unit: "hPa",
-          topic: 'workshop/bar'
-        }
-      ]  
-
-document.addEventListener("DOMContentLoaded",function(){
-
-  Vue.use(VueMqtt.default, mqttServer)
-
-  app = new Vue({
-    el: '#app',         
-    data: {             
-      sensors: sensorList 
+```json
+{
+  "mqtt": {
+    "broker": "mqtt.labict.be",
+    "port": "1884"
+  },
+  "sensors": [
+    {
+      "name": "Foo",
+      "value": "-",
+      "unit": "°C",
+      "topic": "workshop/foo/1"
     },
-    mounted () {
-      this.$mqtt.subscribe(topic)       
+    {
+      "name": "Bar",
+      "value": "-",
+      "unit": "%",
+      "topic": "workshop/bar/1"
     },
-    mqtt: {
-      [topic]: function (data, topic){
-        let message = parseData(data)
-        let sensor = findSensor(topic)
-        updateSensorValue(sensor, message)
-      }
+    {
+      "name": "Baz",
+      "value": "off",
+      "unit": "",
+      "topic": "workshop/baz/1"
     }
-  });
-});
-
-function updateSensorValue(sensor, value) {
-  sensor.value = value.toString()
-}
-
-function findSensor(topic){
-  return app.$data.sensors.find(sensor => {
-    return sensor.topic == topic
-  })
-}
-
-function parseData(data){
-  let json = (new TextDecoder("utf-8").decode(data))    
-  return JSON.parse(json)                               
+  ]
 }
 ```
