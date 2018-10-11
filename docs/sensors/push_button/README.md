@@ -20,7 +20,7 @@ Onderstaand vind je een demo sketch die de stand van de drukknop om de 100 milli
 
 De vertraging kan worden verkleind of er zelfs worden uitgehaald.
 
-```c++
+```cpp
 const int pushPin = 15;   // Pin van de drukknop
 
 void setup()
@@ -53,7 +53,7 @@ void loop()
 
 De starter applicatie is goed om aan te tonen hoe de drukknop werkt, maar is niet zo praktisch voor te verzenden met LoRaWAN. We kunnen niet 10 maal per seconde de staat doorsturen. Om dit met LoRaWAN te combineren zou er beter worden gewerkt met detectie van verandering. Zo zou je onderstaande code kunnen aanpassen om via LoRaWAN de staat te kunnen doorsturen nadat de user de knop heeft ingedrukt (loslaten gaan we geen rekening mee houden).
 
-```c++
+```cpp
 const int pushPin = 15;   // Pin van de drukknop
 
 void setup()

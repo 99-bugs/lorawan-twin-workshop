@@ -30,7 +30,7 @@ Onderstaand vind je een demo sketch die de output van de PIR sensor leest om de 
 
 De vertraging kan worden aangepast.
 
-```c++
+```cpp
 const int PIR_PIN = 15;   // Pin van de PIR sensor
 
 void setup()
@@ -63,7 +63,7 @@ void loop()
 
 In plaats van moment opnames te nemen willen we eigenlijk weten of er binnen een bepaald tijdsvenster beweging was. Dit kan dan worden doorgestuurd via LoRaWAN. Door een lus te maken die 1000x de sensor controleert en telkens 10ms wacht, komen we aan een tijdsvenster van 10s.
 
-```c++
+```cpp
 const int PIR_PIN = 15;   // Pin van de PIR sensor
 
 void setup()

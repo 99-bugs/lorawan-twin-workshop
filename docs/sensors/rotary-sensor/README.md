@@ -18,7 +18,7 @@ Onderstaand vind je een demo sketch die de stand van de draaiknop om de 100 mill
 
 De vertraging kan worden aangepast.
 
-```c++
+```cpp
 const int ROTARY_PIN = 8;      // Pin van de POT
 const double POT_VCC = 5;      // Voedingsspanning van de POT (VCC)
 const int POT_MAX_ANGLE = 300; // Maximale angle van de POT

@@ -26,11 +26,11 @@ Vooraleer je onderstaande code snippet kan gebruiken om te starten dien je in ee
 
 ![Zoeken van de Adafruit Unified Sensor bibliotheek](./img/adafruit_unified_sensor.png)
 
-![Zoeken van de Adafruit BME280 bibliotheek](./img/adafruit_nme280.png)
+![Zoeken van de Adafruit BME280 bibliotheek](./img/adafruit_bme_280.png)
 
 Nu kan je starten vanaf onderstaande code. Hierbij worden zowel de temperatuur, barometerdruk als luchtvochtigheid weergegeven.
 
-```c++
+```cpp
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
@@ -68,7 +68,7 @@ void loop() {
 
 Het probleem is nu natuurlijk dat deze gegevens in een buffer moeten worden geplaatst om te kunnen versturen met LoRaWAN. Dit lost volgende code snippet op. Hierbij worden de gegevens omgezet naar bytes die dan in de buffer worden opgeslagen.
 
-```c++
+```cpp
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>

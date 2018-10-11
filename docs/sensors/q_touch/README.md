@@ -27,7 +27,7 @@ Vooraleer je onderstaande code snippet kan gebruiken om te starten dien je in ee
 
 Nu kan je starten vanaf onderstaande code. Deze applicatie controleert of 1 van de 3 toetsen is ingedrukt (je kan maximaal 1 tegelijk induwen) en zoja, wordt er een gepast bericht naar de seriele monitor gestuurt.
 
-```c++
+```cpp
 #include <Wire.h>
 #include <Seeed_QTouch.h>
 
@@ -62,7 +62,7 @@ void loop()
 
 De starter applicatie is goed om aan te tonen hoe de Touch sensor werkt, maar is niet zo praktisch voor te verzenden met LoRaWAN. We kunnen niet 10 maal per seconde de staat doorsturen. Om dit met LoRaWAN te combineren zou er beter worden gewerkt met detectie van verandering. Zo zou je onderstaande code kunnen aanpassen om via LoRaWAN de staat kunnen doorsturen nadat de user een pad heeft aangeraakt of losgelaten.
 
-```c++
+```cpp
 #include <Wire.h>
 #include <Seeed_QTouch.h>
 
