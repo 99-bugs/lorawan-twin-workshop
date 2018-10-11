@@ -18,7 +18,7 @@ Onderstaand vind je een demo sketch die de stand van de switch om de 100 millise
 
 De vertraging kan worden verkleind of er zelfs worden uitgehaald.
 
-```c++
+```cpp
 const int switchPin = 15;   // Pin van Switch
 
 void setup()
@@ -53,7 +53,7 @@ void loop()
 
 De starter applicatie is goed om aan te tonen hoe de schakelaar werkt, maar is niet zo praktisch voor te verzenden met LoRaWAN. We kunnen niet 10 maal per seconde de staat doorsturen. Om dit met LoRaWAN te combineren zou er beter worden gewerkt met detectie van verandering. Zo zou je onderstaande code kunnen aanpassen om via LoRaWAN de staat kunnen doorsturen nadat de user de knop heeft verschoven.
 
-```c++
+```cpp
 const int switchPin = 15;   // Pin van Switch
 
 void setup()

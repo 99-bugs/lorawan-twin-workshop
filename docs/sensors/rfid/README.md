@@ -47,7 +47,7 @@ Vervolgens kan je ook de antenne aansluiten aan de 2-polige connector.
 
 Onderstaand vind je een demo sketch die het ID uitleest van de kaart die voor de antenne wordt gehouden. Het huidige ID van de kaart wordt dan vervolgens naar de terminal geschreven.
 
-```c++
+```cpp
 const int SIZE_OF_BUFFER = 32;
 uint8_t buffer[SIZE_OF_BUFFER];
 
