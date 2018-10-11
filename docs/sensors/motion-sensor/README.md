@@ -77,7 +77,8 @@ void setup()
 
 void loop()
 {
-  bool motionDetected = false;
+  int motionCounter = 0;
+  int noMotionCounter = 0;
   
   for (int i = 0; i < 1000; i++) {
       // Lees de huidige stand van de PIR sensor in
@@ -85,13 +86,22 @@ void loop()
 
       // Als er ook maar 1x beweging is, dan gaan we dit detecteren
       if (pirState == HIGH) {
-        motionDetected = true;
+        motionCounter++;
+      } else {
+        noMotionCounter++;
       }
 
       delay(10);    // 10ms * 1000 = tijdsvenster van 10 seconden
   }
 
   // Rapportering
+
+  SerialUSB.print("Motion: ");
+  SerialUSB.println(motionCounter);
+
+  SerialUSB.print("NO Motion: ");
+  SerialUSB.println(noMotionCounter);
+
   if (motionDetected) {
     SerialUSB.println("Beweging gedetecteerd in tijdsvenster");
   } else {
