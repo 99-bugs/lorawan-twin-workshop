@@ -102,7 +102,7 @@ void loop()
   SerialUSB.print("NO Motion: ");
   SerialUSB.println(noMotionCounter);
 
-  if (motionDetected) {
+  if (motionCounter > noMotionCounter) {
     SerialUSB.println("Beweging gedetecteerd in tijdsvenster");
   } else {
     SerialUSB.println("Geen beweging in tijdsvenster");
