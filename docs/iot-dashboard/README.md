@@ -2,7 +2,6 @@
 
 HTML, CSS, JavaScript
 
-
 ## HTML document bouwen
 
 De webserver zal alle document die in de map `/var/www/html` staan automatisch gaan *hosten*. Dat wil zeggen dat je vanaf nu naar [http://localhost](http://localhost) kan surfen en daar de documenten uit die map kunt raadplegen.
@@ -11,7 +10,7 @@ In de map `/var/www/html` staat reeds een `index.html` document. We zullen dit d
 
 ### Basisstructuur
 
-Elk HTML document heeft een minimum structuur nodig. Elk HTML document heeft een `<html>` element nodig waarin alle HTML code zit. 
+Elk HTML document heeft een minimum structuur nodig. Elk HTML document heeft een `<html>` element nodig waarin alle HTML code zit.
 
 Elk HTML document bestaat ook uit een `<head>` en een `<body>`. In de `<head>` kan extra informatie bijgehouden worden dat de browser kan gebruiken voor het weergeven van de pagina, maar niet rechtstreeks op de website getoond moet worden. In de `<body>` komt dan de informatie te zitten dat wel aan de gebruiker getoond moet worden.
 
@@ -185,7 +184,7 @@ Als we alles goed samenvoegen dan krijgen we onderstaande resultaat. Deze code z
 HTML definities zijn héél statisch. Ze geven betekenis aan inhoud. Waarden van sensoren binnenlezen en communiceren met andere elementen is dus niet mogelijk. JavaScript biedt daarbij een oplossing. Het maakt mogelijk HTML documenten aan te passen eens ze geladen zijn. Voor dit project zullen we twee extra bestanden toevoegen. De belangrijkste reden om dit op te splitsen is de code overzichtelijk te houden en structuur in het project te steken.
 
 * `/var/www/html/js/app.js` met de JavaScript code die de verwerking van de gegevens zal voorzien
-* `/var/www/html/config.json` met de configuratie van de verschillende sensoren die we wensen te visualiseren.
+* `/var/www/html/sensors.json` met de configuratie van de verschillende sensoren die we wensen te visualiseren.
 
 We zullen eerst de verwerking van de gegevens opbouwen. Onderstaande code zullen we dus programmeren in een bestand `/var/www/html/js/app.js`
 
@@ -336,7 +335,7 @@ Er zijn twee belangrijke zaken die we in deze configuratie moeten verwerken:
 * Instellingen voor de MQTT broker
 * Informatie over welke sensoren we wensen weer te geven
 
-Deze configuratie zullen we plaatsen in het `/var/www/html/config.json` bestand.
+Deze configuratie zullen we plaatsen in het `/var/www/html/sensors.json` bestand.
 
 ### Instellingen
 
@@ -380,7 +379,7 @@ Voor elke sensor die we wensen weer te geven dienen we het deel tussen `{` en `}
 
 ### Resultaat
 
-Als we alles goed samenvoegen krijgen we bijvoorbeeld volgende configuratiebestand `/var/www/html/config.json`:
+Als we alles goed samenvoegen krijgen we bijvoorbeeld volgende configuratiebestand `/var/www/html/sensors.json`:
 
 ```json
 {
