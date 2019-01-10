@@ -289,7 +289,7 @@ De `#` duid op het feit dat deze functie gegevens van alle *topics* zal gaan ver
 
 De data is binair en wordt aan de hand van bytes ter beschikking gesteld in de applicatie. We dienen deze bytes nog om te zetten naar een leesbaar formaat zoals tekst. Dit doen we aan de hand van een `TextDecoder`.
 
-Daarna gaan we in de lijst met sensoren op zoek naar het topic dat overeenkomt met het topic waarop we net informatie verkregen hebben. 
+Daarna gaan we in de lijst met sensoren op zoek naar het topic dat overeenkomt met het topic waarop we net informatie verkregen hebben.
 
 Als er een sensor gevonden is met een overeenkomstig topic, dan kunnen we de waarde (`value`) van deze sensor gaan aanpassen met de nieuwe waarde.
 
@@ -341,14 +341,18 @@ Deze configuratie zullen we plaatsen in het `/var/www/html/sensors.json` bestand
 
 We zullen een MQTT topic, en het ip-adres met poort moeten instellen in onze toepassing. Hiervoor kunnen we twee constanten declareren en een waarde toekennen. Het ip-adres zal je wel moeten aanpassen naar het ip-adres dat jouw eigen Raspberry Pi gekregen heeft (je kan dit nagaan met het `ifconfig` commando. Het ip-address staat dan vermeld bij `eth0` en `inet`).
 
+Wanneer je website op je Raspberry Pi staat, kan je evenwel gebruik maken van `localhost` in plaats van het IP adres van je Pi.
+
 ```js
 ...
   "mqtt": {
-    "broker": "mqtt.labict.be",
-    "port": "1884"
+    "broker": "localhost",
+    "port": "9001"
   },
 ...
 ```
+
+Als je gebruik maakt van onze mqtt server dan dien je als broker `mqtt.labict.be` en als port `1884` op te geven.
 
 ### Lijst met sensoren
 
@@ -368,7 +372,7 @@ De sensorconfiguratie kan er dan bijvoorbeeld zo gaan uitzien:
       "name": "Foo",
       "value": "-",
       "unit": "°C",
-      "topic": "workshop/foo/1"
+      "topic": "workshop/foo"
     },
   ...
   ]
@@ -384,27 +388,27 @@ Als we alles goed samenvoegen krijgen we bijvoorbeeld volgende configuratiebesta
 ```json
 {
   "mqtt": {
-    "broker": "mqtt.labict.be",
-    "port": "1884"
+    "broker": "localhost",
+    "port": "9001"
   },
   "sensors": [
     {
       "name": "Foo",
       "value": "-",
       "unit": "°C",
-      "topic": "workshop/foo/1"
+      "topic": "workshop/foo"
     },
     {
       "name": "Bar",
       "value": "-",
       "unit": "%",
-      "topic": "workshop/bar/1"
+      "topic": "workshop/bar"
     },
     {
       "name": "Baz",
       "value": "off",
       "unit": "",
-      "topic": "workshop/baz/1"
+      "topic": "workshop/baz"
     }
   ]
 }
