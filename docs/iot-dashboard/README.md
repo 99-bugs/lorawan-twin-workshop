@@ -48,25 +48,31 @@ Wij zullen voor deze toepassing de volgende bibliotheken en raamwerken gebruiken
 * **Axios**: Is een bibliotheek die toelaat op de achtergrond extra bestanden in te laden, bijvoorbeeld configuratie.
 * **App.js**: Is het bestand waar wij onze eigen JavaScript code zullen in plaatsen die eigen is aan deze toepassing.
 
+Door onderstaande link en script tags in de head te plaatsen worden deze bibliotheken automatisch geladen.
+
 ```html
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<script src="https://vuejs.org/js/vue.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue-mqtt@2.0.2/dist/build.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js"></script>
-<script src="js/app.js"></script>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://vuejs.org/js/vue.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-mqtt@2.0.2/dist/build.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js"></script>
+  <script src="js/app.js"></script>
+</head>
 ```
 
-Laten we nu wat inhoud gaan toevoegen.
+Laten we nu wat inhoud gaan toevoegen binnen de body.
 
 ### Container toevoegen
 
-Om de webpagina mooi op te maken zullen we gebruik maken van een Materialize *container*. Dit element zorgt ervoor dat onze webpagina mooi gecentreerd in het midden van ons scherm komt te staan. Het zal een marge links en rechts voorzien en zal zich ook aanpassen afhankelijk vanop welk toestel we de pagina bekijken. Zo worden de marges een pak kleiner op een smart-phone om de nuttige ruimte optimaal te benutten.
+Om de webpagina mooi op te maken zullen we gebruik maken van een Materialize *container*. Dit element zorgt ervoor dat onze webpagina mooi gecentreerd in het midden van ons scherm komt te staan. Het zal een marge links en rechts voorzien en zal zich ook aanpassen afhankelijk vanop welk toestel we de pagina bekijken. Zo worden de marges een pak kleiner op een smart-phone om de nuttige ruimte optimaal te benutten. Dit element dient binnen in de body tags geplaatst te worden.
 
 ```html
-<div class="container" id="app">
-  
-</div>
+<body>
+  <div class="container" id="app">
+
+  </div>
+</body>
 ```
 
 ### Titel toevoegen
@@ -76,8 +82,13 @@ Nu kunnen we een titel toevoegen in de container die wel zichtbaar zal zijn voor
 Onder de titel zullen we een horizontale regel tonen, dit kan met het `<hr>` element.
 
 ```html
-<h1><i class="material-icons medium">dashboard</i> IoT dashboard</h1>
-<hr>
+<body>
+  <div class="container" id="app">
+    <h1><i class="material-icons medium">dashboard</i> IoT dashboard</h1>
+    <hr>
+
+  </div>
+</body>
 ```
 
 Bekijk gerust het resultaat eens in de browser.
@@ -91,11 +102,19 @@ We zullen de tekst ook wit maken door een `class` attribuut `white-text` en de t
 Voor elke sensor zullen we ook een kolom toevoegen. Dit kunnen we doen door de het attribuut `v-for="sensor in sensors"` te gebruiken.
 
 ```html
-<div class="row white-text center-align">
-  <div class="col s12 m6 l4" v-for="sensor in sensors">
+<body>
+  <div class="container" id="app">
+    <h1><i class="material-icons medium">dashboard</i> IoT dashboard</h1>
+    <hr>
+
+    <div class="row white-text center-align">
+      <div class="col s12 m6 l4" v-for="sensor in sensors">
+
+      </div>
+    </div>
 
   </div>
-</div>
+</body>
 ```
 
 ### Cards voor elke sensor
@@ -105,10 +124,22 @@ Om de sensorgegevens weer te geven zullen we gebruik maken van een Materialize [
 We kunnen ook de achtergrondkleur van de cards bepalen. We maken hiervoor gebruik van de kleuren uit Materialize [Colors](https://materializecss.com/color.html). In dit geval gebruiken we het kleur `teal`, maar andere kleurnamen kunnen gerust ook gebruikt worden. (`red`, `pink`, `purple`, `deep-purple`, `indigo`, `blue`, `light-blue`, `cyan`, `teal`, `green`, `light-green`, `lime`, `yellow`, `amber`, `orange`, `deep-orange`, `brown`, `grey`, `blue-gray`, `black`)
 
 ```html
-<div class="card-panel  teal darken-1">
-  <div style="font-size: 3rem">{{sensor.value}} {{sensor.unit}}</div>
-  <div>{{sensor.name}}</div>
-</div>
+<body>
+  <div class="container" id="app">
+    <h1><i class="material-icons medium">dashboard</i> IoT dashboard</h1>
+    <hr>
+    <div class="row white-text center-align">
+      <div class="col s12 m6 l4" v-for="sensor in sensors">
+
+        <div class="card-panel  teal darken-1">
+          <div style="font-size: 3rem">{{sensor.value}} {{sensor.unit}}</div>
+          <div>{{sensor.name}}</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</body>
 ```
 
 Omdat we tot nu toe nog geen sensoren hebben gedefinieerd (doen we straks in JavaScript) kunnen we voorlopig nog geen resultaat zien van bovenstaande code.
