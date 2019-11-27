@@ -15,15 +15,16 @@ Linux is reeds aanwezig op onze Raspberry Pi onder de vorm van Raspbian. Dus dit
 
 In volgende paragrafen staan er hoofdzakelijk commando's die dienen te worden uitgevoerd in de terminal. Deze kan je op Raspbian openen door te navigeren naar `Start => Tools => Terminal`. Je krijgt dan volgend scherm te zien. Hier type je de commando's dan gewoon in waarna je op `ENTER` drukt.
 
-> **tasksel**
->
-> Sommige Linux distributies voorzien een tool `tasksel` die toelaat de volledige LAMP stack te installeren met 1 enkel commando. Dit is echter niet beschikbaar voor Raspbian op dit moment. Enkel de webserver (Apache2) kan via deze weg worden geïnstalleerd.
+
+::: tip tasksel
+Sommige Linux distributies voorzien een tool `tasksel` die toelaat de volledige LAMP stack te installeren met 1 enkel commando. Dit is echter niet beschikbaar voor Raspbian op dit moment. Enkel de webserver (Apache2) kan via deze weg worden geïnstalleerd.
+:::
 
 ## Updaten van Raspbian
 
 Vooraleer te starten is het altijd een goed idee om het besturingssysteem zelf te updaten naar de laatste nieuwe versie.
 
-```shell
+```bash
 sudo apt update
 sudo apt upgrade -y
 ```
@@ -34,7 +35,7 @@ Eens klaar met installeren van de updates kan je verder gaan.
 
 Als webserver maken we gebruik van Apache, een heel gekende en bewezen webserver. Een veelvoorkomend alternatief is Nginx (uitgesproken als Engine X), maar Apache is iets makkelijker op te zetten.
 
-```shell
+```bash
 sudo apt install apache2 -y
 ```
 
@@ -46,7 +47,7 @@ Je kan de webserver op dit moment reeds testen door op de Raspberry Pi te surfen
 
 Indien je vanop een andere computer naar de Raspberry Pi wil surfen heb je het IP address van de Pi nodig. Dit kan je achterhalen door het commando `ifconfig` uit te voeren in de terminal. Het IP adres vind je dan bij de `eth0` interface naast `inet`. In het voorbeeld hieronder is het IP adres `172.16.1.228`.
 
-```shell
+```bash
 pi@raspberrypi:~ $ ifconfig
 eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
         inet 172.16.1.228  netmask 255.255.0.0  broadcast 172.16.255.255
@@ -66,13 +67,13 @@ Je kan in dit geval dan surfen naar `http://172.16.1.228` waar je het IP adres v
 
 Naast de PHP engine moeten we ook een module installeren die Apache toelaat om PHP aan te roepen. Dit kan allemaal via onderstaand commando.
 
-```shell
+```bash
 sudo apt install php libapache2-mod-php -y
 ```
 
 Vervolgens dienen we aan Apache duidelijk te maken dat de PHP index pagina (de startpagina als het ware) voorrang moet krijgen bij het openen van de website op de statische HTML index pagina. Dit doen we door de configuratie te openen van Apache.
 
-```shell
+```bash
 cd /etc/apache2
 sudo nano apache2.conf
 ```
@@ -92,7 +93,7 @@ Sla de wijzigingen op door eerst de toetsencombinatie `CTRL-o` in te drukken en 
 
 De server moet nu worden herstart:
 
-```shell
+```bash
 sudo service apache2 restart
 ```
 
@@ -100,7 +101,7 @@ sudo service apache2 restart
 
 Test of PHP werkt kan worden gerealiseerd door een kleine "Hello World" pagina te maken. Voer onderstaande commando's uit om een editor te openen waarin we een klein PHP script maken.
 
-```shell
+```bash
 cd /var/www/html
 sudo nano index.php
 ```
@@ -121,14 +122,14 @@ Surf nu naar `http://localhost/` en dan zou je de "Hello World" tekst moeten kri
 
 MySQL is een veelvoorkomende database manager (DBMS). Naast MySQL dien je ook een bibliotheek voor PHP te installeren. Vervolgens best even de webserver herstarten.
 
-```shell
+```bash
 sudo apt install mysql-server php-mysql -y
 sudo service apache2 restart
 ```
 
 Vervolgens dient de DBMS verder te worden beveiligd. Voer hiervoor onderstaand commando uit:
 
-```shell
+```bash
 sudo mysql_secure_installation
 ```
 
