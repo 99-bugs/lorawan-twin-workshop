@@ -49,7 +49,7 @@ sudo apt -y install leafpad
 echo "-------------------------------------------"
 echo "Installing node-RED"
 echo "-------------------------------------------"
-yes | bash <(curl -sL https://raw.githubusercontent.com/node-red/raspbian-deb-package/master/resources/update-nodejs-and-nodered)
+yes | bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered)
 cd $HOME/.node-red
 npm install node-red-contrib-ttn
 sudo systemctl enable nodered.service
