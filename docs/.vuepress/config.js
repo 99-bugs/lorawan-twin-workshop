@@ -11,7 +11,6 @@ module.exports = {
     sidebar: [
       {
         title: 'De things',   // required
-        path: '/sodaq-explorer/',      // optional, which should be a absolute path.
         collapsable: true, // optional, defaults to true
         sidebarDepth: 0,    // optional, defaults to 1
         children: [
@@ -37,14 +36,9 @@ module.exports = {
         title: 'Het internet',   // required
         path: '/lorawan/',      // optional, which should be a absolute path.
         collapsable: true, // optional, defaults to true
-        sidebarDepth: 1,    // optional, defaults to 1
-        children: [
-          '/lorawan/'
-        ]
       },
       {
         title: 'De server',   // required
-        path: '/lamp/',      // optional, which should be a absolute path.
         collapsable: true, // optional, defaults to true
         sidebarDepth: 0,    // optional, defaults to 1
         children: [
@@ -57,12 +51,7 @@ module.exports = {
         title: 'Het dashboard',   // required
         path: '/iot-dashboard/',      // optional, which should be a absolute path.
         collapsable: true, // optional, defaults to true
-        sidebarDepth: 1,    // optional, defaults to 1
-        children: [
-          '/iot-dashboard/'
-        ]
       },
-
     ],
   },
   markdown: {
