@@ -11,26 +11,40 @@ module.exports = {
     sidebar: [
       {
         title: 'De things',   // required
-        // path: '/lorawan/',      // optional, which should be a absolute path.
+        path: '/sodaq-explorer/',      // optional, which should be a absolute path.
         collapsable: true, // optional, defaults to true
         sidebarDepth: 0,    // optional, defaults to 1
         children: [
           '/sodaq-explorer/',
-          '/sensors/'
+          {
+            title: 'Grove sensoren',   // required
+            path: '/sensors/',      // optional, which should be a absolute path.
+            collapsable: true, // optional, defaults to true
+            sidebarDepth: 0,    // optional, defaults to 1
+            children: [
+              '/sensors/push_button/',
+              '/sensors/switch/',
+              '/sensors/q_touch/',
+              '/sensors/rfid/',
+              '/sensors/motion-sensor/',
+              '/sensors/rotary-sensor/',
+              '/sensors/tph-sensor/',
+            ]
+          },
         ]
       },
       {
         title: 'Het internet',   // required
-        // path: '/lorawan/',      // optional, which should be a absolute path.
+        path: '/lorawan/',      // optional, which should be a absolute path.
         collapsable: true, // optional, defaults to true
-        sidebarDepth: 0,    // optional, defaults to 1
+        sidebarDepth: 1,    // optional, defaults to 1
         children: [
           '/lorawan/'
         ]
       },
       {
         title: 'De server',   // required
-        // path: '/lorawan/',      // optional, which should be a absolute path.
+        path: '/lamp/',      // optional, which should be a absolute path.
         collapsable: true, // optional, defaults to true
         sidebarDepth: 0,    // optional, defaults to 1
         children: [
@@ -41,7 +55,7 @@ module.exports = {
       },
       {
         title: 'Het dashboard',   // required
-        // path: '/lorawan/',      // optional, which should be a absolute path.
+        path: '/iot-dashboard/',      // optional, which should be a absolute path.
         collapsable: true, // optional, defaults to true
         sidebarDepth: 1,    // optional, defaults to 1
         children: [
