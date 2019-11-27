@@ -39,9 +39,9 @@ Naast een **LoRaWAN module** voor draadloze communicatie, bevat het bord eveneen
 
 Begin met het downloaden van de laatste nieuwe **Arduino IDE** van de website van Arduino [https://www.arduino.cc/en/Main/Software](https://www.arduino.cc/en/Main/Software).
 
-> **NOTA** - **Arduino op de Raspberry Pi**
->
-> Tijdens de workshop moet je Arduino niet meer installeren. Dit werd reeds voor jullie gedaan. Op de Raspberry Pi's kan je niet de standaard Arduino installeren. Hier heb je de `Linux ARM` editie voor nodig.
+::: tip Arduino op de Raspberry Pi
+Tijdens de workshop moet je Arduino niet meer installeren. Dit werd reeds voor jullie gedaan. Op de Raspberry Pi's kan je niet de standaard Arduino installeren. Hier heb je de `Linux ARM` editie voor nodig.
+:::
 
 Start de Arduino IDE op.
 
@@ -75,17 +75,17 @@ Onderstaand vind je de benamingen van de pinnen die je kan gebruiken binnen je A
 
 Naast de standaard Arduino benamingen kan je tevens gebruik maken van een aantal handige benamingen voor de veelgebruikte pinnen. Deze worden voorzien door de definitie van het bord dat werd ingeladen.
 
-| Beschrijving |	Pin nummer |	Benaming |
+| Beschrijving | Pin nummer | Benaming |
 | --- | --- | --- |
-| RGB Red  | |LED		LED_RED |
-| RGB Green LED | |		LED_GREEN |
-| RGB Blue LED | |		LED_BLUE |
-| Blue LED |	D13 |	LED_BUILTIN |
-| Bluetooth Wake | |		BLUETOOTH_WAKE |
-| Bluetooth Reset* | |		BT_RESET |
-| Push Button* | |		BUTTON |
-| LoRa Reset* | |		LORA_RESET |
-| Temperature Sensor |	A6 |	TEMP_SENSOR |
+| RGB Red LED | | LED_RED |
+| RGB Green LED | | LED_GREEN |
+| RGB Blue LED | | LED_BLUE |
+| Blue LED | D13 | LED_BUILTIN |
+| Bluetooth Wake | | BLUETOOTH_WAKE |
+| Bluetooth Reset* | | BT_RESET |
+| Push Button* | | BUTTON |
+| LoRa Reset* | | LORA_RESET |
+| Temperature Sensor | A6 | TEMP_SENSOR |
 
 *Bord revisie 5 en hoger
 

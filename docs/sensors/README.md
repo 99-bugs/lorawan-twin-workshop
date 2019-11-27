@@ -1,15 +1,14 @@
 ---
-description: "Grove sensoren uitlezen is een koud kunstje. We hebben hier voor jullie een aantal sensoren voorzien met bijhorende starter sketches. Op deze manier kan je heel snel aan de slag.
-"
+description: "Grove sensoren uitlezen is een koud kunstje. We hebben hier voor jullie een aantal sensoren voorzien met bijhorende starter sketches. Op deze manier kan je heel snel aan de slag."
 ---
 
 # Grove Sensoren
 
-Grove is een modulair, gestandaardiseerd prototypesysteem voor allerhande elementen die connecteerbaar zijn met een ontwikkelbord zoals Arduino. In vergelijking met een jumper- of soldeersysteem is het eenvoudiger om verbindingen te maken en meer toegankelijk voor deze die hier kaas hebben van gegeten.
+Grove is een modulair, gestandaardiseerd prototypesysteem voor allerhande elementen die connecteerbaar zijn met een ontwikkelbord zoals Arduino. In vergelijking met een jumper- of soldeersysteem is het eenvoudiger om verbindingen te maken en meer toegankelijk voor deze die hier nog geen of weinig ervaring mee hebben.
 
 Het Grove systeem bestaat typisch uit 3 delen:
 
-* een **adapterbord** laat toe om het grove systeem aan een ontwikkelbord te koppelen zoals Arduino of Raspberry Pi. Dit is typisch in de vorm van een shield of cape.
+* een **adapterbord** laat toe om het grove systeem aan een ontwikkelbord te koppelen zoals een Arduino of Raspberry Pi. Dit is typisch in de vorm van een shield of cape.
 * een groot assortiment van **modules**, waaronder sensoren, actuatoren, displays, ...
 * een **4-pins connector** die de module verbind met het adapterbord en bijgevolg ook met je ontwikkelbord.
 
@@ -29,6 +28,8 @@ Niet elke module maakt gebruik van dezelfde communicatiestandaard. Het is dus we
 Elke module is voorzien van documentatie en voorbeelden om snel aan de slag te kunnen. Al deze informatie is te vinden op [http://wiki.seeedstudio.com/Grove_System/](http://wiki.seeedstudio.com/Grove_System/).
 
 ## Sensoren
+
+De sensoren die wij voor jullie voorzien hebben zijn de volgende:
 
 * [Push Button](./push_button/README.md)
 * [Switch (P)](./switch/README.md)
