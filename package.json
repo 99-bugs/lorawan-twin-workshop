@@ -22,8 +22,8 @@
   },
   "homepage": "https://github.com/99-bugs/lorawan-twin-workshop#readme",
   "dependencies": {
-    "vuepress": "^0.14.4",
+    "vuepress": "^1.2.0",
     "vuepress-plugin-zooming": "^1.1.6",
-    "webpack-serve": "^2.0.2"
+    "webpack-serve": "^2.0.3"
   }
 }
