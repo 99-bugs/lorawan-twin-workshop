@@ -55,7 +55,7 @@ Elke LoRaWAN toepassing heeft een aantal instellingen die in de code juist inges
 * **AppEUI**: Identificatie van de `App` waartoe de sensor behoort.
 * **AppKey**: Encryptiesleutel voor de `App` zodat niemand jouw gegevens kan zien.
 
-Zonder de juiste gegevens komen jouw sensorwaarden niet aan bij de juist applicatie. Vergeet deze dus zeker niet aan te passen in je code. De exacte waarden kan je terug vinden in de console van de Things Network. 
+Zonder de juiste gegevens komen jouw sensorwaarden niet aan bij de juist applicatie. Vergeet deze dus zeker niet aan te passen in je code. De exacte waarden kan je terug vinden in de console van de Things Network.
 
 Nu de sensor geconfigureerd is kunnen we deze ook gaan programmeren. Dit doen we in de Arduino IDE.
 
@@ -249,3 +249,35 @@ void sendWithLoRa() {
     }
 }
 ```
+
+### The Things Network Decoder
+
+Wanneer de data op de TTN binnenkomt dan zijn dit ruwe bytes. Dit is vrij low-level en zou de eindapplicatie dwingen om de ruwe data om te zetten naar eigenlijke informatie. We kunnen dit proces door de TTN laten doen. Dit maakt debuggen makkelijker en zorgt er ook voor dat een applicatie die gebruik wil maken van de data dit niet meer hoeft te doen.
+
+Open je applicatie op de [console](https://console.thethingsnetwork.org/applications) van The Things Network.
+
+![Console TTN](./img/ttn-console-app.png)
+
+Klik bovenaan rechts op `Payload Formats`. We kunnen nu in het venster een stukje JavaScript code plaatsen die de raw bytes omzet naar een meer leesbaar en verwerkbaar formaat. Typisch gebruiken we voor deze dingen JSON.
+
+Kopieer onderstaande JS code en plaats dit in het `decoder` venster.
+
+```js
+function Decoder(bytes, port) {
+  // Decode an uplink message from a buffer
+  // (array) of bytes to an object of fields.
+  var decoded = {};
+
+  if (port == 1) {
+    decoded.temperature = (bytes[1] + bytes[0]*256)/100.0;
+  }
+
+  return decoded;
+}
+```
+
+Later zullen we deze nog moeten uitbreiden voor de andere sensoren.
+
+![Console TTN](./img/ttn-payload-decoder.png)
+
+Klik vervolgens op `Save`.
