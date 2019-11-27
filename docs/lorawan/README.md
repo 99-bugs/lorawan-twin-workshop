@@ -16,6 +16,8 @@ De architectuur bestaat uit *gateways*, *netwerkservers* en *applicatieservers*.
 
 The Things Network bouwt een globaal gedistribueerd, crowd-sourced en open IoT datanetwerk dat eigendom is, en opgezet wordt door zijn gebruikers. Door gebruik te maken van LoRaWAN technologie voorziet The Things Network een end-to-end stack: van sensoren (de nodes), gateways, netwerk servers, sensor beheer en integratie met cloud providers en IoT platformen. Alles is volledig veilig geïmplementeerd en configureerbaar door de eindgebruiker.
 
+Vooraleer je met dit alles aan de slag kan dien je echter wel eerst een account te maken op [The Things Network](https://www.thethingsnetwork.org/). Druk bovenaan op `Sign Up` en vul je gegevens in.
+
 ### Nieuwe TTN applicatie bouwen
 
 Sensoren kunnen communiceren met een `applicatie` van The Things Network waarin ze geregistreerd worden. Om sensoren te registreren moet er eerst een applicatie gebouwd worden.
