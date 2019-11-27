@@ -1,3 +1,7 @@
+---
+description: "Node-RED, een grafische flow programmatie, legt de connectie tussen The Things Network en onze MQTT broker."
+---
+
 # Node-RED
 
 ![Node-RED](./img/node-red-hero.png)

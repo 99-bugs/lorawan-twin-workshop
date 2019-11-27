@@ -1,3 +1,8 @@
+---
+description: "Grove sensoren uitlezen is een koud kunstje. We hebben hier voor jullie een aantal sensoren voorzien met bijhorende starter sketches. Op deze manier kan je heel snel aan de slag.
+"
+---
+
 # Grove Sensoren
 
 Grove is een modulair, gestandaardiseerd prototypesysteem voor allerhande elementen die connecteerbaar zijn met een ontwikkelbord zoals Arduino. In vergelijking met een jumper- of soldeersysteem is het eenvoudiger om verbindingen te maken en meer toegankelijk voor deze die hier kaas hebben van gegeten.

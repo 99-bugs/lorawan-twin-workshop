@@ -1,3 +1,7 @@
+---
+description: "Door onze data af te beelden op een web dashboard kunnen we een mooi overzicht maken. Daarvoor hebben we natuurlijk een webserver nodig."
+---
+
 # LoRaWAN
 
 ![LoRaWAN Architectuur](./img/lorawan.jpg)

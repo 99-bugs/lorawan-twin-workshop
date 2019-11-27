@@ -1,3 +1,7 @@
+---
+description: "Als we onze data ter beschikking stellen via MQTT kan elke geïnteresseerde partij (web app, mobiele app, ...) deze raadplegen."
+---
+
 # Mosquitto
 
 Mosquitto is een MQTT broker, ook wel server genoemd. Het laat toe verschillende toestellen met elkaar te communiceren.

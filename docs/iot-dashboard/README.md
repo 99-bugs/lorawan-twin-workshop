@@ -1,3 +1,7 @@
+---
+description: "Hier maken we gebruik van een klein framework om een mooi dashboard te bouwen waar onze data ter beschikking wordt gesteld. Deze hosten we dan natuurlijk op onze eigen Raspberry Pi's."
+---
+
 # Bouwen van een eigen IoT dashboard
 
 HTML, CSS, JavaScript

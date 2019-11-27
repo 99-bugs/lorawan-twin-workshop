@@ -1,3 +1,7 @@
+---
+description: "We starten hier met het opzetten van Arduino en het SODAQ ExpLoRer ontwikkelingsbord."
+---
+
 # SODAQ ExpLoRer
 
 Het SODAQ ExpLoRer ontwikkelbord is een Arduino compatibel bord gemaakt voor onderzoeks- en labo doeleinden. Doordat het een Arduino compatibel bord is, is het natuurlijk ook heel toegankelijk voor studenten.
