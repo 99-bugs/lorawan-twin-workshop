@@ -1,6 +1,6 @@
 # Node-RED
 
-![](./img/node-red-hero.png)
+![Node-RED](./img/node-red-hero.png)
 
 Node-RED is een flow gebaseerde visuele ontwikkelomgeving ontwikkeld door IBM. Het laat toe hardware toestellen, API's en online diensten met elkaar te communiceren in het teken van het Internet of Things.
 
@@ -11,8 +11,8 @@ Node-RED is een browser omgeving die toelaat JavaScript functies te creëren. El
 <!-- [https://nodered.org/docs/hardware/raspberrypi](https://nodered.org/docs/hardware/raspberrypi) -->
 Om Node-RED te installeren op de Raspberry PI moeten we volgend commando gaan uitvoeren in een terminal (commandolijn).
 
-```shell
-bash <(curl -sL https://raw.githubusercontent.com/node-red/raspbian-deb-package/master/resources/update-nodejs-and-nodered)
+```bash
+bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered)
 ```
 
 Het installatiescript zal een paar vragen stellen vooralleer het uitgevoerd wordt. Antwoord op beide vragen met *ja* door op `y` en `ENTER` te drukken.
@@ -25,9 +25,9 @@ De installatie zal daarna van start gaan. Dit kan een aantal minuten duren. De v
 
 ### The Things Network integratie
 
-Node-RED heeft een plug-in dat toelaat elementen van The Things Network te gebruiken. De installatie van deze plugin gebeurt terug via de commandolijn. Voer volgende commando's uit.
+Node-RED heeft een plug-in die toelaat elementen van The Things Network te gebruiken. De installatie van deze plugin gebeurt terug via de commandolijn. Voer volgende commando's uit.
 
-```shell
+```bash
 cd $HOME/.node-red
 npm install node-red-contrib-ttn
 ```
@@ -38,7 +38,7 @@ Je kan er voor kiezen om Node-RED automatisch te laten opstarten wanneer de Rasp
 
 Dit instellen kan terug via de commandolijn met het volgende commando:
 
-```shell
+```bash
 sudo systemctl enable nodered.service
 ```
 
@@ -82,7 +82,7 @@ Dubbelklik op de `ttn uplink` node om de configuratie te tonen. Het eerste wat w
 
 Klik op de knop met het potlood icoontje, rechts naast het invoerveld `Add new ttn app...`. Je krijgt dan het volgende te zien:
 
-![](./img/ttn-configuration.png)
+![TTN Configuratie](./img/ttn-configuration.png)
 
 Daar moeten we het `App ID` en de `Access Key` van de The Things Network applicatie gaan invullen. Deze gegevens kan je terugvinden op de [console](https://console.thethingsnetwork.org/applications) van The Things Network.
 
