@@ -60,31 +60,43 @@ Node-RED interactie zal vanaf nu volledig via de browser gebeuren door te surfen
 
 ## Configuratie
 
-Nu dat Node-RED geïnstalleerd is, kan er een configuratie gebouwd worden voor onze toepassing. In dit voorbeeld zal een temperatuursensor uitgelezen worden vanuit The Things Network, en zullen we deze waarde gaan publiceren via MQTT zodat de data real-time beschikbaar gesteld wordt aan elke toepassing die geïnteresseerd is, zoals bijvoorbeeld een webapplicatie.
+Nu dat Node-RED geïnstalleerd is, kan er een configuratie gebouwd worden voor onze toepassing. In dit voorbeeld zal een **temperatuursensor** uitgelezen worden vanuit The Things Network, en zullen we deze waarde gaan publiceren via MQTT zodat de data real-time beschikbaar gesteld wordt aan elke toepassing die geïnteresseerd is, zoals bijvoorbeeld een webapplicatie.
 
-We dienen dus een flow te bouwen die de sensor waarde als uitvoer heeft, en MQTT als invoer. In dit voorbeeld dienen we gebruik te maken van een `ttn uplink` node, en een `mqtt` node. Merk op dat een uitvoer node aan de rechterkant kan gekoppeld worden en dat een invoer node aan de linkerkant gekoppeld kan worden.
+We dienen dus een flow te bouwen die de sensorwaarde binnenkrijgt van The Things Network en deze dan publiceert naar de MQTT broker op onze Raspberry Pi. Hiervoor dienen we gebruik te maken van de `mqtt in` en `mqtt out` node.
 
-Zoek de twee nodes in de lijst aan de linker kant, en sleep ze naar het centrale deel. Indien je ze niet direct terug kan vinden, dan kan je aan de linkerkant bovenaan ook gebruik maken van de `filter nodes` zoekfunctie.
+::: warning ttn uplink node
+Voordien werd deze opstelling gebouwd door een koppeling te maken met The Things Network aan de hand van een `ttn uplink` node. Het probleem hiermee was echter dat telkens de Node-RED flow opnieuw werd gestart een nieuwe connectie werd opgezet en de oude niet goed werd afgesloten (intern probleem van de node). The Things Network liet echter maar een beperkt aantal connecties toe, wat er voor zorgde dat na een aantal pogingen geen connectie meer kon worden gemaakt met The Things Network. Dit probleem hebben we via de MQTT API niet.
+:::
 
-De nodes mogen dan ook aan elkaar gekoppeld worden zodat de uitvoer van de `ttn uplink` node naar de invoer van de `mqtt` node zal gaan.
+Merk op dat een node die data genereert (uitvoer) aan de rechterkant kan gekoppeld worden en een node die data binnen neemt (invoer) aan de linkerkant gekoppeld kan worden.
 
-Hieronder kan je een voorbeeld zien
+### De mqtt input node
 
-![Voorbeeld flow](./img/node-red-example.png)
+We starten met de `mqtt input` node zodat we eerst de data van The Things Network kunnen binnen halen.
 
-Nu de nodes correct aan elkaar gekoppeld zijn, dienen we ze nog te configureren
+Zoek de node `mqtt input` in de lijst aan de linker kant, en sleep deze naar het centrale deel. Indien je deze niet direct terug kan vinden, dan kan je aan de linkerkant bovenaan ook gebruik maken van de `filter nodes` zoekfunctie.
 
-### De `ttn uplink` node configureren
+Vervolgens kunnen we ook een `debug` node aan de uitgang van de `mqtt input` koppelen zodat we de informatie makkelijk kunnen raadplegen die van The Things Network komt.
 
-Dubbelklik op de `ttn uplink` node om de configuratie te tonen. Het eerste wat we daar dienen te doen is de TTN App instellen. Met deze configuratie gaan we aangeven van welke applicatie van The Things Network we gegevens willen ontvangen. We dienen dan ook de juiste `access key` in te stellen.
+![MQTT input node debug](./img/ttn-input-debug.png)
 
-![Nieuwe TTN App instellen](./img/new-ttn-app.png)
+Nu dienen we de node nog te configureren zodat deze connectie maakt met de MQTT broker van The Things Network.
 
-Klik op de knop met het potlood icoontje, rechts naast het invoerveld `Add new ttn app...`. Je krijgt dan het volgende te zien:
+#### Configuratie van de mqtt input node
 
-![TTN Configuratie](./img/ttn-configuration.png)
+Dubbelklik op de `mqtt input` node om de configuratie te tonen. Hier dienen we de gegevens van The Things Network in te stellen. Met deze configuratie gaan we aangeven van welke applicatie van The Things Network we gegevens willen ontvangen. We dienen dan ook de juiste `access key` in te stellen.
 
-Daar moeten we het `App ID` en de `Access Key` van de The Things Network applicatie gaan invullen. Deze gegevens kan je terugvinden op de [console](https://console.thethingsnetwork.org/applications) van The Things Network.
+![Configuratie van MQTT in node](./img/mqtt-in-node-config.png)
+
+Klik op de knop met het potlood icoontje, rechts naast het invoerveld `Add new mqtt broker...`. Je krijgt dan het volgende te zien:
+
+![TTN Broker Configuratie](./img/new-mqtt-broker-ttn.png)
+
+Eerst en vooral dienen we in het tabblad **Connection** de **server** in te stellen op `eu.thethings.network`.
+
+![TTN Server](./img/node-red-ttn-server.png)
+
+Vervolgens moeten we een bruikersnaam en wachtwoord ingeven in het tabblad **Security**. Hiervoor moeten we het `App ID` en de `Access Key` van de The Things Network applicatie achterhalen. Deze gegevens kan je terugvinden op de [console](https://console.thethingsnetwork.org/applications) van The Things Network.
 
 Het `App ID` kan je terugvinden onder `Application overview`.
 
@@ -94,19 +106,64 @@ De `Access Key` kan je terugvinden onderaan bij `Access Keys`. Je kan de key kop
 
 ![The Things Network Access Key](./img/ttn-access-key.png)
 
-Kopieer en plak beide gegevens in Node-RED en klik op de knop `Add`. De bovenstaande stappen moeten normaal maar 1 maal gebeuren in Node-RED. Deze gegevens zullen bewaard worden zodat je ze ook kan gebruiken bij andere flows. Je zal nu verder kunnen gaan met het configureren van de node.
+Gebruik het `App ID` in Node RED als `Username` en de `Access Key` als `Password` .
 
-Vul nu een naam in voor de node. Dit mag om het even wat zijn, in dit voorbeeld nemen we een naam die het soort sensor beschrijft. Verder dienen we nog een `Device ID` op te geven. Dit id moet overeenkomen met het Device ID vanop The Things Network console.
+![TTN Security](./img/node-red-ttn-security.png)
 
-![The Things Network node configuratie](./img/ttn-node-configuration.png)
+Klik vervolgens bovenaan rechts op de knop `Add`.
 
-### De `mqtt` node configureren
+Als laatste dienen we ook in te stellen waar onze temperatuursensor data kan worden bekomen. Dit doen we door het topic in te stellen op basis van de naam die we aan ons device hebben gegeven. Dit kunnen we terug vinden op de [console](https://console.thethingsnetwork.org/applications) van The Things Network. Klik bovenaan rechts op `Devices` en kopieer de naam van je device.
+
+Bijvoorbeeld:
+
+![TTN Device Name](./img/ttn-device-name.png)
+
+De naam van het device dien je in het topic `+/devices/+/up` in te vullen in plaats van het 2de `+` teken. Voor het `labsensor` device wordt dit dus: `+/devices/labsensor/up`
+
+![TTN Topic](./img/ttn-mqtt-topic.png)
+
+Als laatste dienen we de mqtt node output ook in te stellen zodat deze een JavaScript object terug geeft in plaats van een pure JSON string. Dit laat ons toe om later makkelijker te filteren. Selecteer als output `A parsed JSON Object`.
+
+![Output JS Object](./img/ttn-output-json-object.png)
+
+Klik vervolgens op `Done`. Dit zou je eindresultaat moeten zijn:
+
+![Eindresultaat MQTT input node](./img/ttn-input-node-done.png)
+
+Indien je nu op het kleine debug beestje klikt rechts bovenaan in Node RED dan zou je reeds data moeten zien binnenkomen van je sensor.
+
+![Debug Data](./img/debug-input-node.png)
+
+### Filteren data
+
+Op dit moment krijgen we niet enkel onze data binnen van de TTN maar ook allerlei metadata. We dienen eerst onze data er uit te filteren vooraleer deze terug door te sturen naar onze eigen MQTT broker.
+
+Hiervoor kan je gebruik maken van de algemene `function node`. Als je hier op dubbelklikt kan je een stukje JavaScript code bouwen om uit te voeren.
+
+```js
+msg.payload = msg.payload.payload_fields.temperature;
+return msg;
+```
+
+Best kan je de `Name` van de node instellen op bv. `Filter temperatuur`. Sla de aanpassingen op door op `Done` te klikken.
+
+Hang vervolgens de `function` node aan de output van `mqtt in` node.
+
+Tevens kan je aan de output van de `function` een `debug` node hangen zodat we zien wat er van data uit komt.
+
+![Node filter functie](./img/node-filter-function.png)
+
+### De mqtt output node
+
+Voor het verzenden van de gefilterde data kan er gebruik worden gemaakt van een `mqtt output` node. Deze mag je rechtstreeks aan de output van de `Filter temperatuur` function node hangen.
+
+![MQTT Output Node](./img/mqtt-output-node.png)
 
 Nu moeten we enkel nog de MQTT node configureren. Dit doen we terug door te dubbelklikken op de mqtt node. We krijgen dan volgende scherm te zien:
 
 ![mqtt node instellingen](./img/new-mqtt-broker.png)
 
-Eerst dienen we een server in te stellen. Dit kunnen we doen door op de knop te drukken met het potlood icoontje rechts naast `Add new mqtt-broker...`. Dan komen we op volgende venster terrecht waar we de gegevens van de server kunnen invullen. Hier vullen we voor zowel de naam als de server  `localhost` in om aan te geven dat de MQTT broker op het zelfde toestel geïnstalleerd staat.
+Eerst dienen we een server in te stellen. Dit kunnen we doen door op de knop te drukken met het potlood icoontje rechts naast `Add new mqtt-broker...`. Let wel op dat je niet de bestaande `eu.thethings.network:1883` aanpast, maar eerst `Add new mqtt broker` selecteert. Dan komen we op volgende venster terrecht waar we de gegevens van de server kunnen invullen. Hier vullen we voor zowel de naam als de server `localhost` in om aan te geven dat de MQTT broker op het zelfde toestel geïnstalleerd staat.
 
 ![mqtt broker configuratie](./img/mqtt-broker-configuration.png)
 
@@ -124,6 +181,6 @@ Klik op `Done` om het configuratievenster te sluiten en de aanpassingen op te sl
 
 Wanneer alles correct geconfigureerd is zou de flow er als volgt moeten uitzien.
 
-![Temperatuur flow](./img/node-red-configuration-ready.png)
+![Temperatuur flow](./img/full-flow-temperature-sensor.png)
 
 Je kan de flow activeren door bovenaan rechts op de knop `Deploy` te drukken. De flow zal nu uitgevoerd worden. Node-RED zal deze ook op de achtergrond blijven uitvoeren. Dat wil dus zeggen dat je de webbrowser gerust mag afsluiten en alles zal blijven werken.
