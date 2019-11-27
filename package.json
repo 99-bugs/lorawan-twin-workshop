@@ -1,7 +1,7 @@
 {
   "name": "lorawan-twin-workshop",
   "version": "1.0.0",
-  "description": "LoRaWAN STEP workshop",
+  "description": "LoRaWAN STEM workshop",
   "main": "index.js",
   "directories": {
     "doc": "docs"
