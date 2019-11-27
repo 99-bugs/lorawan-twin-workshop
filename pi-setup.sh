@@ -86,6 +86,12 @@ git clone https://github.com/adafruit/Adafruit_BME280_Library.git
 cd Adafruit_BME280_Library
 git checkout 1.0.7
 
+echo "-------------------------------------------"
+echo "Installing xscreensave"
+echo "-------------------------------------------"
+sudo apt -y install xscreensaver
+echo "Disable screensaver: Preferences > Screensaver > Select disable screen saver from the dropdown."
+
 cd
 
 echo "-------------------------------------------"
