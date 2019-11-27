@@ -42,6 +42,11 @@ echo "-------------------------------------------"
 sudo apt -y install mosquitto
 
 echo "-------------------------------------------"
+echo "Installing leafpad"
+echo "-------------------------------------------"
+sudo apt -y install leafpad
+
+echo "-------------------------------------------"
 echo "Installing node-RED"
 echo "-------------------------------------------"
 yes | bash <(curl -sL https://raw.githubusercontent.com/node-red/raspbian-deb-package/master/resources/update-nodejs-and-nodered)
