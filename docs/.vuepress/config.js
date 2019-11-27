@@ -30,6 +30,7 @@ module.exports = {
         bgColor: 'black',
         zIndex: 10000,
       },
-    }]
+    }],
+    ['@dovyp/vuepress-plugin-clipboard-copy', true]
   ],
 }
