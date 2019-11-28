@@ -287,3 +287,129 @@ Later zullen we deze nog moeten uitbreiden voor de andere sensoren.
 ![Console TTN](./img/ttn-payload-decoder.png)
 
 Klik vervolgens op `Save`.
+
+### Decoders Sensoren
+
+Controlleer voor alle zekerheid dat de `port` van de decoder dezelfde is als deze van je applicatie op de Sodaq.
+
+#### Push Button
+
+```js
+function Decoder(bytes, port) {
+  // Decode an uplink message from a buffer
+  // (array) of bytes to an object of fields.
+  var decoded = {};
+
+  if (port == 17 || port == 28 || port == 31) {
+    decoded.state = (bytes[0] == 0xFF ? true : false);
+    decoded.event = true;
+  }
+
+  return decoded;
+}
+```
+
+#### Switch (P)
+
+```js
+function Decoder(bytes, port) {
+  // Decode an uplink message from a buffer
+  // (array) of bytes to an object of fields.
+  var decoded = {};
+
+  if (port == 17 || port == 28 || port == 31) {
+    decoded.state = (bytes[0] == 0xFF ? true : false);
+    decoded.event = true;
+  }
+
+  return decoded;
+}
+```
+
+#### Q Touch Sensor
+
+```js
+function Decoder(bytes, port) {
+  // Decode an uplink message from a buffer
+  // (array) of bytes to an object of fields.
+  var decoded = {};
+
+  if (port == 17 || port == 28 || port == 31) {
+    decoded.state = (bytes[0] == 0xFF ? true : false);
+    decoded.event = true;
+  }
+
+  return decoded;
+}
+```
+
+#### RFID 125kHz Reader
+
+```js
+function Decoder(bytes, port) {
+  // Decode an uplink message from a buffer
+  // (array) of bytes to an object of fields.
+  var decoded = {};
+
+  if (port == 25) {
+    var id = "";
+    for (var i = 0; i < bytes.length; i++) {
+      id += String.fromCharCode(bytes[i]);
+    }
+    decoded.id = id;
+    decoded.single_byte = bytes[0] | bytes[1];
+  }
+
+  return decoded;
+}
+```
+
+#### Bewegingssensor
+
+```js
+function Decoder(bytes, port) {
+  // Decode an uplink message from a buffer
+  // (array) of bytes to an object of fields.
+  var decoded = {};
+
+  if (port == 16) {
+    decoded.motion = bytes[0];
+  }
+
+  return decoded;
+}
+```
+
+#### Rotatiesensor
+
+```js
+function Decoder(bytes, port) {
+  // Decode an uplink message from a buffer
+  // (array) of bytes to an object of fields.
+  var decoded = {};
+
+  if (port == 11) {
+    decoded.rotation = bytes[0];
+  }
+
+  return decoded;
+}
+```
+
+#### Temperatuur, druk en vochtigheidssensor
+
+```js
+function Decoder(bytes, port) {
+  // Decode an uplink message from a buffer
+  // (array) of bytes to an object of fields.
+  var decoded = {};
+
+  if (port == 10) {
+    decoded.temperature = (bytes[1] + bytes[0]*256)/100.0;
+    decoded.pressure = (bytes[4] + bytes[3]*256 + bytes[2]*256*256) / 100.0;
+    decoded.humidity = bytes[5];
+  }
+
+  return decoded;
+}
+```
