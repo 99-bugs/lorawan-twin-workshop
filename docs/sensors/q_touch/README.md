@@ -92,7 +92,7 @@ void loop()
     delay(100);    // Even wachten voor ontdendering
   }
 
-  SerialUSB.println("Event is gebeurt");
+  SerialUSB.println("Event is gebeurd");
   SerialUSB.print("Toets aangeraakt met id = ");
   SerialUSB.println(state);
 }

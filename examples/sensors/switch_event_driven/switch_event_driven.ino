@@ -26,7 +26,7 @@ void loop()
     delay(10);    // Even wachten voor ontdendering
   }
 
-  SerialUSB.println("Event is gebeurt");
+  SerialUSB.println("Event is gebeurd");
 
   SerialUSB.println("De schakelaar is ");
   SerialUSB.println(state);
