@@ -1,2 +1,4 @@
-node_modules
-.vscode
+node_modules/
+.vscode/
+docs/.vuepress/.cache/
+docs/.vuepress/.temp/

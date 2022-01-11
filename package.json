@@ -3,28 +3,30 @@
   "version": "1.0.0",
   "description": "LoRaWAN STEM workshop",
   "main": "index.js",
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
+  },
   "directories": {
     "doc": "docs"
-  },
-  "scripts": {
-    "docs:build": "vuepress build docs",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "docs:dev": "vuepress dev docs"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/99-bugs/lorawan-twin-workshop.git"
   },
-  "author": "Sille Van Landschoot <info@sillevl.be>",
-  "license": "MIT",
+  "keywords": [
+    "VIVES",
+    "bachelor",
+    "ict",
+    "elektronics",
+    "thesis"
+  ],
+  "author": "Sille Van Landschoot <info@sillevl.be>, Nico De Witte <nico.dewitte@vives.be",
   "bugs": {
     "url": "https://github.com/99-bugs/lorawan-twin-workshop/issues"
   },
   "homepage": "https://github.com/99-bugs/lorawan-twin-workshop#readme",
-  "dependencies": {
-    "@dovyp/vuepress-plugin-clipboard-copy": "^1.0.0-alpha.7",
-    "vuepress": "^1.2.0",
-    "vuepress-plugin-zooming": "^1.1.6",
-    "webpack-serve": "^2.0.3"
+  "devDependencies": {
+    "vuepress": "^2.0.0-beta.32"
   }
 }
