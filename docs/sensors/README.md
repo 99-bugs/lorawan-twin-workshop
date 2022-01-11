@@ -33,7 +33,7 @@ Elke module is voorzien van documentatie en voorbeelden om snel aan de slag te k
 
 De sensoren die wij voor jullie voorzien hebben zijn de volgende:
 
-* [Push Button](./push_button/README.md)
+* [Een Push Button](./push_button/README.md)
 * [Switch (P)](./switch/README.md)
 * [Q Touch Sensor](./q_touch/README.md)
 * [RFID 125kHz Reader](./rfid/README.md)
