@@ -32,19 +32,19 @@ module.exports = {
           }
         ]
       },
-      // {
-      //   text: 'Het Internet',
-      //   children: [
-      //     {
-      //       text: 'LoRaWAN',
-      //       link: '/lorawan/',
-      //     },
+      {
+        text: 'Het Internet',
+        children: [
+          {
+            text: 'LoRaWAN',
+            link: '/lorawan/',
+          },
       //     {
       //       text: 'MQTT',
       //       link: '/mqtt/',
       //     }
-      //   ]
-      // },
+        ]
+      },
       // Visualuatie ?
       // Interactie ?
       // NodeRED + NodeRED dashboard + eventueel eigen dashboard ?
