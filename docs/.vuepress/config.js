@@ -22,29 +22,29 @@ module.exports = {
             collapsible: true,
             children: [
               '/sensors/push_button/',
-              '/sensors/switch/',
-              '/sensors/q_touch/',
-              '/sensors/rfid/',
-              '/sensors/motion-sensor/',
-              '/sensors/rotary-sensor/',
-              '/sensors/tph-sensor/',
+              // '/sensors/switch/',
+              // '/sensors/q_touch/',
+              // '/sensors/rfid/',
+              // '/sensors/motion-sensor/',
+              // '/sensors/rotary-sensor/',
+              // '/sensors/tph-sensor/',
             ]
           }
         ]
       },
-      {
-        text: 'Het Internet',
-        children: [
-          {
-            text: 'LoRaWAN',
-            link: '/lorawan/',
-          },
-          {
-            text: 'MQTT',
-            link: '/mqtt/',
-          }
-        ]
-      },
+      // {
+      //   text: 'Het Internet',
+      //   children: [
+      //     {
+      //       text: 'LoRaWAN',
+      //       link: '/lorawan/',
+      //     },
+      //     {
+      //       text: 'MQTT',
+      //       link: '/mqtt/',
+      //     }
+      //   ]
+      // },
       // Visualuatie ?
       // Interactie ?
       // NodeRED + NodeRED dashboard + eventueel eigen dashboard ?
