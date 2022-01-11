@@ -18,7 +18,7 @@ Als je de markeringen op de PCB van de drukknop bekijkt en vergelijkt met deze o
 
 Onderstaand vind je een demo sketch die de stand van de drukknop om de 100 milliseconden uitleest. De huidige stand van de drukknop wordt vervolgens weergegeven in de console.
 
-De vertraging kan worden verkleind of er zelfs worden uitgehaald.
+De vertraging kan worden verkleind of vergroot naargelang de toepassing.
 
 ```cpp
 const int PUSH_PIN = 15;   // Pin of Push Button

@@ -22,7 +22,7 @@ module.exports = {
             collapsible: true,
             children: [
               '/sensors/push_button/',
-              // '/sensors/switch/',
+              '/sensors/switch/',
               // '/sensors/q_touch/',
               // '/sensors/rfid/',
               // '/sensors/motion-sensor/',

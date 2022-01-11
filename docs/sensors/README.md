@@ -34,10 +34,11 @@ Elke module is voorzien van documentatie en voorbeelden om snel aan de slag te k
 De sensoren die wij voor jullie voorzien hebben zijn de volgende:
 
 * [Een Push Button](./push_button/README.md)
-* [Switch (P)](./switch/README.md)
+* [Een Switch (P)](./switch/README.md)
 * [Q Touch Sensor](./q_touch/README.md)
 * [RFID 125kHz Reader](./rfid/README.md)
 * [Bewegingssensor](./motion-sensor/README.md)
 * [Rotatiesensor](./rotary-sensor/README.md)
 * [Temperatuur, druk en vochtigheidssensor](./tph-sensor/README.md)
-  
+
+Elke sensor is voorzien van een aantal demo applicaties die je kan testen of die je op weg zullen helpen voor de volgende hoofdstukken.
