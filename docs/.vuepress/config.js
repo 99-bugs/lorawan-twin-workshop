@@ -19,6 +19,7 @@ module.exports = {
           {
             text: 'Grove sensoren',
             link: '/sensors/',
+            collapsible: true,
             children: [
               '/sensors/push_button/',
               '/sensors/switch/',
