@@ -18,7 +18,9 @@ Vooraleer je met dit alles aan de slag kan gaan, dien je echter wel eerst een ac
 
 Sensoren kunnen communiceren met een *applicatie* van The Things Network waarin ze geregistreerd worden. Om sensoren te registreren moet er eerst een applicatie gebouwd worden.
 
-Je kan een applicatie bouwen door te surfen naar [The Things Network console](https://eu1.cloud.thethings.network/console/applications). Daar dien je een aantal gegevens in te geven:
+Je kan een applicatie bouwen door te surfen naar [The Things Network console](https://eu1.cloud.thethings.network/console/applications).
+
+Daar dien je dan een aantal gegevens in te geven:
 
 * **Owner**: De beheerder van de applicatie. Dit ben je in dit geval natuurlijk zelf.
 * **Application ID**: Hier kies je zelf een uniek *ID* dat bestaat uit kleine alfanumerieke letters. Spaties zijn niet toegestaan, maar een `-` teken wel.
@@ -275,7 +277,7 @@ void sendWithLoRa()
 }
 ```
 
-<!-- TODO: Plaats iets over de tijd van zenden + airtime! -->
+De frequentieband waarvan LoRa gebruik maakt is een vrije band (ISM). Deze mag "gratis" worden gebruikt en is ook gedeeld met andere toepassingen. Er zijn echter wel een aantal regels waaraan we ons dienen te houden. Zo mag een LoRaWAN device maar 1% van de tijd zenden, de andere 99% mag het device niets zenden. Dit betekent als je LoRaWAN berichtje bv. `50ms` air-time in beslag neemt, dat je maar om de `5s` zo een bericht mag sturen. De `consumed_airtime` kan je raadplegen in de *Event details*  bij the Things Network Console live data.
 
 ### DevEUI, AppEUI en AppKey
 
@@ -307,7 +309,7 @@ Nu de sensor geconfigureerd is kunnen we deze ook gaan programmeren.
 
 Zorg er voor dat het juiste board geselecteerd is onder `Tools => Board`, namelijk `SODAQ ExpLoRer`.
 
-### Data op The Things Network
+## Data op The Things Network
 
 Navigeer nu terug naar jouw applicatie op [The Things Network console](https://eu1.cloud.thethings.network/console/applications). Als alles goed gaat zou je onder `Live data` jouw gegevens moeten zien binnen komen.
 
@@ -321,35 +323,45 @@ Komt er geen data binnen, kijk dan eens naar de seriele monitor of er geen error
 
 Wanneer de data op de TTN binnenkomt dan zijn dit ruwe bytes. Dit is vrij low-level en zou de eindapplicatie dwingen om de ruwe data om te zetten naar eigenlijke informatie. We kunnen dit proces door de TTN laten doen. Dit maakt debuggen makkelijker en zorgt er ook voor dat een applicatie die gebruik wil maken van de data dit niet meer hoeft te doen.
 
-Open je applicatie op de [console](https://console.thethingsnetwork.org/applications) van The Things Network.
+:: tip Ruwe bytes
+Merk op dat we het aantal te verzenden bytes to laag mogelijk proberen te houden (om de *air-time* zo laag mogelijk te houden). Dit betekent dan ook dat we geen ASCII karakters of JSON of zo gaan verzenden maar wel gecodeerde bytes. Dit heeft dan wel als nadeel dat we dit terug moeten decoderen.
+:::
 
-![Console TTN](./img/ttn-console-app.png)
+Open je applicatie op [The Things Network console](https://eu1.cloud.thethings.network/console/applications).
 
-Klik bovenaan rechts op `Payload Formats`. We kunnen nu in het venster een stukje JavaScript code plaatsen die de raw bytes omzet naar een meer leesbaar en verwerkbaar formaat. Typisch gebruiken we voor deze dingen JSON.
+Klik links op `Payload formatters` en klik op `Uplink`om de formatter in te stellen voor de berichtjes die binnenkomen van het device. Stel het type formatter vervolgens in op `Javascript`.
 
-Kopieer onderstaande JS code en plaats dit in het `decoder` venster.
+![Payload Formatter](./img/payload_formatter.png)
+
+We kunnen nu in het venster een stukje JavaScript code plaatsen die de raw bytes omzet naar een meer leesbaar en verwerkbaar formaat. Typisch gebruiken we voor deze dingen JSON.
+
+Kopieer onderstaande JavaScript code en plaats dit in het `decoder` venster.
 
 ```js
-function Decoder(bytes, port) {
-  // Decode an uplink message from a buffer
-  // (array) of bytes to an object of fields.
-  var decoded = {};
+function decodeUplink(input) {
+  let message = {
+    data: {},
+    warnings: [],
+    errors: []
+  };
 
-  if (port == 1) {
-    decoded.temperature = (bytes[1] + bytes[0]*256)/100.0;
+  if (input.fPort == 1) {
+    message.data.temperature = (input.bytes[1] + input.bytes[0]*256)/100.0;
   }
 
-  return decoded;
+  return message;
 }
 ```
 
-Later zullen we deze nog moeten uitbreiden voor de andere sensoren.
+Klik vervolgens op `Save changes` om de wijzigingen op te slaan.
 
-![Console TTN](./img/ttn-payload-decoder.png)
+Als je je nu begeeft naar `Live data` zou je niet meer de ruwe bytes mogen zien voor de `Payload` maar een leesbaar JSON object met de temperatuur erin. Controleer voor alle zekerheid dat de waarde hetzelfde is als in de seriele monitor van Arduino IDE.
 
-Klik vervolgens op `Save`.
+![Decoded Payload](./img/decoded_payload.png)
 
-### Decoders Sensoren
+Later zullen we payload decoder deze nog verder uitbreiden voor de andere sensoren.
+
+<!-- ### Decoders Sensoren
 
 Controlleer voor alle zekerheid dat de `port` van de decoder dezelfde is als deze van je applicatie op de Sodaq.
 
@@ -473,4 +485,4 @@ function Decoder(bytes, port) {
 
   return decoded;
 }
-```
+``` -->

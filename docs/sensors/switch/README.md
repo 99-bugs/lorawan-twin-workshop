@@ -28,9 +28,9 @@ void setup() {
   // Configure switch pin as digital input
   pinMode(SWITCH_PIN, INPUT);
 
-  while ((!SerialUSB) && (millis() < 10000)) {
-    // Wait for SerialUSB or start after 10 seconds
-  }
+  // Wait for SerialUSB or start after 10 seconds
+  while ((!SerialUSB) && (millis() < 10000)) {}
+
   SerialUSB.println("Starting Switch demo ...");
 }
 
@@ -75,9 +75,9 @@ void setup() {
   previousState = digitalRead(SWITCH_PIN);    // Read start state
   currentState = previousState;             // Starting with this state
 
-  while ((!SerialUSB) && (millis() < 10000)) {
-    // Wait for SerialUSB or start after 10 seconds
-  }
+  // Wait for SerialUSB or start after 10 seconds
+  while ((!SerialUSB) && (millis() < 10000)) {}
+
   SerialUSB.println("Starting Switch Event demo ...");
 }
 

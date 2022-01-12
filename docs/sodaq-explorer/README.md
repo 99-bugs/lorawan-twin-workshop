@@ -142,9 +142,9 @@ De sketch wordt na het opladen of het inpluggen van de voeding direct gestart. A
 void setup() {
   SerialUSB.begin(115200);
 
-  while ((!SerialUSB) && (millis() < 10000)) {
-    // Wait for SerialUSB or start after 10 seconds
-  }
+  // Wait for SerialUSB or start after 10 seconds
+  while ((!SerialUSB) && (millis() < 10000)) {}
+
   SerialUSB.println("Starting Hello World demo code ...");
 }
 
@@ -177,9 +177,9 @@ void setup() {
   // Configure LED_BUILTIN  as output
   pinMode(LED_BUILTIN, OUTPUT);
 
-  while ((!SerialUSB) && (millis() < 10000)) {
-    // Wait for SerialUSB or start after 10 seconds
-  }
+  // Wait for SerialUSB or start after 10 seconds
+  while ((!SerialUSB) && (millis() < 10000)) { }
+
   SerialUSB.println("Starting Hello World demo code ...");
 }
 

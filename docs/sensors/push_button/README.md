@@ -30,9 +30,9 @@ void setup() {
   // Configure push pin as digital input
   pinMode(PUSH_PIN, INPUT);
 
-  while ((!SerialUSB) && (millis() < 10000)) {
-    // Wait for SerialUSB or start after 10 seconds
-  }
+  // Wait for SerialUSB or start after 10 seconds
+  while ((!SerialUSB) && (millis() < 10000)) {}
+
   SerialUSB.println("Starting Push Button demo ...");
 }
 
@@ -84,9 +84,9 @@ void setup() {
   previousState = digitalRead(PUSH_PIN);    // Read start state
   currentState = previousState;             // Starting with this state
 
-  while ((!SerialUSB) && (millis() < 10000)) {
-    // Wait for SerialUSB or start after 10 seconds
-  }
+  // Wait for SerialUSB or start after 10 seconds
+  while ((!SerialUSB) && (millis() < 10000)) {}
+
   SerialUSB.println("Starting Push Button Event demo ...");
 }
 
