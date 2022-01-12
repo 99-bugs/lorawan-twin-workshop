@@ -39,10 +39,10 @@ module.exports = {
             text: 'LoRaWAN',
             link: '/lorawan/',
           },
-      //     {
-      //       text: 'MQTT',
-      //       link: '/mqtt/',
-      //     }
+          {
+            text: 'MQTT',
+            link: '/mqtt/',
+          }
         ]
       },
       // Visualuatie ?
