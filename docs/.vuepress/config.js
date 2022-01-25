@@ -17,6 +17,14 @@ module.exports = {
             link: '/sodaq-explorer/'
           },
           {
+            text: 'Datacaptatie',
+            link: '/data-capture/'
+          },
+
+
+
+
+          {
             text: 'Grove sensoren',
             link: '/sensors/',
             children: [
