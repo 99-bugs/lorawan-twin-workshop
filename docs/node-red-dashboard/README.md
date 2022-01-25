@@ -73,3 +73,11 @@ Als we het verloop van de temperatuur willen weergeven, dan kunnen we gebruik ma
 Na het deployen van je flow zou je volgende resultaat moeten bekomen.
 
 ![Temperatuur Graph](./img/temperature-graph.png)
+
+## What's Next
+
+Het grote nadeel van deze setup is dat Node-RED de data niet permanent bijhoud. Met andere woorden als je Node-RED herstart ben je je data kwijt. Dit is meestal niet wat je wil.
+
+![Data gone](./img/data-gone.png)
+
+Dit kunnen we oplossen aan de hand van een database.
