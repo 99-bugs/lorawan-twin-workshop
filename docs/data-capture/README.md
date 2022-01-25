@@ -162,6 +162,8 @@ Stel dat je tijdens het wachten op deze gebeurtenis ook iets anders wil gaan doe
 
 De oplossing ligt erin om de functie `wait_for_button_press` niet-blokkerend te maken zodat je ook andere taken kan uitvoeren. Deze functie dient dan wel te reporteren of de gebeurtenis heeft plaatsgevonden of niet. Daarnaast moeten we er ook rekening mee houden dat deze "andere taken" niet te veel in beslag mogen nemen, anders zou het kunnen zijn dat we de gebeurtenis missen.
 
+![Niet-blokkerende verandering detecteren](./img/non-blocking.png)
+
 #### Demo Sketch
 
 ```cpp
