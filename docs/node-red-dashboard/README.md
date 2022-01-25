@@ -50,9 +50,9 @@ Binnen deze *Tab* kan je nu een `group` maken met widgets. Maak een nieuwe `grou
 
 De volgende stap bestaat eruit om de temperatuur op het dashboard af te beelden aan de hand van een geschikte widget. We hebben onder andere keus uit:
 
-* text: het afbeelden van tekst of dergelijke data
-* gauge: een "graadmeter", handig voor het afbeelden van de huidige waarde
-* chart: voor het afbeelden van een grafiek
+* `text`: het afbeelden van tekst of dergelijke data
+* `gauge`: een "graadmeter", handig voor het afbeelden van de huidige waarde
+* `chart`: voor het afbeelden van een grafiek
 
 Om de huidige temperatuur af te beelden gaan we een `gauge` gebruiken. Sleep de node op je flow en koppel deze aan je filter node die de temperatuur output.
 
