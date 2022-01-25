@@ -6,6 +6,8 @@
 
 LoRaWAN (Long Range Wide Area Network) is een specificatie voor telecommunicatie geschikt voor **lange afstandscommunicatie met weinig vermogen**. De technologie wordt gebruikt voor machine-naar-machine communicatie en het Internet of Things.
 
+![Draadloze technologieën](./img/wireless_techs.png)
+
 De architectuur bestaat uit *gateways*, *netwerkservers* en *applicatieservers*. Er worden RF-chips van Semtech gebruikt die een spread spectrum uitzenden. De nodes versturen een versleuteld bericht via radio. In Europa gebeurt dit op een frequentie van 868 MHz. Dit bericht wordt ontvangen door de gateways in het bereik van de zender. De gateways zijn verbonden met het Internet en sturen het bericht door naar de netwerkservers. Deze berichten kunnen vervolgens worden opgehaald door een applicatieserver. Die kan bepalen of er data teruggezonden moet worden, of de data dient opgeslagen te worden in een database... Een webapplicatie doet dan dienst als interface voor de gebruiker.
 
 ## The Things Network
