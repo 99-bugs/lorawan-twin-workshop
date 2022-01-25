@@ -20,10 +20,6 @@ module.exports = {
             text: 'Datacaptatie',
             link: '/data-capture/'
           },
-
-
-
-
           {
             text: 'Grove sensoren',
             link: '/sensors/',
@@ -50,17 +46,10 @@ module.exports = {
       {
         text: 'De applicatie',   // required
         children: [
-          '/node-red/'
+          '/node-red/',
+          '/node-red-dashboard/',
         ]
       },
-      // Visualuatie ?
-      // Interactie ?
-      // NodeRED + NodeRED dashboard + eventueel eigen dashboard ?
-      // {
-      //   title: 'Het dashboard',   // required
-      //   path: '/iot-dashboard/',      // optional, which should be a absolute path.
-      //   collapsable: true, // optional, defaults to true
-      // },
     ],
   },
   serviceWorker: true,
