@@ -1,10 +1,10 @@
 # Datacaptatie
 
-Onder datacaptatie verstaan we het binnenhalen en verzamelen van de data van de verschillende sensoren die aan onze microcontroller hangen. Afhankelijk van de sensoren zal er op een bepaalde manier moeten worden gecommuniceerd met de sensor. Later hierover meer.
+Onder datacaptatie verstaan we het binnenhalen van de data van een bepaalde bron. Dit kan bv. van een sensor zijn die aan onze microcontroller hangt. Afhankelijk van de sensor, zal er op een bepaalde manier moeten worden gecommuniceerd met de sensor. Later hierover meer.
 
 Vervolgens gaan we de data dan verzamelen en doorsturen naar "het internet" voor opslag, verwerking, visualisatie, ...
 
-Afhankelijk van de sensor en de toepassing kan het uitlezen van de sensoren op verschillende manieren gebeuren. Zo kunnen we een sensor periodiek uitlezen of kunnen we kijken naar een verandering en deze dan pas capteren.
+Afhankelijk van de sensor en de toepassing kan het uitlezen van de sensoren op verschillende manieren gebeuren. Zo kunnen we een sensor periodiek uitlezen of kunnen we kijken naar een verandering en deze dan pas reporteren.
 
 ## Periodiek uitlezen
 
