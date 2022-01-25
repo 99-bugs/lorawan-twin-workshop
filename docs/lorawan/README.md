@@ -1,79 +1,80 @@
----
-description: "Door onze data af te beelden op een web dashboard kunnen we een mooi overzicht maken. Daarvoor hebben we natuurlijk een webserver nodig."
----
-
 # LoRaWAN
 
 ![LoRaWAN Architectuur](./img/lorawan.jpg)
 
 ## Wat is LoRaWAN
 
-LoRaWAN (Long Range Wide Area Network) is een specificatie voor telecommunicatie geschikt voor langeafstandscommunicatie met weinig vermogen. De technologie wordt gebruikt voor machine-naar-machine communicatie en het Internet of Things.
+LoRaWAN (Long Range Wide Area Network) is een specificatie voor telecommunicatie geschikt voor **lange afstandscommunicatie met weinig vermogen**. De technologie wordt gebruikt voor machine-naar-machine communicatie en het Internet of Things.
 
-De architectuur bestaat uit *gateways*, *netwerkservers* en *applicatieservers*. Er worden RF-chips van Semtech gebruikt die een spread spectrum uitzenden. De nodes versturen een versleuteld bericht via radio. In Europa is deze frequentie 868 MHz. Dit bericht wordt ontvangen door de gateway. De gateway is verbonden met het Internet en stuurt het bericht door naar de netwerkservers. De berichten kunnen worden opgehaald door een applicatieserver. Die kan bepalen of er data teruggezonden moet worden, of de data dient opslagen te worden in een database, ... . Een webapplicatie doet dan dienst als interface voor de gebruiker.
+De architectuur bestaat uit *gateways*, *netwerkservers* en *applicatieservers*. Er worden RF-chips van Semtech gebruikt die een spread spectrum uitzenden. De nodes versturen een versleuteld bericht via radio. In Europa gebeurt dit op een frequentie van 868 MHz. Dit bericht wordt ontvangen door de gateways in het bereik van de zender. De gateways zijn verbonden met het Internet en sturen het bericht door naar de netwerkservers. Deze berichten kunnen vervolgens worden opgehaald door een applicatieserver. Die kan bepalen of er data teruggezonden moet worden, of de data dient opgeslagen te worden in een database... Een webapplicatie doet dan dienst als interface voor de gebruiker.
 
 ## The Things Network
 
-The Things Network bouwt een globaal gedistribueerd, crowd-sourced en open IoT datanetwerk dat eigendom is, en opgezet wordt door zijn gebruikers. Door gebruik te maken van LoRaWAN technologie voorziet The Things Network een end-to-end stack: van sensoren (de nodes), gateways, netwerk servers, sensor beheer en integratie met cloud providers en IoT platformen. Alles is volledig veilig geïmplementeerd en configureerbaar door de eindgebruiker.
+The Things Network bouwt een globaal gedistribueerd, crowd-sourced en open IoT datanetwerk dat eigendom is van, en opgezet wordt door zijn gebruikers. Door gebruik te maken van LoRaWAN technologie voorziet The Things Network een end-to-end stack: van sensoren (de nodes), gateways, netwerk servers, sensor beheer en integratie met cloud providers en IoT platformen. Alles is volledig veilig geïmplementeerd en configureerbaar door de eindgebruiker.
 
-Vooraleer je met dit alles aan de slag kan dien je echter wel eerst een account te maken op [The Things Network](https://www.thethingsnetwork.org/). Druk bovenaan op `Sign Up` en vul je gegevens in.
+Vooraleer je met dit alles aan de slag kan gaan, dien je echter wel eerst een account te maken op [The Things Network](https://www.thethingsnetwork.org/). Druk bovenaan op `Sign up` en vul je gegevens in.
 
 ### Nieuwe TTN applicatie bouwen
 
-Sensoren kunnen communiceren met een `applicatie` van The Things Network waarin ze geregistreerd worden. Om sensoren te registreren moet er eerst een applicatie gebouwd worden.
+Sensoren kunnen communiceren met een *applicatie* van The Things Network waarin ze geregistreerd worden. Om sensoren te registreren moet er eerst een applicatie gebouwd worden.
 
-Je kan een applicatie bouwen door te surfen naar The Things Network [console](https://console.thethingsnetwork.org/applications/add). Daar dien je een aantal gegevens in te geven:
+Je kan een applicatie bouwen door te surfen naar [The Things Network console](https://eu1.cloud.thethings.network/console/applications).
 
+Daar dien je dan een aantal gegevens in te geven:
+
+* **Owner**: De beheerder van de applicatie. Dit ben je in dit geval natuurlijk zelf.
 * **Application ID**: Hier kies je zelf een uniek *ID* dat bestaat uit kleine alfanumerieke letters. Spaties zijn niet toegestaan, maar een `-` teken wel.
-* **Application description**: Hier kan je een kleine beschrijving plaatsen over de applicatie die je wil toevoegen.
+* **Application name**: Dit kan een meer gebruiksvriendelijk naam zijn voor je applicatie in tegenstelling tot het ID.
+* **Description**: Hier kan je een kleine beschrijving plaatsen over de applicatie die je wil toevoegen.
 
 ![Applicatie toevoegen](./img/add-application.png)
 
-Klik dan op **Add Application** om te eindigen. Je zal doorverwezen worden naar de toegevoegde applicatie pagina. Hier zal je de gegenereerde **App EUI** en **Access Keys** terugvinden (deze hebben we later nog nodig).
+Klik dan op **Create application** om te eindigen. Je zal doorverwezen worden naar de toegevoegde applicatie pagina. Hier zal je de volledige applicatie en de bijhorende sensoren kunnen beheren. Straks zullen we hier ook de data van onze devices zien binnenstromen.
 
 ### Nieuwe sensor toevoegen
 
 Vooralleer een sensor kan communiceren met The Things Network moeten we deze registreren in een applicatie.
 
-Open de applicatie in The Things Network [console](https://console.thethingsnetwork.org/applications/) en klik op **Register device**. Er zullen een aantal gegevens gevraagd worden:
+Open de applicatie in [The Things Network console](https://eu1.cloud.thethings.network/console/applications) en klik op **Add end device**.
 
-* **Device ID**: Hier kies je zelf een uniek *ID* dat bestaat uit kleine alfanumerieke letters. Spaties zijn niet toegestaan, maar een `-` teken wel.
-* **Device EUI**: Druk op het :twisted_rightwards_arrows: icoontje om een willekeurige EUI te berekenen bij het aanmaken van de sensor.
-* **App Key**: Deze laten we ook automatisch genereren.
+Als je een kant-en-klare LoRaWAN sensor koopt, bestaat de kans dat je deze kan selecteren van de drop down op de huidige pagina.
 
-![Registreer sensor](./img/register-device.png)
+![Off-the-shelf Device](./img/off-the-shelf.png)
 
-Klik op **Register** om te eindigen. Je zal doorverwezen worden naar de overzichtspagina van de nieuwe sensor. Daar kan je de nodige gegevens (`DevEUI`, `AppEUI` en `AppKey`) vinden die we straks in de code zullen moeten gebruiken.
+Wij zijn natuurlijk techneuten en maken graag de dingen zelf. Vandaar dat wij moeten kiezen om een device **Manually** toe te voegen.
 
-## Sodaq LoRaWAN voorbeeld
+Er zullen een aantal gegevens gevraagd worden:
+
+* **Frequency plan**: de frequentieband waarop de LoRaWAN chip werkt. Voor Europa kan je kiezen voor `Europe 863-870 MHz (SF9 for RX2 - recommended)`
+* **LoRaWAN version**: de versie van LoRaWAN die door de chip (hier de Microchip RN2483) wordt ondersteund. Voor de RN2483 is dit `MAC V1.0.1`.
+* **Activation mode**: de manier waarop het device met het netwerk verbind.
+  * ABP (activation-by-personalization) is de minder veilige optie omdat hier de encryptie sleutels in het device worden opgeslagen.
+  * OTAA (Over-the-air-activation) is de meest veilige optie omdat er hier een join-procedure plaatsvind die resulteert in encryption keys die worden gegenereerd op het device en op de network server. Niet alle devices ondersteunen dit echter. De RN2483 en bijhorende bibliotheek gelukkig wel.
+
+Vervolgens zal je ook onderstaande parameters dienen te genereren door op het :twisted_rightwards_arrows: icoontje te klikken:
+
+* **DevEUI**: een unieke identificatie voor je device.
+* **AppEUI** (also called *JoinEUI*): een unieke identificatie voor de join server. Dit wordt aangeboden door de verkoper van het device of in ons geval mag je dit allemaal `0` maken.
+* **AppKey**: een geheime sleutel die wordt gebruikt om de `AppSKey` en `NwkSKey` sessie sleutels te genereren die beiden worden gebruikt om het LoRaWAN bericht te versleutelen.
+
+::: tip `AppSKey` en `NwkSKey`
+
+De `AppSKey` of de applicatie sessie key is een key die gebruikt wordt om de berichten te versleutelen tussen je device en de applicatie server. De `NwkSKey` of de de network sessie key is een key die gebruikt wordt om de berichten te versleutelen tussen je device en de network server. Wanneer je geen OTAA maar ABP gebruikt zal je deze geheime sleutels zowel in je device als op de Things Network moeten voorzien. Bij OTAA worden die automatisch gegenereerd op basis van de `AppKey` en wat andere informatie.
+:::
+
+Het **End device ID** wordt automatisch gegenereerd voor jou op basis van je `DevEUI`.
+
+![Register Device](./img/register-device.png)
+
+Klik op **Register end device** om te eindigen. Je zal doorverwezen worden naar de overzichtspagina van de nieuwe sensor. Daar kan je de nodige gegevens (`DevEUI`, `AppEUI` en `AppKey`) vinden die we straks in de code zullen moeten gebruiken.
+
+## SODAQ LoRaWAN voorbeeld
 
 `Hello world` voorbeelden zijn bij programmeren de meest eenvoudige voorbeelden om iets aan te tonen. Dit voorbeeld geeft het meest eenvoudige programma om de temperatuur van de ingebouwde sensor te verzenden via LoRaWAN.
 
 ::: tip
 In de code staat hier en daar wat commentaar met de tekst `TODO:`. Deze tekst wordt door programmeurs gebruikt om zich er aan te herinneren dat er nog iets gedaan moet worden. Kijk dus uit naar `TODO:` tekst, je zal daar optioneel of verplicht nog iets moeten aanpassen.
 :::
-
-## DevEUI, AppEUI en AppKey
-
-Elke LoRaWAN toepassing heeft een aantal instellingen die in de code juist ingesteld moeten worden.
-
-* **DevEUI**: Unieke identificatie van de sensor.
-* **AppEUI**: Identificatie van de `App` waartoe de sensor behoort.
-* **AppKey**: Encryptiesleutel voor de `App` zodat niemand jouw gegevens kan zien.
-
-Zonder de juiste gegevens komen jouw sensorwaarden niet aan bij de juist applicatie. Vergeet deze dus zeker niet aan te passen in je code. De exacte waarden kan je terug vinden in de console van de Things Network.
-
-Nu de sensor geconfigureerd is kunnen we deze ook gaan programmeren. Dit doen we in de Arduino IDE.
-
-Bibliotheken: Zorg dat de benodigde bibliotheken geïnstalleerd zijn via de Arduino bibliotheken manager:
-
-`Schets -> Bibliotheek gebruiken -> Bibliotheken beheren`
-
-Installeer de `Sodaq_RN2483` en `Sodaq_wdt` bibliotheken.
-
-Zorg er ook voor dat het juiste `Board` geselecteerd (`SODAQ Explorer`) is onder `Hulpmiddelen -> Board:`
-
-### Eenvoudig LoRaWAN verzenden voorbeeld
 
 ```cpp
 #include <Sodaq_RN2483.h>
@@ -84,9 +85,9 @@ Zorg er ook voor dat het juiste `Board` geselecteerd (`SODAQ Explorer`) is onder
 //**********************************************************
 // TODO: verander de waarden van DevEUI, AppEUI en APPkey
 //**********************************************************
-static uint8_t DevEUI[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-const uint8_t AppEUI[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-const uint8_t AppKey[16] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+static const uint8_t DevEUI[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+static const uint8_t AppEUI[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+static const uint8_t AppKey[16] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
 //**********************************************************
 // TODO: De poort waarop de data wordt verzonden
@@ -100,11 +101,19 @@ const int LORAWAN_PORT = 1;
 const int SIZE_OF_BUFFER = 32;
 uint8_t buffer[SIZE_OF_BUFFER];
 uint8_t numberOfDataBytes = 1;
+bool sendLoraMessage = false;
+
+//**********************************************************
+// WARNING:   Niet aanpassen. Staat van event gebaseerde
+//            sensor
+//**********************************************************
+int previousState = 0;
+int currentState = 0;
 
 //**********************************************************
 // TODO: De setup van Arduino, wordt in het begin van je
 //       sketch 1x uitgevoerd.
-//       Als je sensor moet initializeren, doe je dit hier
+//       Als je sensor moet initialiseren, doe je dit hier
 //**********************************************************
 void setup()
 {
@@ -120,8 +129,10 @@ void setup()
     while ((!SerialUSB) && (millis() < 5000));
     debugSerial.println("Starting LoRaWAN");
 
-    // Configuratie button op Sodaq
+    // Configuratie button op SODAQ ExpLoRer
     pinMode(BUTTON, INPUT);        // Digitale pin als ingang
+    previousState = digitalRead(BUTTON);    // Lezen van start staat
+    currentState = previousState;           // Starten met deze staat
 
     // Configuratie van LoRaWAN
     loraSerial.begin(LoRaBee.getDefaultBaudRate());
@@ -132,21 +143,27 @@ void setup()
 //**********************************************************
 // TODO: De loop van Arduino, deze blijft telkens herhalen
 //       Hier kies je een type sensor:
-//           - perdiodiek uitgelezen (met delay erin)
-//           - event gebasseerde sensoren (zonder delay erin)
+//           - periodiek uitgelezen (met delay erin)
+//           - event gebaseerde sensoren (zonder delay erin)
 //**********************************************************
 void loop()
 {
     // Periodiek sensor uitlezen
-    getSensorValue();
+    samplePeriodicSensor();
+
     // OF
-    // Event gebasseerde sensor, blocking - delay in commentaar zetten!
-    // waitForEvent();
 
-    // Verzenden met LoRa
-    sendWithLoRa();
+    // Event gebaseerde sensor
+    // checkForEvent();
 
-    // Delay verwijderen bij event-gebasseerde sensoren
+    // Verzenden met LoRa als er bericht klaar staat
+    if (sendLoraMessage) {
+      SerialUSB.println("Starten met verzenden van LoRaWAN message");
+      sendWithLoRa();
+      sendLoraMessage = false;
+    }
+
+    // Delay verwijderen bij event gebaseerde sensoren
     delay(10000);     // Tijd om te wachten (milliseconden)
 }
 
@@ -154,7 +171,7 @@ void loop()
 // TODO: Uitlezen van een periodieke sensor en vullen van buffer.
 //       Dit moet worden aangepast naargelang de sensor
 //**********************************************************
-void getSensorValue()
+void samplePeriodicSensor()
 {
     //10mV per C, 0C is 500mV
     float mVolts = (float)analogRead(TEMP_SENSOR) * 3300.0 / 1023.0;
@@ -167,34 +184,39 @@ void getSensorValue()
     buffer[0] = ((int)(temperature * 100) >> 8) & 0xFF;
     buffer[1] = ((int)(temperature * 100) >> 0) & 0xFF;
     numberOfDataBytes = 2;
+
+    // Geef aan dat er een bericht klaar is om te verzenden
+    sendLoraMessage = true;
 }
 
 //**********************************************************
-// TODO: Wachten op een verandering voor een event gebasseerde
+// TODO: Detecteer een verandering voor een event gebaseerde
 //       sensor.
 //**********************************************************
-void waitForEvent()
+void checkForEvent()
 {
-  // Lees de huidige stand van de drukknop
-  int previousState = digitalRead(BUTTON);
-  int state = previousState;
+  currentState = digitalRead(BUTTON);
 
-  debugSerial.println("Wachten voor event");
+  if (currentState != previousState) {
+    SerialUSB.println("De staat van BUTTON is gewijzigd");
 
-  // Wachten op verandering van de staat van de knop.
-  // We wachten ook zolang de knop ingedrukt is (state == HIGH)
-  //    (loslaten negeren we dus, enkel indrukken)
-  while (state == previousState || state  == HIGH) {
-    previousState = state;          // Nieuwe staat opslaan in oude staat
-    state = digitalRead(BUTTON);    // Nieuwe staat inlezen
-    delay(10);    // Even wachten voor ontdendering
+    // Wat is de huidige staat?
+    if (currentState == LOW) {
+      SerialUSB.println("De knop werd ingedrukt");
+
+      // Dit gaan we verzenden met LoRaWAN
+      buffer[0] = HIGH;
+      numberOfDataBytes = 1;
+      sendLoraMessage = true;
+
+    } else {
+      SerialUSB.println("De knop werd los gelaten");
+    }
+
+    // Set the current state as the previous state
+    previousState = currentState;
+    delay(10);      // Do some debouncing
   }
-
-  debugSerial.println("Event is gebeurt");
-
-  // Opslaan in buffer om te verzenden
-  buffer[0] = HIGH;
-  numberOfDataBytes = 1;
 }
 
 //**********************************************************
@@ -203,92 +225,143 @@ void waitForEvent()
 //**********************************************************
 void setupLoRa()
 {
-    if (LoRaBee.initOTA(loraSerial, DevEUI, AppEUI, AppKey, true)) {
-        debugSerial.println("Network connection successful.");
-        digitalWrite(LED_BLUE, HIGH);
-        digitalWrite(LED_GREEN, LOW);
-        digitalWrite(LED_RED, HIGH);
-    }
-    else {
-        debugSerial.println("Network connection failed!");
-    }
-    LoRaBee.setSpreadingFactor(7);
+  if (LoRaBee.initOTA(loraSerial, DevEUI, AppEUI, AppKey, true)) {
+    debugSerial.println("Network connection successful.");
+    digitalWrite(LED_BLUE, HIGH);
+    digitalWrite(LED_GREEN, LOW);
+    digitalWrite(LED_RED, HIGH);
+  } else {
+    debugSerial.println("Network connection failed!");
+  }
+  LoRaBee.setSpreadingFactor(7);
 }
 
-void sendWithLoRa() {
-    switch (LoRaBee.send(LORAWAN_PORT, buffer, numberOfDataBytes))
-    {
-        case NoError:
-          debugSerial.println("Successful transmission.");
-          break;
-        case NoResponse:
-          debugSerial.println("There was no response from the device.");
-          break;
-        case Timeout:
-          debugSerial.println("Connection timed-out. Check your serial connection to the device! Sleeping for 20sec.");
-          delay(20000);
-          break;
-        case PayloadSizeError:
-          debugSerial.println("The size of the payload is greater than allowed. Transmission failed!");
-          break;
-        case InternalError:
-          debugSerial.println("Oh No! This shouldn not happen. Something is really wrong! The program will reset the RN module.");
-          setupLoRa();
-          break;
-        case Busy:
-          debugSerial.println("The device is busy. Sleeping for 10 extra seconds.");
-          delay(10000);
-          break;
-        case NetworkFatalError:
-          debugSerial.println("There is a non-recoverable error with the network connection. The program will reset the RN module.");
-          setupLoRa();
-          break;
-        case NotConnected:
-          debugSerial.println("The device is not connected to the network. The program will reset the RN module.");
-          setupLoRa();
-          break;
-        case NoAcknowledgment:
-          debugSerial.println("There was no acknowledgment sent back!");
-          break;
-        default:
-          break;
-    }
+void sendWithLoRa()
+{
+  switch (LoRaBee.send(LORAWAN_PORT, buffer, numberOfDataBytes)) {
+    case NoError:
+      debugSerial.println("Successful transmission.");
+      break;
+    case NoResponse:
+      debugSerial.println("There was no response from the device.");
+      break;
+    case Timeout:
+      debugSerial.println("Connection timed-out. Check your serial connection to the device! Sleeping for 20sec.");
+      delay(20000);
+      break;
+    case PayloadSizeError:
+      debugSerial.println("The size of the payload is greater than allowed. Transmission failed!");
+      break;
+    case InternalError:
+      debugSerial.println("Oh No! This should not happen. Something is really wrong! The program will reset the RN module.");
+      setupLoRa();
+      break;
+    case Busy:
+      debugSerial.println("The device is busy. Sleeping for 10 extra seconds.");
+      delay(10000);
+      break;
+    case NetworkFatalError:
+      debugSerial.println("There is a non-recoverable error with the network connection. The program will reset the RN module.");
+      setupLoRa();
+      break;
+    case NotConnected:
+      debugSerial.println("The device is not connected to the network. The program will reset the RN module.");
+      setupLoRa();
+      break;
+    case NoAcknowledgment:
+      debugSerial.println("There was no acknowledgment sent back!");
+      break;
+    default:
+      break;
+  }
 }
 ```
+
+De frequentieband waarvan LoRa gebruik maakt is een vrije band (ISM). Deze mag "gratis" worden gebruikt en is ook gedeeld met andere toepassingen. Er zijn echter wel een aantal regels waaraan we ons dienen te houden. Zo mag een LoRaWAN device maar 1% van de tijd zenden, de andere 99% mag het device niets zenden. Dit betekent als je LoRaWAN berichtje bv. `50ms` air-time in beslag neemt, dat je maar om de `5s` zo een bericht mag sturen. De `consumed_airtime` kan je raadplegen in de *Event details*  bij the Things Network Console live data.
+
+### DevEUI, AppEUI en AppKey
+
+Elke LoRaWAN toepassing heeft een aantal instellingen die in de code juist ingesteld moeten worden.
+
+* **DevEUI**: Unieke identificatie van de sensor.
+* **AppEUI**: Identificatie van de `App` waartoe de sensor behoort.
+* **AppKey**: Encryptiesleutel voor de `App` zodat niemand jouw gegevens kan zien.
+
+Zonder de juiste gegevens komen jouw sensorwaarden niet aan bij de juist applicatie. Vergeet deze dus zeker niet aan te passen in je code. De exacte waarden kan je terug vinden in de console van de Things Network.
+
+Door op de bekjes `<>` te klikken kan je de keys omzetten naar een komma gescheiden formaat dat je rechtstreeks in je code kan plakken.
+
+### Bibliotheken
+
+Vooraleer we nu de firmware kunnen compileren en flashen dienen we nog twee bibliotheken te installeren. Dit doen we in de Arduino IDE. Navigeer hiervoor naar `Tools => Manage Libraries...`.
+
+Zoek eerst naar `Sodaq_RN2483` en installeer de laatste versie van de bibliotheek door op `Install` te klikken.
+
+![Sodaq_RN2483](./img/Sodaq_RN2483.png)
+
+Vervolgens dien je ook de `Sodaq_wdt` bibliotheek te zoeken en te installeren.
+
+![Sodaq_wdt](./img/Sodaq_wdt.png)
+
+### Flashen
+
+Nu de sensor geconfigureerd is kunnen we deze ook gaan programmeren.
+
+Zorg er voor dat het juiste board geselecteerd is onder `Tools => Board`, namelijk `SODAQ ExpLoRer`.
+
+## Data op The Things Network
+
+Navigeer nu terug naar jouw applicatie op [The Things Network console](https://eu1.cloud.thethings.network/console/applications). Als alles goed gaat zou je onder `Live data` jouw gegevens moeten zien binnen komen.
+
+![Live Data](./img/ttn-live-data.png)
+
+Voorlopig zijn dit nog ruwe bytes, maar als er data binnen komt zit je goed.
+
+Komt er geen data binnen, kijk dan eens naar de seriele monitor of er geen errors worden gegeven. Controleer ook nog eens of je de keys wel correct hebt ingegeven.
 
 ### The Things Network Decoder
 
 Wanneer de data op de TTN binnenkomt dan zijn dit ruwe bytes. Dit is vrij low-level en zou de eindapplicatie dwingen om de ruwe data om te zetten naar eigenlijke informatie. We kunnen dit proces door de TTN laten doen. Dit maakt debuggen makkelijker en zorgt er ook voor dat een applicatie die gebruik wil maken van de data dit niet meer hoeft te doen.
 
-Open je applicatie op de [console](https://console.thethingsnetwork.org/applications) van The Things Network.
+:: tip Ruwe bytes
+Merk op dat we het aantal te verzenden bytes to laag mogelijk proberen te houden (om de *air-time* zo laag mogelijk te houden). Dit betekent dan ook dat we geen ASCII karakters of JSON of zo gaan verzenden maar wel gecodeerde bytes. Dit heeft dan wel als nadeel dat we dit terug moeten decoderen.
+:::
 
-![Console TTN](./img/ttn-console-app.png)
+Open je applicatie op [The Things Network console](https://eu1.cloud.thethings.network/console/applications).
 
-Klik bovenaan rechts op `Payload Formats`. We kunnen nu in het venster een stukje JavaScript code plaatsen die de raw bytes omzet naar een meer leesbaar en verwerkbaar formaat. Typisch gebruiken we voor deze dingen JSON.
+Klik links op `Payload formatters` en klik op `Uplink`om de formatter in te stellen voor de berichtjes die binnenkomen van het device. Stel het type formatter vervolgens in op `Javascript`.
 
-Kopieer onderstaande JS code en plaats dit in het `decoder` venster.
+![Payload Formatter](./img/payload_formatter.png)
+
+We kunnen nu in het venster een stukje JavaScript code plaatsen die de raw bytes omzet naar een meer leesbaar en verwerkbaar formaat. Typisch gebruiken we voor deze dingen JSON.
+
+Kopieer onderstaande JavaScript code en plaats dit in het `decoder` venster.
 
 ```js
-function Decoder(bytes, port) {
-  // Decode an uplink message from a buffer
-  // (array) of bytes to an object of fields.
-  var decoded = {};
+function decodeUplink(input) {
+  let message = {
+    data: {},
+    warnings: [],
+    errors: []
+  };
 
-  if (port == 1) {
-    decoded.temperature = (bytes[1] + bytes[0]*256)/100.0;
+  if (input.fPort == 1) {
+    message.data.temperature = (input.bytes[1] + input.bytes[0]*256)/100.0;
   }
 
-  return decoded;
+  return message;
 }
 ```
 
-Later zullen we deze nog moeten uitbreiden voor de andere sensoren.
+Klik vervolgens op `Save changes` om de wijzigingen op te slaan.
 
-![Console TTN](./img/ttn-payload-decoder.png)
+Als je je nu begeeft naar `Live data` zou je niet meer de ruwe bytes mogen zien voor de `Payload` maar een leesbaar JSON object met de temperatuur erin. Controleer voor alle zekerheid dat de waarde hetzelfde is als in de seriele monitor van Arduino IDE.
 
-Klik vervolgens op `Save`.
+![Decoded Payload](./img/decoded_payload.png)
 
-### Decoders Sensoren
+Later zullen we payload decoder deze nog verder uitbreiden voor de andere sensoren.
+
+<!-- ### Decoders Sensoren
 
 Controlleer voor alle zekerheid dat de `port` van de decoder dezelfde is als deze van je applicatie op de Sodaq.
 
@@ -412,4 +485,4 @@ function Decoder(bytes, port) {
 
   return decoded;
 }
-```
+``` -->

@@ -27,14 +27,15 @@ module.exports = {
           {
             text: 'Grove sensoren',
             link: '/sensors/',
+            collapsible: true,
             children: [
               '/sensors/push_button/',
               '/sensors/switch/',
-              '/sensors/q_touch/',
-              '/sensors/rfid/',
-              '/sensors/motion-sensor/',
-              '/sensors/rotary-sensor/',
-              '/sensors/tph-sensor/',
+              // '/sensors/q_touch/',
+              // '/sensors/rfid/',
+              // '/sensors/motion-sensor/',
+              // '/sensors/rotary-sensor/',
+              // '/sensors/tph-sensor/',
             ]
           }
         ]
@@ -42,31 +43,19 @@ module.exports = {
       {
         text: 'Het Internet',
         children: [
-          {
-            text: 'LoRaWAN',
-            link: '/lorawan/',
-          },
-          {
-            text: 'MQTT',
-            link: '/mqtt/',
-          }
+          '/lorawan/',
+          '/mqtt/'
+        ]
+      },
+      {
+        text: 'De applicatie',   // required
+        children: [
+          '/node-red/'
         ]
       },
       // Visualuatie ?
       // Interactie ?
       // NodeRED + NodeRED dashboard + eventueel eigen dashboard ?
-
-
-      // {
-      //   title: 'De server',   // required
-      //   collapsable: true, // optional, defaults to true
-      //   sidebarDepth: 0,    // optional, defaults to 1
-      //   children: [
-      //     '/lamp/',
-      //     '/mosquitto/',
-      //     '/node-red/'
-      //   ]
-      // },
       // {
       //   title: 'Het dashboard',   // required
       //   path: '/iot-dashboard/',      // optional, which should be a absolute path.

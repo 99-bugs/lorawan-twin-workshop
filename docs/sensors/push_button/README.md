@@ -1,4 +1,4 @@
-# Push Button
+# Een Push Button
 
 De Grove Push Button is een drukknop die ideaal is om dingen aan of uit te zetten. In tegenstelling tot een schakelaar blijft een drukknop niet in zijn positie staan. Dit betekent dus dat de knop zichzelf herstelt nadat deze is losgelaten.
 
@@ -12,80 +12,111 @@ Om de drukknop te verbinden met het SODAQ bord dien je eerst en vooral een **4-p
 
 ![Drukknop op het SODAQ bord aansluiten](./img/connecting_button_to_sodaq.png)
 
-Als je de markeringen op de PCB van de drukknop bekijkt en vergelijkt met deze op het SODAQ bord, zal je zien dat de output van drukknop (aangeduid met `SIG`) is aangesloten op `D15`. NC staat voor *Not Connected* of niet aangesloten.
+Als je de markeringen op de PCB van de drukknop bekijkt en vergelijkt met deze op het SODAQ bord (achterzijde), zal je zien dat de output van de drukknop (aangeduid met `SIG`) is aangesloten op `D15`. `NC` staat voor *Not Connected* of niet aangesloten.
 
 ## Starter Applicatie
 
 Onderstaand vind je een demo sketch die de stand van de drukknop om de 100 milliseconden uitleest. De huidige stand van de drukknop wordt vervolgens weergegeven in de console.
 
-De vertraging kan worden verkleind of er zelfs worden uitgehaald.
+De vertraging kan worden verkleind of vergroot naargelang de toepassing.
 
 ```cpp
-const int pushPin = 15;   // Pin van de drukknop
+const int PUSH_PIN = 15;   // Pin of Push Button
 
-void setup()
-{
-  // put your setup code here, to run once:
+// Put your setup code here, to run once:
+void setup() {
   SerialUSB.begin(115200);
-  while ((!SerialUSB) && (millis() < 5000));
-  SerialUSB.println("Starten van push button demo");
-  pinMode(pushPin, INPUT);          // Digitale pin als ingang
+
+  // Configure push pin as digital input
+  pinMode(PUSH_PIN, INPUT);
+
+  // Wait for SerialUSB or start after 10 seconds
+  while ((!SerialUSB) && (millis() < 10000)) {}
+
+  SerialUSB.println("Starting Push Button demo ...");
 }
 
-void loop()
-{
-  // Lees de huidige stand van de drukknop in
-  int pushState = digitalRead(pushPin);
+// Put your main code here, to run repeatedly:
+void loop() {
+  // Read out the current state of the push button
+  int pushState = digitalRead(PUSH_PIN);
 
   if (pushState == HIGH) {
-    SerialUSB.println("De drukknop is ingedrukt");
-  }
-  else {
-    SerialUSB.println("De drukknop is niet ingedrukt");
+    SerialUSB.println("The push button is pressed.");
+  } else {
+    SerialUSB.println("The push button is not pressed.");
   }
 
-  // 100 milliseconden wachten, kan je verhogen of verlagen
+  // Wait 100 milliseconds between each read.
+  // You can lower or raise this
   delay(100);
 }
 ```
 
+Als je de knop een aantal keer indrukt zou je een dergelijke output in de seriele monitor moeten krijgen.
+
+![Output](./img/output.png)
+
 ## Event gebaseerd
 
-De starter applicatie is goed om aan te tonen hoe de drukknop werkt, maar is niet zo praktisch voor te verzenden met LoRaWAN. We kunnen niet 10 maal per seconde de staat doorsturen. Om dit met LoRaWAN te combineren zou er beter worden gewerkt met detectie van verandering. Zo zou je onderstaande code kunnen aanpassen om via LoRaWAN de staat te kunnen doorsturen nadat de user de knop heeft ingedrukt (loslaten gaan we geen rekening mee houden).
+De starter applicatie is goed om aan te tonen hoe de drukknop werkt, maar meestal zijn we niet geinterreseerd in de huidige staat op bepaalde momenten maar eerder in verandering. Met andere woorden, onze applicatie zou moeten detecteren wanneer er iemand de knop indrukt of los laat. Dit noemen we event gebaseerd.
+
+Er zijn in principe twee manieren om dit te realiseren:
+
+* met interrupts, waarbij de microcontroller hardwarematig de verandering detecteert. Dit moet echter worden ondersteund voor de pin waarop de drukknop is aangesloten.
+* met een state machine, waarbij we software-matig kijken of de staat van de drukknop verandert is ten opzichte van de vorige check.
+
+De tweede optie is hier voor ons de meest toepasselijke omdat dit ook later het best zal werken in samenwerking met LoRaWAN.
 
 ```cpp
-const int pushPin = 15;   // Pin van de drukknop
+const int PUSH_PIN = 15;   // Pin of Push Button
 
-void setup()
-{
-  // put your setup code here, to run once:
+// Previous state of Push Button
+int previousState = 0;
+int currentState = 0;
+
+// Put your setup code here, to run once:
+void setup() {
   SerialUSB.begin(115200);
-  while ((!SerialUSB) && (millis() < 5000));
-  SerialUSB.println("Starten van push button demo");
-  pinMode(pushPin, INPUT);          // Digitale pin als ingang
+
+  // Configure push pin as digital input
+  pinMode(PUSH_PIN, INPUT);
+  previousState = digitalRead(PUSH_PIN);    // Read start state
+  currentState = previousState;             // Starting with this state
+
+  // Wait for SerialUSB or start after 10 seconds
+  while ((!SerialUSB) && (millis() < 10000)) {}
+
+  SerialUSB.println("Starting Push Button Event demo ...");
 }
 
-void loop()
-{
-  // Lees de huidige stand van de drukknop
-  int previousState = digitalRead(pushPin);
-  int state = previousState;
+// Put your main code here, to run repeatedly:
+void loop() {
+  currentState = digitalRead(PUSH_PIN);
 
-  SerialUSB.println("Wachten voor event");
+  if (currentState != previousState) {
+    SerialUSB.println("Detected state change of push button");
 
-  // Wachten op verandering van de staat van de knop.
-  // We wachten ook zolang de knop ingedrukt is (state == LOW)
-  //    (loslaten negeren we dus, enkel indrukken)
-  while (state == previousState || state  == LOW) {
-    previousState = state;          // Nieuwe staat opslaan in oude staat
-    state = digitalRead(pushPin);    // Nieuwe staat inlezen
-    delay(10);    // Even wachten voor ontdendering
+    // What is the current state?
+    if (currentState == LOW) {
+      SerialUSB.println("Push button was PRESSED");
+    } else {
+      SerialUSB.println("Push button was RELEASED");
+    }
+
+    // Set the current state as the previous state
+    previousState = currentState;
+    delay(10);      // Do some debouncing
   }
-
-  SerialUSB.println("Event is gebeurd");
 }
 ```
 
+Dit zou de volgende output moeten geven als je een aantal keer de knop indrukt en terug los laat.
+
+![Output of Event Based Demo](./img/event_output.png)
+
+Merk op dat je op deze manier nu kan kiezen op welke verandering je reageert. Op het drukken, het los laten of zelfs beiden.
+
 ## Meer informatie
 
-Meer informatie is beschikbaar op [http://wiki.seeedstudio.com/Grove-Switch-P/](http://wiki.seeedstudio.com/Grove-Switch-P/).
+Meer informatie kan je terugvinden op de website van Seeed Studio: [https://wiki.seeedstudio.com/Grove-Button](https://wiki.seeedstudio.com/Grove-Button).
