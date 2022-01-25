@@ -87,7 +87,7 @@ Eerst en vooral dienen we in het tabblad **Connection** de **server** in te stel
 
 ![TTN Server](./img/node-red-ttn-server.png)
 
-Vervolgens moeten we een bruikersnaam en wachtwoord ingeven in het tabblad **Security**. Als wachtwoord hebben we het application id met de postfix `@ttn` en als wachtwoord hebben de API key nodig. Beiden vinden we terug op The Things Network onder `Integrations => MQTT`.
+Vervolgens moeten we een bruikersnaam en wachtwoord ingeven in het tabblad **Security**. Als gebruikersnaam hebben we het application id met de postfix `@ttn` en als wachtwoord hebben de API key nodig. Beiden vinden we terug op The Things Network onder `Integrations => MQTT`.
 
 ![TTN Security](./img/node-red-ttn-security.png)
 
@@ -144,7 +144,7 @@ Tevens kan je aan de output van de `function` een `debug` node hangen zodat we z
 
 Wanneer alles correct geconfigureerd is zou de flow er als volgt moeten uitzien.
 
-![Temperatuur flow](./img/full-flow-temperature-sensor.png)
+![Temperatuur flow](./img/temperature_from_ttn.png)
 
 Je kan de flow activeren door bovenaan rechts op de knop `Deploy` te drukken. De flow zal nu uitgevoerd worden. Node-RED zal deze ook op de achtergrond blijven uitvoeren. Dat wil dus zeggen dat je de webbrowser gerust mag afsluiten en alles zal blijven werken.
 

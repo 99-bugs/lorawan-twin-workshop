@@ -1,0 +1,108 @@
+[
+  {
+      "id": "f6f2187d.f17ca8",
+      "type": "tab",
+      "label": "Temperatuur",
+      "disabled": false,
+      "info": ""
+  },
+  {
+      "id": "6d83bcc41d07be42",
+      "type": "mqtt in",
+      "z": "f6f2187d.f17ca8",
+      "name": "",
+      "topic": "v3/workshop-vti-sensors@ttn/devices/eui-70b3d57ed004b1fd/up",
+      "qos": "2",
+      "datatype": "json",
+      "broker": "72b7650225d6d480",
+      "nl": false,
+      "rap": true,
+      "rh": 0,
+      "inputs": 0,
+      "x": 270,
+      "y": 100,
+      "wires": [
+          [
+              "a15dc1f66cd2fd72",
+              "47518082ec776cea"
+          ]
+      ]
+  },
+  {
+      "id": "a15dc1f66cd2fd72",
+      "type": "debug",
+      "z": "f6f2187d.f17ca8",
+      "name": "",
+      "active": true,
+      "tosidebar": true,
+      "console": false,
+      "tostatus": false,
+      "complete": "false",
+      "statusVal": "",
+      "statusType": "auto",
+      "x": 730,
+      "y": 100,
+      "wires": []
+  },
+  {
+      "id": "47518082ec776cea",
+      "type": "function",
+      "z": "f6f2187d.f17ca8",
+      "name": "Filter temperatuur",
+      "func": "msg.payload = msg.payload.uplink_message.decoded_payload.temperature;\nreturn msg;",
+      "outputs": 1,
+      "noerr": 0,
+      "initialize": "",
+      "finalize": "",
+      "libs": [],
+      "x": 650,
+      "y": 200,
+      "wires": [
+          [
+              "a1bc8588ec717c95"
+          ]
+      ]
+  },
+  {
+      "id": "a1bc8588ec717c95",
+      "type": "debug",
+      "z": "f6f2187d.f17ca8",
+      "name": "",
+      "active": true,
+      "tosidebar": true,
+      "console": false,
+      "tostatus": false,
+      "complete": "false",
+      "statusVal": "",
+      "statusType": "auto",
+      "x": 870,
+      "y": 260,
+      "wires": []
+  },
+  {
+      "id": "72b7650225d6d480",
+      "type": "mqtt-broker",
+      "name": "ThingsNetwork",
+      "broker": "eu1.cloud.thethings.network",
+      "port": "1883",
+      "clientid": "",
+      "autoConnect": true,
+      "usetls": false,
+      "protocolVersion": "4",
+      "keepalive": "60",
+      "cleansession": true,
+      "birthTopic": "",
+      "birthQos": "0",
+      "birthPayload": "",
+      "birthMsg": {},
+      "closeTopic": "",
+      "closeQos": "0",
+      "closePayload": "",
+      "closeMsg": {},
+      "willTopic": "",
+      "willQos": "0",
+      "willPayload": "",
+      "willMsg": {},
+      "sessionExpiry": ""
+  }
+]
