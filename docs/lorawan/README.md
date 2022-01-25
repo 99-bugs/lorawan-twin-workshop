@@ -70,7 +70,7 @@ Klik op **Register end device** om te eindigen. Je zal doorverwezen worden naar 
 
 ## SODAQ LoRaWAN voorbeeld
 
-`Hello world` voorbeelden zijn bij programmeren de meest eenvoudige voorbeelden om iets aan te tonen. Dit voorbeeld geeft het meest eenvoudige programma om de temperatuur van de ingebouwde sensor te verzenden via LoRaWAN.
+`Hello world` voorbeelden zijn bij programmeren de meest eenvoudige voorbeelden om iets aan te tonen. Dit voorbeeld geeft het meest eenvoudige programma om de **temperatuur van de ingebouwde sensor** te verzenden via LoRaWAN.
 
 ::: tip
 In de code staat hier en daar wat commentaar met de tekst `TODO:`. Deze tekst wordt door programmeurs gebruikt om zich er aan te herinneren dat er nog iets gedaan moet worden. Kijk dus uit naar `TODO:` tekst, je zal daar optioneel of verplicht nog iets moeten aanpassen.
@@ -79,87 +79,91 @@ In de code staat hier en daar wat commentaar met de tekst `TODO:`. Deze tekst wo
 ```cpp
 #include <Sodaq_RN2483.h>
 
-#define debugSerial SerialUSB
 #define loraSerial Serial2
 
 //**********************************************************
-// TODO: verander de waarden van DevEUI, AppEUI en APPkey
+// TODO: Verander de waarden van DevEUI, AppEUI en APPkey
+//       volgens deze aangegeven op de console van
+//       The Things Network.
 //**********************************************************
 static const uint8_t DevEUI[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 static const uint8_t AppEUI[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 static const uint8_t AppKey[16] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
 //**********************************************************
-// TODO: De poort waarop de data wordt verzonden
-//       Andere poort per type sensor
+// De poort waarop de data wordt verzonden.
+// Dit dien je normaal niet aan te passen.
 //**********************************************************
 const int LORAWAN_PORT = 1;
 
 //**********************************************************
-// WARNING:   Niet aanpassen. Maakt de buffer voor data.
+// Niet aanpassen. Maakt de buffer voor data.
 //**********************************************************
 const int SIZE_OF_BUFFER = 32;
-uint8_t buffer[SIZE_OF_BUFFER];
-uint8_t numberOfDataBytes = 1;
-bool sendLoraMessage = false;
+uint8_t buffer[SIZE_OF_BUFFER];   // Buffer voor bericht
+uint8_t numberOfDataBytes = 1;    // Aantal te versturen bytes
+
+// Aangeven of LoRaWAN bericht klaar is om te versturen
+bool sendLoraMessage = false;     
 
 //**********************************************************
-// WARNING:   Niet aanpassen. Staat van event gebaseerde
-//            sensor
+// Staat van event gebaseerde sensoren
 //**********************************************************
 int previousState = 0;
 int currentState = 0;
 
 //**********************************************************
-// TODO: De setup van Arduino, wordt in het begin van je
-//       sketch 1x uitgevoerd.
-//       Als je sensor moet initialiseren, doe je dit hier
+// De setup van Arduino, wordt in het begin van je sketch
+// eenmalig uitgevoerd.
+// Als je sensor moet initialiseren, dan doe je dit hier
 //**********************************************************
-void setup()
-{
-    pinMode(LED_BLUE, OUTPUT);         // Blauwe LED als uitgang
-    pinMode(LED_RED, OUTPUT);          // Rode LED als uitgang
-    pinMode(LED_GREEN, OUTPUT);        // Groene LED als uitgang
+void setup() {
+  pinMode(LED_BLUE, OUTPUT);         // Blauwe LED als uitgang
+  pinMode(LED_RED, OUTPUT);          // Rode LED als uitgang
+  pinMode(LED_GREEN, OUTPUT);        // Groene LED als uitgang
 
-    digitalWrite(LED_BLUE, HIGH);
-    digitalWrite(LED_GREEN, HIGH);
-    digitalWrite(LED_RED, LOW);
+  status_connecting();
     
-    SerialUSB.begin(115200);
-    while ((!SerialUSB) && (millis() < 5000));
-    debugSerial.println("Starting LoRaWAN");
+  SerialUSB.begin(115200);
 
-    // Configuratie button op SODAQ ExpLoRer
-    pinMode(BUTTON, INPUT);        // Digitale pin als ingang
-    previousState = digitalRead(BUTTON);    // Lezen van start staat
-    currentState = previousState;           // Starten met deze staat
+  // 10 seconden wachten op SerialUSB. 
+  while ((!SerialUSB) && (millis() < 10000)) { }
 
-    // Configuratie van LoRaWAN
-    loraSerial.begin(LoRaBee.getDefaultBaudRate());
-    LoRaBee.init(loraSerial, LORA_RESET);
-    setupLoRa();
+  SerialUSB.println("Starten van LoRaWAN temperatuur demo.");
+
+  // Configuratie digitale pin als ingang
+  pinMode(BUTTON, INPUT);
+
+  // We lezen ook de "start staat" in
+  previousState = digitalRead(BUTTON);
+  currentState = previousState;
+
+  // Configuratie van LoRaWAN
+  loraSerial.begin(LoRaBee.getDefaultBaudRate());
+  LoRaBee.init(loraSerial, LORA_RESET);
+  setup_lora();
 }
 
 //**********************************************************
-// TODO: De loop van Arduino, deze blijft telkens herhalen
-//       Hier kies je een type sensor:
-//           - periodiek uitgelezen (met delay erin)
-//           - event gebaseerde sensoren (zonder delay erin)
+// De main loop van Arduino, deze blijft telkens herhalen.
+//
+//    Hier kies je een type sensor:
+//       - periodiek uitgelezen (met delay erin)
+//       - event gebaseerde sensoren (zonder delay erin)
 //**********************************************************
-void loop()
-{
+void loop() {
     // Periodiek sensor uitlezen
-    samplePeriodicSensor();
+    sample_periodic_sensor();
 
     // OF
 
     // Event gebaseerde sensor
-    // checkForEvent();
+    // check_sensor_for_event();
 
-    // Verzenden met LoRa als er bericht klaar staat
+    // Verzenden met LoRaWAN als er bericht klaar staat
     if (sendLoraMessage) {
       SerialUSB.println("Starten met verzenden van LoRaWAN message");
-      sendWithLoRa();
+      send_message_with_lora();
       sendLoraMessage = false;
     }
 
@@ -171,109 +175,145 @@ void loop()
 // TODO: Uitlezen van een periodieke sensor en vullen van buffer.
 //       Dit moet worden aangepast naargelang de sensor
 //**********************************************************
-void samplePeriodicSensor()
-{
-    //10mV per C, 0C is 500mV
-    float mVolts = (float)analogRead(TEMP_SENSOR) * 3300.0 / 1023.0;
-    float temperature = (mVolts - 500.0) / 10.0;
+void sample_periodic_sensor() {
+  //10mV per C, 0C is 500mV
+  float mVolts = (float)analogRead(TEMP_SENSOR) * 3300.0 / 1023.0;
+  float temperature = (mVolts - 500.0) / 10.0;
 
-    // Uitschrijven in console
-    debugSerial.println(temperature);
+  // Uitschrijven naar seriele monitor
+  SerialUSB.print("Temperatuur = ");
+  SerialUSB.print(temperature);
+  SerialUSB.println("°C");
 
-    // Buffer vullen met onze data (temperatuur)
-    buffer[0] = ((int)(temperature * 100) >> 8) & 0xFF;
-    buffer[1] = ((int)(temperature * 100) >> 0) & 0xFF;
-    numberOfDataBytes = 2;
+  // Buffer vullen met onze data (temperatuur)
+  buffer[0] = ((int)(temperature * 100) >> 8) & 0xFF;
+  buffer[1] = ((int)(temperature * 100) >> 0) & 0xFF;
+  numberOfDataBytes = 2;
 
-    // Geef aan dat er een bericht klaar is om te verzenden
-    sendLoraMessage = true;
+  // Geef aan dat er een bericht klaar is om te verzenden
+  sendLoraMessage = true;
 }
 
 //**********************************************************
 // TODO: Detecteer een verandering voor een event gebaseerde
 //       sensor.
 //**********************************************************
-void checkForEvent()
-{
+void check_sensor_for_event() {
   currentState = digitalRead(BUTTON);
 
   if (currentState != previousState) {
-    SerialUSB.println("De staat van BUTTON is gewijzigd");
+    // Nieuwe staat opslaan in oude staat
+    previousState = currentState;
+    delay(10);    // Even wachten voor ontdendering
 
-    // Wat is de huidige staat?
-    if (currentState == LOW) {
+    // We willen enkel het "loslaten" detecteren
+    if (currentState == HIGH) {
       SerialUSB.println("De knop werd ingedrukt");
 
       // Dit gaan we verzenden met LoRaWAN
       buffer[0] = HIGH;
       numberOfDataBytes = 1;
       sendLoraMessage = true;
-
-    } else {
-      SerialUSB.println("De knop werd los gelaten");
     }
-
-    // Set the current state as the previous state
-    previousState = currentState;
-    delay(10);      // Do some debouncing
   }
 }
 
 //**********************************************************
-// WARNING:   Vanaf hier dien je niets meer aan te passen.
-//            Dit zijn de functies die de LoRa data verzenden.
+// Niet aanpassen. Dit zijn de functies die de LoRa data verzenden.
 //**********************************************************
-void setupLoRa()
-{
+void setup_lora() {
   if (LoRaBee.initOTA(loraSerial, DevEUI, AppEUI, AppKey, true)) {
-    debugSerial.println("Network connection successful.");
-    digitalWrite(LED_BLUE, HIGH);
-    digitalWrite(LED_GREEN, LOW);
-    digitalWrite(LED_RED, HIGH);
+    SerialUSB.println("LoRaWAN - Network connectie OK");
+    status_ok();
   } else {
-    debugSerial.println("Network connection failed!");
+    SerialUSB.println("LoRaWAN - Network connectie gefaald!");
+    status_error();
   }
   LoRaBee.setSpreadingFactor(7);
 }
 
-void sendWithLoRa()
-{
-  switch (LoRaBee.send(LORAWAN_PORT, buffer, numberOfDataBytes)) {
+void send_message_with_lora() {
+  status_sending();
+  int status = LoRaBee.send(LORAWAN_PORT, buffer, numberOfDataBytes);
+
+  switch (status) {
     case NoError:
-      debugSerial.println("Successful transmission.");
+      SerialUSB.println("LoRaWAN - Bericht verstuurd.");
+      status_ok();
       break;
     case NoResponse:
-      debugSerial.println("There was no response from the device.");
+      SerialUSB.println("LoRaWAN - De RN2483 chip reageert niet meer.");
+      status_warning();
       break;
     case Timeout:
-      debugSerial.println("Connection timed-out. Check your serial connection to the device! Sleeping for 20sec.");
+      SerialUSB.println("LoRaWAN - Connectie time-out. 20 seconden wachten ...");
+      status_warning();
       delay(20000);
       break;
     case PayloadSizeError:
-      debugSerial.println("The size of the payload is greater than allowed. Transmission failed!");
+      SerialUSB.println("LoRaWAN - Transmissie gefaald. Het bericht was te groot.");
+      status_warning();
       break;
     case InternalError:
-      debugSerial.println("Oh No! This should not happen. Something is really wrong! The program will reset the RN module.");
-      setupLoRa();
+      SerialUSB.println("LoRaWAN - Interne fout. Resetting RN2483 ...");
+      status_error();
+      setup_lora();
       break;
     case Busy:
-      debugSerial.println("The device is busy. Sleeping for 10 extra seconds.");
+      SerialUSB.println("LoRaWAN - RN2483 is bezet. 10 seconden wachten ...");
+      status_error();
       delay(10000);
       break;
     case NetworkFatalError:
-      debugSerial.println("There is a non-recoverable error with the network connection. The program will reset the RN module.");
-      setupLoRa();
+      SerialUSB.println("LoRaWAN - Er was een network fout. Resetting RN2483 ...");
+      status_error();
+      setup_lora();
       break;
     case NotConnected:
-      debugSerial.println("The device is not connected to the network. The program will reset the RN module.");
-      setupLoRa();
+      SerialUSB.println("LoRaWAN - Connectie verloren. Resetting RN2483 ...");
+      status_error();
+      setup_lora();
       break;
     case NoAcknowledgment:
-      debugSerial.println("There was no acknowledgment sent back!");
+      SerialUSB.println("LoRaWAN - Er werd geen bevestiging ontvangen.");
+      status_warning();
       break;
     default:
       break;
   }
+}
+
+//**********************************************************
+// Niet aanpassen. Status RGB led
+//**********************************************************
+void status_connecting() {
+  digitalWrite(LED_BLUE, LOW);
+  digitalWrite(LED_GREEN, HIGH);
+  digitalWrite(LED_RED, HIGH);
+}
+
+void status_ok() {
+  digitalWrite(LED_BLUE, HIGH);
+  digitalWrite(LED_GREEN, LOW);
+  digitalWrite(LED_RED, HIGH);
+}
+
+void status_sending() {
+  digitalWrite(LED_BLUE, LOW);
+  digitalWrite(LED_GREEN, LOW);
+  digitalWrite(LED_RED, HIGH);
+}
+
+void status_warning() {
+  digitalWrite(LED_BLUE, HIGH);
+  digitalWrite(LED_GREEN, LOW);
+  digitalWrite(LED_RED, LOW);
+}
+
+void status_error() {
+  digitalWrite(LED_BLUE, HIGH);
+  digitalWrite(LED_GREEN, HIGH);
+  digitalWrite(LED_RED, LOW);
 }
 ```
 
@@ -323,7 +363,7 @@ Komt er geen data binnen, kijk dan eens naar de seriele monitor of er geen error
 
 Wanneer de data op de TTN binnenkomt dan zijn dit ruwe bytes. Dit is vrij low-level en zou de eindapplicatie dwingen om de ruwe data om te zetten naar eigenlijke informatie. We kunnen dit proces door de TTN laten doen. Dit maakt debuggen makkelijker en zorgt er ook voor dat een applicatie die gebruik wil maken van de data dit niet meer hoeft te doen.
 
-:: tip Ruwe bytes
+::: tip Ruwe bytes
 Merk op dat we het aantal te verzenden bytes to laag mogelijk proberen te houden (om de *air-time* zo laag mogelijk te houden). Dit betekent dan ook dat we geen ASCII karakters of JSON of zo gaan verzenden maar wel gecodeerde bytes. Dit heeft dan wel als nadeel dat we dit terug moeten decoderen.
 :::
 
@@ -359,7 +399,7 @@ Als je je nu begeeft naar `Live data` zou je niet meer de ruwe bytes mogen zien 
 
 ![Decoded Payload](./img/decoded_payload.png)
 
-Later zullen we payload decoder deze nog verder uitbreiden voor de andere sensoren.
+Later zullen we payload decoder nog verder uitbreiden voor de andere sensoren.
 
 <!-- ### Decoders Sensoren
 
