@@ -88,7 +88,7 @@ else
   echo "node-RED is already installed. Skipping ...."
 fi
 
-apt search influxdb2 | grep 'installed' &>> /dev/null
+apt search influxdb2 2>&1 | grep 'installed' &> /dev/null
 if [ "$?" -ne 0 ];
 then
   echo "-------------------------------------------"
