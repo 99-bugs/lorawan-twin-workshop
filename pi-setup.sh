@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
 # Call me with: 
-#    curl -sL http://bit.do/lorawan-workshop | bash -s --
+#   bash <(curl -sL http://bit.do/lorawan-workshop)
+
+function pause() {
+   read -p "$* [ENTER TO CONTINUE]"
+}
 
 echo "----------------------------------------------";
 echo "  _          ___      __      __ _    _  _    ";
@@ -23,82 +27,65 @@ sudo apt update
 sudo apt upgrade -y
 
 echo "-------------------------------------------"
-echo "Downloading and installing arduino"
-echo "Using latest version - may fix lib manager"
+echo "Installing basic dependencies"
 echo "-------------------------------------------"
-cd && curl -o arduino.tar.xz https://downloads.arduino.cc/arduino-1.8.7-r1-linuxarm.tar.xz
-tar -xf arduino.tar.xz
-cd arduino-1.8.7
-./install.sh
-
-echo "-------------------------------------------"
-echo "Installing LAMP"
-echo "-------------------------------------------"
-sudo apt -y install apache2 php libapache2-mod-php mysql-server php-mysql
-
-echo "-------------------------------------------"
-echo "Installing mosquitto"
-echo "-------------------------------------------"
+sudo apt -y install git
 sudo apt -y install mosquitto
+sudo apt -y install build-essential curl
+
+
+if [ ! -d "arduino-1.8.19" ];
+then
+  echo "-------------------------------------------"
+  echo "Downloading arduino IDE portable"
+  echo "-------------------------------------------"
+  curl -L -o portable-arduino-1.8.19-linuxaarch64.tar.xz "https://filesender.belnet.be/download.php?token=9118b6de-c395-41e2-a115-83f1c2ca9c4b&files_ids=955787"
+  tar -xf portable-arduino-1.8.19-linuxaarch64.tar.xz
+  cd arduino-1.8.19
+  ./install.sh
+fi
+
+## HOW TO CREATE THE ARDUINO PORTABLE FILE?
+# # Based on https://www.arduino.cc/en/Guide/PortableIDE
+# cd && curl -O "https://downloads.arduino.cc/arduino-1.8.19-linuxaarch64.tar.xz"
+# tar -xf arduino-1.8.19-linuxaarch64.tar.xz
+# cd arduino-1.8.19
+# mkdir portable
+# echo "boardsmanager.additional.urls=http://downloads.sodaq.net/package_sodaq_samd_index.json" >> portable/preferences.txt
+# # Launch the IDE and install the SODAQ SAMD Board Package. This will take some time.
+
+# # Install some Arduino libraries via Libray Manager
+# # Sodaq_wdt v1.0.2
+# # Sodaq_RN2483 v1.1.0
+
+# cd && tar -czf portable-arduino-1.8.19-linuxaarch64.tar.xz arduino-1.8.19
 
 echo "-------------------------------------------"
-echo "Installing leafpad"
+echo "Installing node-RED and packages"
 echo "-------------------------------------------"
-sudo apt -y install leafpad
-
-echo "-------------------------------------------"
-echo "Installing node-RED"
-echo "-------------------------------------------"
+cd
 yes | bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered)
-cd $HOME/.node-red
-npm install node-red-contrib-ttn
+cd ~/.node-red
+npm install node-red-contrib-influxdb
+npm install node-red-dashboard
 sudo systemctl enable nodered.service
 
 echo "-------------------------------------------"
-echo "Installing some Arduino libraries"
+echo "Installing InfluxDB"
 echo "-------------------------------------------"
-cd && sudo rm -rf ~/Arduino/libraries
-
-mkdir -p Arduino/libraries
-
-cd ~/Arduino/libraries
-git clone https://github.com/SodaqMoja/Sodaq_wdt.git
-cd Sodaq_wdt
-git checkout v1.0.1
-
-cd ~/Arduino/libraries
-git clone https://github.com/SodaqMoja/Sodaq_RN2483.git
-cd Sodaq_RN2483
-git checkout v1.0.11
-
-cd ~/Arduino/libraries
-git clone https://github.com/Seeed-Studio/Seeed_QTouch.git
-cd Seeed_QTouch
-git checkout 1.0.0
-
-cd ~/Arduino/libraries
-git clone https://github.com/adafruit/Adafruit_Sensor.git
-cd Adafruit_Sensor
-git checkout 1.0.2
-
-cd ~/Arduino/libraries
-git clone https://github.com/adafruit/Adafruit_BME280_Library.git
-cd Adafruit_BME280_Library
-git checkout 1.0.7
-
-echo "-------------------------------------------"
-echo "Installing xscreensave"
-echo "-------------------------------------------"
-sudo apt -y install xscreensaver
-echo "Disable screensaver: Preferences > Screensaver > Select disable screen saver from the dropdown."
+curl https://repos.influxdata.com/influxdb.key | gpg --dearmor | sudo tee /usr/share/keyrings/influxdb-archive-keyring.gpg >/dev/null
+echo "deb [signed-by=/usr/share/keyrings/influxdb-archive-keyring.gpg] https://repos.influxdata.com/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
+sudo apt update
+sudo apt -y install influxdb2
+sudo systemctl unmask influxdb
+sudo systemctl enable influxdb
+sudo systemctl start influxdb
 
 cd
 
 echo "-------------------------------------------"
 echo "Done ..."
 echo "-------------------------------------------"
-
-clear
 
 echo "----------------------------------------------";
 echo "  _          ___      __      __ _    _  _    ";
