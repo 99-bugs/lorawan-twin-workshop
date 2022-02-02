@@ -48,6 +48,7 @@ module.exports = {
         children: [
           '/node-red/',
           '/node-red-dashboard/',
+          '/influxdb/',
         ]
       },
     ],
