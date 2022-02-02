@@ -41,7 +41,9 @@ then
   echo "-------------------------------------------"
   git clone https://github.com/99-bugs/lorawan-twin-workshop.git
 else
-  echo "LoRaWAN TWIN Workshop dir already exists. Skipping ...."
+  echo "LoRaWAN TWIN Workshop dir already exists."
+  cd lorawan-twin-workshop
+  git pull origin master
 fi
 
 cd
