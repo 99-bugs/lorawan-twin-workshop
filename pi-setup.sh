@@ -33,7 +33,18 @@ sudo apt -y install git
 sudo apt -y install mosquitto
 sudo apt -y install build-essential curl
 
+cd
+if [ ! -d "lorawan-twin-workshop" ];
+then
+  echo "-------------------------------------------"
+  echo "Cloning LoRaWAN TWIN Workshop repo"
+  echo "-------------------------------------------"
+  git clone https://github.com/99-bugs/lorawan-twin-workshop.git
+else
+  echo "LoRaWAN TWIN Workshop dir already exists. Skipping ...."
+fi
 
+cd
 if [ ! -d "arduino-1.8.19" ];
 then
   echo "-------------------------------------------"
@@ -43,6 +54,8 @@ then
   tar -xf portable-arduino-1.8.19-linuxaarch64.tar.xz
   cd arduino-1.8.19
   ./install.sh
+else
+  echo "Arduino IDE is already installed. Skipping ...."
 fi
 
 ## HOW TO CREATE THE ARDUINO PORTABLE FILE?
@@ -60,26 +73,37 @@ fi
 
 # cd && tar -czf portable-arduino-1.8.19-linuxaarch64.tar.xz arduino-1.8.19
 
-echo "-------------------------------------------"
-echo "Installing node-RED and packages"
-echo "-------------------------------------------"
 cd
-yes | bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered)
-cd ~/.node-red
-npm install node-red-contrib-influxdb
-npm install node-red-dashboard
-sudo systemctl enable nodered.service
+if [ ! -d ".node-red" ];
+then
+  echo "-------------------------------------------"
+  echo "Installing node-RED and packages"
+  echo "-------------------------------------------"
+  yes | bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered)
+  cd ~/.node-red
+  npm install node-red-contrib-influxdb
+  npm install node-red-dashboard
+  sudo systemctl enable nodered.service
+else
+  echo "node-RED is already installed. Skipping ...."
+fi
 
-echo "-------------------------------------------"
-echo "Installing InfluxDB"
-echo "-------------------------------------------"
-curl https://repos.influxdata.com/influxdb.key | gpg --dearmor | sudo tee /usr/share/keyrings/influxdb-archive-keyring.gpg >/dev/null
-echo "deb [signed-by=/usr/share/keyrings/influxdb-archive-keyring.gpg] https://repos.influxdata.com/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
-sudo apt update
-sudo apt -y install influxdb2
-sudo systemctl unmask influxdb
-sudo systemctl enable influxdb
-sudo systemctl start influxdb
+apt search influxdb2 | grep 'installed' &>> /dev/null
+if [ "$?" -ne 0 ];
+then
+  echo "-------------------------------------------"
+  echo "Installing InfluxDB"
+  echo "-------------------------------------------"
+  curl https://repos.influxdata.com/influxdb.key | gpg --dearmor | sudo tee /usr/share/keyrings/influxdb-archive-keyring.gpg >/dev/null
+  echo "deb [signed-by=/usr/share/keyrings/influxdb-archive-keyring.gpg] https://repos.influxdata.com/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
+  sudo apt update
+  sudo apt -y install influxdb2
+  sudo systemctl unmask influxdb
+  sudo systemctl enable influxdb
+  sudo systemctl start influxdb
+else
+  echo "InfluxDB2 is already installed. Skipping ...."
+fi
 
 cd
 
