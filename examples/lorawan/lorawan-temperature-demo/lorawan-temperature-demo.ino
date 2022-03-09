@@ -8,15 +8,9 @@
 //       volgens deze aangegeven op de console van
 //       The Things Network.
 //**********************************************************
-static const uint8_t DevEUI[8] = { 0x70, 0xB3, 0xD5, 0x7E, 0xD0, 0x04, 0xB1, 0xFD };
+static const uint8_t DevEUI[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 static const uint8_t AppEUI[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-static const uint8_t AppKey[16] = { 0xC3, 0xFF, 0x2C, 0x90, 0x6E, 0xA0, 0xDA, 0x6B, 0xC6, 0xFA, 0x05, 0x4D, 0x2B, 0xC2, 0xD5, 0xE1 };
-
-//**********************************************************
-// De poort waarop de data wordt verzonden.
-// Dit dien je normaal niet aan te passen.
-//**********************************************************
-const int LORAWAN_PORT = 1;
+static const uint8_t AppKey[16] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
 //**********************************************************
 // Niet aanpassen. Maakt de buffer voor data.
@@ -154,9 +148,9 @@ void setup_lora() {
   LoRaBee.setSpreadingFactor(7);
 }
 
-void send_message_with_lora() {
+void send_message_with_lora(unsigned int port = 1) {
   status_sending();
-  int status = LoRaBee.send(LORAWAN_PORT, buffer, numberOfDataBytes);
+  int status = LoRaBee.send(port, buffer, numberOfDataBytes);
 
   switch (status) {
     case NoError:
