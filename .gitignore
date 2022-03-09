@@ -2,3 +2,4 @@ node_modules/
 .vscode/
 docs/.vuepress/.cache/
 docs/.vuepress/.temp/
+*.tmp

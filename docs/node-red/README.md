@@ -19,7 +19,7 @@ Om Node-RED te installeren op de Raspberry PI moeten we volgend commando gaan ui
 bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered)
 ```
 
-Het installatiescript zal een paar vragen stellen vooralleer het uitgevoerd wordt. Antwoord op beide vragen met *ja* door op `y` en `ENTER` te drukken.
+Het installatiescript zal een paar vragen stellen vooraleer het uitgevoerd wordt. Antwoord op beide vragen met *ja* door op `y` en `ENTER` te drukken.
 
 ![Node-RED installatie stap 2](./img/node-red-installation-step2.png)
 

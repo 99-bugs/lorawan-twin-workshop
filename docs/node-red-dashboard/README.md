@@ -56,6 +56,8 @@ De volgende stap bestaat eruit om de temperatuur op het dashboard af te beelden 
 
 Om de huidige temperatuur af te beelden gaan we een `gauge` gebruiken. Sleep de node op je flow en koppel deze aan je filter node die de temperatuur output.
 
+![Temperatuur Gauge Node](./img/temperature-gauge-node.png)
+
 Dubbelklik de `gauge` node om deze te configureren. Je kan hier ook kiezen tot welke `group` van je dashboard deze node dient te behoren. Pas de configuratie aan zoals hieronder aangegeven.
 
 ![Temperatuur Gauge](./img/temperature-gauge.png)
@@ -66,7 +68,11 @@ Vergeet niet om je flow te deployen vooraleer je een kijkje neemt op de dashboar
 
 ### Grafieken
 
-Als we het verloop van de temperatuur willen weergeven, dan kunnen we gebruik maken van de `chart` component. Voeg deze toe aan je flow met onderstaande configuratie.
+Als we het verloop van de temperatuur willen weergeven, dan kunnen we gebruik maken van de `chart` component. Voeg deze toe aan je flow.
+
+![Temperatuur Chart Node](./img/temperature-chart-node.png)
+
+Volgens gaan we deze ook opnieuw moeten configureren:
 
 ![Temperatuur Node Graph](./img/temperature-graph-edit.png)
 
