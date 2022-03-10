@@ -20,6 +20,11 @@ echo "----------------------------------------------";
 echo "Setting up Raspberry Pi for the LoRaWAN workshop"
 echo "Sit back, this is going to take a while ..."
 
+if ! uname -a | grep 'aarch64' &>/dev/null; then
+  echo "Please use a 64-bit RPi image"
+  exit -1
+fi
+
 echo "-------------------------------------------"
 echo "Updating the system"
 echo "-------------------------------------------"
