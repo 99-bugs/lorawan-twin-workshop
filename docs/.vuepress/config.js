@@ -20,20 +20,6 @@ module.exports = {
             text: 'Datacaptatie',
             link: '/data-capture/'
           },
-          {
-            text: 'Grove sensoren',
-            link: '/sensors/',
-            collapsible: true,
-            children: [
-              '/sensors/push_button/',
-              '/sensors/switch/',
-              // '/sensors/q_touch/',
-              // '/sensors/rfid/',
-              // '/sensors/motion-sensor/',
-              // '/sensors/rotary-sensor/',
-              // '/sensors/tph-sensor/',
-            ]
-          }
         ]
       },
       {
@@ -51,6 +37,14 @@ module.exports = {
           '/influxdb/',
         ]
       },
+      {
+        text: 'Grove Sensoren',   // required
+        link: '/sensors/',
+        children: [
+          '/sensors/push_button/',
+        ]
+      },
+
     ],
   },
   serviceWorker: true,
