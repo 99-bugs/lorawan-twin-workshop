@@ -109,6 +109,21 @@ fi
 
 cd
 
+if [ ! -f "Desktop/workshop.desktop" ];
+then
+touch "Desktop/workshop.desktop"
+cat <<EOT > "Desktop/workshop.desktop"
+[Desktop Entry]
+Encoding=UTF-8
+Name=LoRaWAN-Workshop
+Type=Link
+URL=https://lorawan-workshop.99bugs.be/
+Icon=text-html
+EOT
+else
+  echo "Shortcut already exists. Skipping"
+fi
+
 echo "-------------------------------------------"
 echo "Done ..."
 echo "-------------------------------------------"
