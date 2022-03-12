@@ -1,30 +1,65 @@
-const int pushPin = 15;   // Pin van de drukknop
+//**********************************************************
+// Hier gaan we globale variabelen declareren.
+// Deze zijn beschikbaar doorheen de volledige sketch.
+//**********************************************************
+const int PUSH_BUTTON_PIN = 15;   // Pin van de drukknop
 
-void setup()
-{
-  // put your setup code here, to run once:
+// Globale variabelen met de staat van de drukknop
+int previousState = 0;
+int currentState = 0;
+
+//**********************************************************
+// De setup van Arduino, wordt in het begin van je sketch
+// eenmalig uitgevoerd.
+// Als je sensor moet initialiseren, dan doe je dit hier
+//**********************************************************
+void setup() {
   SerialUSB.begin(115200);
-  while ((!SerialUSB) && (millis() < 5000));
-  SerialUSB.println("Starten van push button demo");
-  pinMode(pushPin, INPUT);          // Digitale pin als ingang
+
+  // 10 seconden wachten op SerialUSB. 
+  while ((!SerialUSB) && (millis() < 10000)) { }
+  
+  pinMode(PUSH_BUTTON_PIN, INPUT);          // Digitale pin als ingang
+
+  // We lezen ook de "start staat" in
+  previousState = digitalRead(PUSH_BUTTON_PIN);
+  currentState = previousState;
+
+  SerialUSB.println("Starten van starter sketch niet-blokkerende push button events.");
 }
 
-void loop()
-{
-  // Lees de huidige stand van de drukknop
-  int previousState = digitalRead(pushPin);
-  int state = previousState;
-
-  SerialUSB.println("Wachten voor event");
-
-  // Wachten op verandering van de staat van de knop.
-  // We wachten ook zolang de knop ingedrukt is (state == LOW)
-  //    (loslaten negeren we dus, enkel indrukken)
-  while (state == previousState || state  == LOW) {
-    previousState = state;          // Nieuwe staat opslaan in oude staat
-    state = digitalRead(pushPin);    // Nieuwe staat inlezen
-    delay(10);    // Even wachten voor ontdendering
+//**********************************************************
+// De main loop van Arduino, deze blijft telkens herhalen.
+//**********************************************************
+void loop() {
+  if (has_button_been_pressed()) {
+    // Versturen, verwerken, ... van de drukknop event
+    SerialUSB.println("Er werd op de knop gedrukt");
   }
 
-  SerialUSB.println("Event is gebeurd");
+  // Hier kunnen we pas iets anders doen ...
+
+}
+
+//**********************************************************
+// Controleer of er op de knop PUSH_BUTTON_PIN werd gedrukt
+//**********************************************************
+bool has_button_been_pressed()
+{
+  currentState = digitalRead(PUSH_BUTTON_PIN);
+
+  if (currentState != previousState) {
+    // Nieuwe staat opslaan in oude staat
+    previousState = currentState;
+    delay(10);    // Even wachten voor ontdendering
+
+    // We willen enkel het "loslaten" detecteren
+    if (currentState == HIGH) {
+      // Aangeven dat de knop werd ingedrukt
+      return true;
+    }
+  }
+
+  // Er vond geen verandering plaats
+  return false;
 }

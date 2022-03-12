@@ -21,93 +21,123 @@ Onderstaand vind je een demo sketch die de stand van de drukknop om de 100 milli
 De vertraging kan worden verkleind of vergroot naargelang de toepassing.
 
 ```cpp
-const int PUSH_PIN = 15;   // Pin of Push Button
+//**********************************************************
+// Hier gaan we globale variabelen declareren.
+// Deze zijn beschikbaar doorheen de volledige sketch.
+//**********************************************************
+const int PUSH_BUTTON_PIN = 15;   // Pin van de drukknop
 
-// Put your setup code here, to run once:
+//**********************************************************
+// De setup van Arduino, wordt in het begin van je sketch
+// eenmalig uitgevoerd.
+// Als je sensor moet initialiseren, dan doe je dit hier
+//**********************************************************
 void setup() {
   SerialUSB.begin(115200);
 
-  // Configure push pin as digital input
-  pinMode(PUSH_PIN, INPUT);
+  // 10 seconden wachten op SerialUSB. 
+  while ((!SerialUSB) && (millis() < 10000)) { }
+  
+  pinMode(PUSH_BUTTON_PIN, INPUT);          // Digitale pin als ingang
 
-  // Wait for SerialUSB or start after 10 seconds
-  while ((!SerialUSB) && (millis() < 10000)) {}
-
-  SerialUSB.println("Starting Push Button demo ...");
+  SerialUSB.println("Starten van starter sketch push button.");
 }
 
-// Put your main code here, to run repeatedly:
+//**********************************************************
+// De main loop van Arduino, deze blijft telkens herhalen.
+//**********************************************************
 void loop() {
-  // Read out the current state of the push button
-  int pushState = digitalRead(PUSH_PIN);
+  // Lees de huidige stand van de drukknop in
+  int pushState = digitalRead(PUSH_BUTTON_PIN);
 
   if (pushState == HIGH) {
-    SerialUSB.println("The push button is pressed.");
-  } else {
-    SerialUSB.println("The push button is not pressed.");
+    SerialUSB.println("De drukknop is ingedrukt");
+  }
+  else {
+    SerialUSB.println("De drukknop is niet ingedrukt");
   }
 
-  // Wait 100 milliseconds between each read.
-  // You can lower or raise this
+  // 100 milliseconden wachten, kan je verhogen of verlagen
   delay(100);
 }
+
 ```
 
-Als je de knop een aantal keer indrukt zou je een dergelijke output in de seriele monitor moeten krijgen.
+Als je de knop een aantal keer indrukt zou je een dergelijke output in de seriële monitor moeten krijgen.
 
 ![Output](./img/output.png)
 
 ## Event gebaseerd
 
-De starter applicatie is goed om aan te tonen hoe de drukknop werkt, maar meestal zijn we niet geinterreseerd in de huidige staat op bepaalde momenten maar eerder in verandering. Met andere woorden, onze applicatie zou moeten detecteren wanneer er iemand de knop indrukt of los laat. Dit noemen we event gebaseerd.
+De starter applicatie is goed om aan te tonen hoe de drukknop werkt, maar meestal zijn we niet geïnterpreteerd in de huidige staat op bepaalde momenten maar eerder in verandering. Met andere woorden, onze applicatie zou moeten detecteren wanneer er iemand de knop indrukt of los laat. Dit noemen we event gebaseerd.
 
-Er zijn in principe twee manieren om dit te realiseren:
-
-* met interrupts, waarbij de microcontroller hardwarematig de verandering detecteert. Dit moet echter worden ondersteund voor de pin waarop de drukknop is aangesloten.
-* met een state machine, waarbij we software-matig kijken of de staat van de drukknop verandert is ten opzichte van de vorige check.
-
-De tweede optie is hier voor ons de meest toepasselijke omdat dit ook later het best zal werken in samenwerking met LoRaWAN.
+De event gebaseerde optie is hier voor ons de meest toepasselijke omdat dit ook het best zal werken in samenwerking met LoRaWAN. Er werd hier ook gekozen voor de niet-blokkerende optie.
 
 ```cpp
-const int PUSH_PIN = 15;   // Pin of Push Button
+//**********************************************************
+// Hier gaan we globale variabelen declareren.
+// Deze zijn beschikbaar doorheen de volledige sketch.
+//**********************************************************
+const int PUSH_BUTTON_PIN = 15;   // Pin van de drukknop
 
-// Previous state of Push Button
+// Globale variabelen met de staat van de drukknop
 int previousState = 0;
 int currentState = 0;
 
-// Put your setup code here, to run once:
+//**********************************************************
+// De setup van Arduino, wordt in het begin van je sketch
+// eenmalig uitgevoerd.
+// Als je sensor moet initialiseren, dan doe je dit hier
+//**********************************************************
 void setup() {
   SerialUSB.begin(115200);
 
-  // Configure push pin as digital input
-  pinMode(PUSH_PIN, INPUT);
-  previousState = digitalRead(PUSH_PIN);    // Read start state
-  currentState = previousState;             // Starting with this state
+  // 10 seconden wachten op SerialUSB. 
+  while ((!SerialUSB) && (millis() < 10000)) { }
+  
+  pinMode(PUSH_BUTTON_PIN, INPUT);          // Digitale pin als ingang
 
-  // Wait for SerialUSB or start after 10 seconds
-  while ((!SerialUSB) && (millis() < 10000)) {}
+  // We lezen ook de "start staat" in
+  previousState = digitalRead(PUSH_BUTTON_PIN);
+  currentState = previousState;
 
-  SerialUSB.println("Starting Push Button Event demo ...");
+  SerialUSB.println("Starten van starter sketch niet-blokkerende push button events.");
 }
 
-// Put your main code here, to run repeatedly:
+//**********************************************************
+// De main loop van Arduino, deze blijft telkens herhalen.
+//**********************************************************
 void loop() {
-  currentState = digitalRead(PUSH_PIN);
+  if (has_button_been_pressed()) {
+    // Versturen, verwerken, ... van de drukknop event
+    SerialUSB.println("Er werd op de knop gedrukt");
+  }
+
+  // Hier kunnen we pas iets anders doen ...
+
+}
+
+//**********************************************************
+// Controleer of er op de knop PUSH_BUTTON_PIN werd gedrukt
+//**********************************************************
+bool has_button_been_pressed()
+{
+  currentState = digitalRead(PUSH_BUTTON_PIN);
 
   if (currentState != previousState) {
-    SerialUSB.println("Detected state change of push button");
-
-    // What is the current state?
-    if (currentState == LOW) {
-      SerialUSB.println("Push button was PRESSED");
-    } else {
-      SerialUSB.println("Push button was RELEASED");
-    }
-
-    // Set the current state as the previous state
+    // Nieuwe staat opslaan in oude staat
     previousState = currentState;
-    delay(10);      // Do some debouncing
+    delay(10);    // Even wachten voor ontdendering
+
+    // We willen enkel het "loslaten" detecteren
+    if (currentState == HIGH) {
+      // Aangeven dat de knop werd ingedrukt
+      return true;
+    }
   }
+
+  // Er vond geen verandering plaats
+  return false;
 }
 ```
 

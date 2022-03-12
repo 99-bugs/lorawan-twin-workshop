@@ -1,18 +1,31 @@
-const int pushPin = 15;   // Pin van de drukknop
+//**********************************************************
+// Hier gaan we globale variabelen declareren.
+// Deze zijn beschikbaar doorheen de volledige sketch.
+//**********************************************************
+const int PUSH_BUTTON_PIN = 15;   // Pin van de drukknop
 
-void setup()
-{
-  // put your setup code here, to run once:
+//**********************************************************
+// De setup van Arduino, wordt in het begin van je sketch
+// eenmalig uitgevoerd.
+// Als je sensor moet initialiseren, dan doe je dit hier
+//**********************************************************
+void setup() {
   SerialUSB.begin(115200);
-  while ((!SerialUSB) && (millis() < 5000));
-  SerialUSB.println("Starten van push button demo");
-  pinMode(pushPin, INPUT);          // Digitale pin als ingang
+
+  // 10 seconden wachten op SerialUSB. 
+  while ((!SerialUSB) && (millis() < 10000)) { }
+  
+  pinMode(PUSH_BUTTON_PIN, INPUT);          // Digitale pin als ingang
+
+  SerialUSB.println("Starten van starter sketch push button.");
 }
 
-void loop()
-{
+//**********************************************************
+// De main loop van Arduino, deze blijft telkens herhalen.
+//**********************************************************
+void loop() {
   // Lees de huidige stand van de drukknop in
-  int pushState = digitalRead(pushPin);
+  int pushState = digitalRead(PUSH_BUTTON_PIN);
 
   if (pushState == HIGH) {
     SerialUSB.println("De drukknop is ingedrukt");

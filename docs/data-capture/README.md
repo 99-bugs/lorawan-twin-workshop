@@ -25,7 +25,7 @@ Hierbij gaan we om de bepaalde tijd (vast interval) de sensorwaarde capteren en 
 
 ### Demo Sketch
 
-Onderstaand vind je een demo sketch die de on-board temperatuur sensor periodiek uitleest. De huidige temperatuur wordt vervolgens weergegeven in de seriele monitor.
+Onderstaand vind je een demo sketch die de on-board temperatuur sensor periodiek uitleest. De huidige temperatuur wordt vervolgens weergegeven in de seriële monitor.
 
 ```cpp
 //**********************************************************
