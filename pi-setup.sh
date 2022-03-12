@@ -126,7 +126,7 @@ URL=https://lorawan-workshop.99bugs.be/
 Icon=text-html
 EOT
 else
-  echo "Shortcut already exists. Skipping"
+  echo "Shortcut already exists. Skipping ..."
 fi
 
 echo "-------------------------------------------"
