@@ -223,7 +223,7 @@ void loop() {
 }
 
 //**********************************************************
-// Controlleer of er op de knop BUTTON werd gedrukt
+// Controleer of er op de knop BUTTON werd gedrukt
 //**********************************************************
 bool has_button_been_pressed()
 {

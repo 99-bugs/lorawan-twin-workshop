@@ -79,7 +79,7 @@ void loop() {
     // Verzenden met LoRaWAN als er bericht klaar staat
     if (sendLoraMessage) {
       SerialUSB.println("Starten met verzenden van LoRaWAN message");
-      send_message_with_lora();
+      send_message_with_lora(1);
       sendLoraMessage = false;
     }
 
@@ -96,7 +96,7 @@ void sample_periodic_sensor() {
   float mVolts = (float)analogRead(TEMP_SENSOR) * 3300.0 / 1023.0;
   float temperature = (mVolts - 500.0) / 10.0;
 
-  // Uitschrijven naar seriele monitor
+  // Uitschrijven naar seriële monitor
   SerialUSB.print("Temperatuur = ");
   SerialUSB.print(temperature);
   SerialUSB.println("°C");
@@ -148,7 +148,7 @@ void setup_lora() {
   LoRaBee.setSpreadingFactor(7);
 }
 
-void send_message_with_lora(unsigned int port = 1) {
+void send_message_with_lora(unsigned int port) {
   status_sending();
   int status = LoRaBee.send(port, buffer, numberOfDataBytes);
 

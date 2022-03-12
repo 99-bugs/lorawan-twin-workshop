@@ -79,6 +79,7 @@ In de code staat hier en daar wat commentaar met de tekst `TODO:`. Deze tekst wo
 :::
 
 ```cpp
+
 #include <Sodaq_RN2483.h>
 
 #define loraSerial Serial2
@@ -91,12 +92,6 @@ In de code staat hier en daar wat commentaar met de tekst `TODO:`. Deze tekst wo
 static const uint8_t DevEUI[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 static const uint8_t AppEUI[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 static const uint8_t AppKey[16] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-
-//**********************************************************
-// De poort waarop de data wordt verzonden.
-// Dit dien je normaal niet aan te passen.
-//**********************************************************
-const int LORAWAN_PORT = 1;
 
 //**********************************************************
 // Niet aanpassen. Maakt de buffer voor data.
@@ -165,7 +160,7 @@ void loop() {
     // Verzenden met LoRaWAN als er bericht klaar staat
     if (sendLoraMessage) {
       SerialUSB.println("Starten met verzenden van LoRaWAN message");
-      send_message_with_lora();
+      send_message_with_lora(1);
       sendLoraMessage = false;
     }
 
@@ -182,7 +177,7 @@ void sample_periodic_sensor() {
   float mVolts = (float)analogRead(TEMP_SENSOR) * 3300.0 / 1023.0;
   float temperature = (mVolts - 500.0) / 10.0;
 
-  // Uitschrijven naar seriele monitor
+  // Uitschrijven naar seriële monitor
   SerialUSB.print("Temperatuur = ");
   SerialUSB.print(temperature);
   SerialUSB.println("°C");
@@ -234,9 +229,9 @@ void setup_lora() {
   LoRaBee.setSpreadingFactor(7);
 }
 
-void send_message_with_lora() {
+void send_message_with_lora(unsigned int port) {
   status_sending();
-  int status = LoRaBee.send(LORAWAN_PORT, buffer, numberOfDataBytes);
+  int status = LoRaBee.send(port, buffer, numberOfDataBytes);
 
   switch (status) {
     case NoError:
