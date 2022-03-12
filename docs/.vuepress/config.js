@@ -25,23 +25,42 @@ module.exports = {
       {
         text: 'Het Internet',
         children: [
-          '/lorawan/',
-          '/mqtt/'
+          
+          {
+            text: 'LoRaWAN',
+            link: '/lorawan/',
+          },
+          {
+            text: 'MQTT',
+            link: '/mqtt/'
+          },
         ]
       },
       {
         text: 'De applicatie',   // required
         children: [
-          '/node-red/',
-          '/node-red-dashboard/',
-          '/influxdb/',
+          {
+            text: 'Node-RED',
+            link: '/node-red/'
+          },
+          {
+            text: 'Node-RED Dashboard',
+            link: '/node-red-dashboard/'
+          },
+          {
+            text: 'InfluxDB',
+            link: '/influxdb/'
+          },
         ]
       },
       {
         text: 'Grove Sensoren',   // required
         link: '/sensors/',
         children: [
-          '/sensors/push_button/',
+          {
+            text: 'Een Push Button',
+            link: '/sensors/push_button/'
+          },
         ]
       },
 

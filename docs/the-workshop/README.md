@@ -5,3 +5,5 @@ Tijdens het eerste deel van de deze workshop gaan we de sensoren inlezen en de i
 ![Situatieschets](./img/setup_diagram.png)
 
 In het tweede deel van deze workshop bouwen we een dashboard dat de gegevens kan visualiseren. Dit dashboard hosten we lokaal op een [Raspberry Pi](https://www.raspberrypi.org/).
+
+<!-- TODO: Dit nog eens herschrijven -->
