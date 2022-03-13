@@ -81,6 +81,10 @@ module.exports = {
             text: 'RFID 125kHz Reader',
             link: '/sensors/rfid/'
           },
+          {
+            text: 'PIR Motion Sensor',
+            link: '/sensors/motion-sensor/'
+          },
         ]
       },
 

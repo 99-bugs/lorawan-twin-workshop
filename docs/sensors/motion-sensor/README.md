@@ -31,19 +31,32 @@ Onderstaand vind je een demo sketch die de output van de PIR sensor leest om de 
 De vertraging kan worden aangepast.
 
 ```cpp
-const int PIR_PIN = 15;   // Pin van de PIR sensor
+//**********************************************************
+// Hier gaan we globale variabelen declareren.
+// Deze zijn beschikbaar doorheen de volledige sketch.
+//**********************************************************
+const int PIR_PIN = 15;             // Pin van de bewegingssensor
 
-void setup()
-{
-  // put your setup code here, to run once:
+//**********************************************************
+// De setup van Arduino, wordt in het begin van je sketch
+// eenmalig uitgevoerd.
+// Als je sensor moet initialiseren, dan doe je dit hier
+//**********************************************************
+void setup() {
   SerialUSB.begin(115200);
-  while ((!SerialUSB) && (millis() < 5000));
-  SerialUSB.println("Starten van PIR sensor demo");
+
+  // 10 seconden wachten op SerialUSB. 
+  while ((!SerialUSB) && (millis() < 10000)) { }
+  
   pinMode(PIR_PIN, INPUT);          // Digitale pin als ingang
+
+  SerialUSB.println("Starten van starter sketch bewegingssensor.");
 }
 
-void loop()
-{
+//**********************************************************
+// De main loop van Arduino, deze blijft telkens herhalen.
+//**********************************************************
+void loop() {
   // Lees de huidige stand van de PIR sensor in
   int pirState = digitalRead(PIR_PIN);
 
@@ -51,7 +64,7 @@ void loop()
     SerialUSB.println("Beweging gedetecteerd");
   }
   else {
-    SerialUSB.println("Geen beweging");
+    SerialUSB.println("Geen beweging gedetecteerd");
   }
 
   // 500 milliseconden wachten, kan je verhogen of verlagen
@@ -61,55 +74,62 @@ void loop()
 
 ## Met tijdsvenster
 
-In plaats van moment opnames te nemen willen we eigenlijk weten of er binnen een bepaald tijdsvenster beweging was. Dit kan dan worden doorgestuurd via LoRaWAN. Door een lus te maken die 1000x de sensor controleert en telkens 10ms wacht, komen we aan een tijdsvenster van 10s.
+In plaats van moment opnames te nemen willen we eigenlijk weten of er binnen een bepaald tijdsvenster beweging was. Dit kan dan worden doorgestuurd via LoRaWAN. Door een lus te maken die `1000x` de sensor controleert en telkens `10ms` wacht, komen we aan een tijdsvenster van `10s`.
 
 ```cpp
-const int PIR_PIN = 15;   // Pin van de PIR sensor
+//**********************************************************
+// Hier gaan we globale variabelen declareren.
+// Deze zijn beschikbaar doorheen de volledige sketch.
+//**********************************************************
+const int PIR_PIN = 15;             // Pin van de bewegingssensor
 
-void setup()
-{
-  // put your setup code here, to run once:
+//**********************************************************
+// De setup van Arduino, wordt in het begin van je sketch
+// eenmalig uitgevoerd.
+// Als je sensor moet initialiseren, dan doe je dit hier
+//**********************************************************
+void setup() {
   SerialUSB.begin(115200);
-  while ((!SerialUSB) && (millis() < 5000));
-  SerialUSB.println("Starten van PIR sensor demo");
+
+  // 10 seconden wachten op SerialUSB. 
+  while ((!SerialUSB) && (millis() < 10000)) { }
+  
   pinMode(PIR_PIN, INPUT);          // Digitale pin als ingang
+
+  SerialUSB.println("Starten van starter sketch bewegingssensor met tijdsvenster.");
 }
 
-void loop()
-{
-  int motionCounter = 0;
-  int noMotionCounter = 0;
+//**********************************************************
+// De main loop van Arduino, deze blijft telkens herhalen.
+//**********************************************************
+void loop() {
+  bool motionDetected = false;
   
   for (int i = 0; i < 1000; i++) {
-      // Lees de huidige stand van de PIR sensor in
-      int pirState = digitalRead(PIR_PIN);
+    // Lees de huidige stand van de PIR sensor in
+    int pirState = digitalRead(PIR_PIN);
 
-      // Als er ook maar 1x beweging is, dan gaan we dit detecteren
-      if (pirState == HIGH) {
-        motionCounter++;
-      } else {
-        noMotionCounter++;
-      }
+    // Als er ook maar 1x beweging is, dan gaan we dit detecteren
+    if (pirState == HIGH) {
+      motionDetected = true;
+    }
 
-      delay(10);    // 10ms * 1000 = tijdsvenster van 10 seconden
+    delay(10);    // 10ms * 1000 = tijdsvenster van 10 seconden
   }
 
   // Rapportering
-
-  SerialUSB.print("Motion: ");
-  SerialUSB.println(motionCounter);
-
-  SerialUSB.print("NO Motion: ");
-  SerialUSB.println(noMotionCounter);
-
-  if (motionCounter > noMotionCounter) {
+  if (motionDetected) {
     SerialUSB.println("Beweging gedetecteerd in tijdsvenster");
   } else {
-    SerialUSB.println("Geen beweging in tijdsvenster");
+    SerialUSB.println("Geen beweging gedetecteerd in tijdsvenster");
   }
 }
 ```
 
+Dit zou dan volgende output moeten opleveren:
+
+![Output Window](./img/output_window.png)
+
 ## Meer informatie
 
-Meer informatie is beschikbaar op [https://www.seeedstudio.com/Grove-PIR-Motion-Sensor-p-802.html](https://www.seeedstudio.com/Grove-PIR-Motion-Sensor-p-802.html)
+Meer informatie is beschikbaar op [https://wiki.seeedstudio.com/Grove-PIR_Motion_Sensor/](https://wiki.seeedstudio.com/Grove-PIR_Motion_Sensor/).
