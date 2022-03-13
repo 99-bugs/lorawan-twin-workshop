@@ -85,6 +85,10 @@ module.exports = {
             text: 'PIR Motion Sensor',
             link: '/sensors/motion-sensor/'
           },
+          {
+            text: 'Touch Sensor',
+            link: '/sensors/single-touch-sensor/'
+          },
         ]
       },
 
