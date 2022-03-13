@@ -212,10 +212,112 @@ Wanneer we de data inspecteren zien we dat we een array krijgen van objecten met
 
 ## Grafiek Historiek
 
-<!-- Hoe moet onze data er uit zien ?
+Het maken van een grafiek vereist wat kennis van de `chart` node en vooral van hoe deze de datareeks verwacht om af te beelden. Als je echter weet dat de `chart` node gebruik maakt van [Chart.js](https://www.chartjs.org/), een zeer populaire JavaScript library, om grafieken en dergelijke te produceren dan kan je vrij veel informatie vinden online. De beste online documentatie is natuurlijk deze van de library zelf: [https://www.chartjs.org/docs/](https://www.chartjs.org/docs/)
 
-Dit kan op twee manieren.
+De data die we aan de `chart` node die we aan de grafiek aanleveren dient van volgende formaat te zijn:
 
-* Meer javascript
-* Meer Node-RED -->
+```js
+msg.payload = [{
+  series: ["Temperatuur"],
+  data: [ msg.payload ],
+}];
+```
 
+Hier bij is
+
+* `Temperatuur`: een array van titels voor de grafieken
+* `data`: een array van de eigenlijke datapunten die dienen afgebeeld te worden. Hierbij is elk element een object met een `x` en `y` property.
+
+Merk op dat er meerdere data reeksen kunnen worden afgebeeld binnen 1 grafiek. Vandaar dat alle properties van dit object eigenlijk arrays zijn. Wij gaan ons echter beperken tot 1 reeks per grafiek.
+
+Uit onze `influxdb in` node komt reeds een array van objecten. Maar in plaats van `x` en `y` properties hebben we hier `_time` en `_value` properties. Dit dienen we om te vormen.
+
+Het makkelijkste dat we kunnen doen is de originele lijst van objecten opsplitsen, de objecten dan vervangen met objecten van de correcte vorm, om vervolgens de objecten weer samen te voegen tot een lijst.
+
+### Opsplitsen
+
+Om de lijst van objecten op te splitsen kunnen we gebruik maken van de node `split`. Deze node vinden we terug onder de category `sequence`. Hang gerust ook een `debug` node aan de uitgang van de `split` node.
+
+![Split Data](./img/chart_split_data.png)
+
+De data die uit de `split` node komt zou er nu als volgt moeten uitzien:
+
+```json
+{
+  "result": "mean",
+  "table": 0,
+  "_start": "2022-03-12T07:29:20.574438712Z",
+  "_stop": "2022-03-13T07:29:20.574438712Z",
+  "_time": "2022-03-13T07:28:00Z",
+  "_value": 25.88,
+  "_field": "value",
+  "_measurement": "temperatuur"
+}
+```
+
+### Omvormen
+
+Het object dat uit de `split` node komt dienen we nu te vervangen door een object met `x` en `y` properties. Dit kunnen we het makkelijkste realiseren aan de hand van een `function` node met wat JavaScript erin.
+
+![Chart XY Object](./img/chart_xy_object.png)
+
+Met volgende JavaScript code kunnen we een inkomend object met de properties `_time` en `_value` makkelijk omvormen naar een nieuw object met de properties `x` en `y`:
+
+```js
+msg.payload = {
+   x: msg.payload._time,
+   y: msg.payload._value
+} 
+
+return msg;
+```
+
+Als alles goed gaat zou dit nu het resultaat moeten zijn:
+
+```json
+{
+  "x": "2022-03-13T07:33:00Z",
+  "y": 25.8
+}
+```
+
+### Samenvoegen
+
+Aangezien we opnieuw een array van objecten willen, dienen we de objecten nu opnieuw samen te voegen met een `join` node die we tevens terug vinden in de category `sequence`.
+
+![Chart Join](./img/chart_join.png)
+
+Het resultaat zou er nu zo moeten uitzien:
+
+![Chart Joined Objects](./img/chart_joined_objects.png)
+
+### Chart Object
+
+Als laatste dienen we nu nog een `function` node te voorzien zodat we de data kunnen aanleveren aan de `chart` node.
+
+![Chart Object](./img/chart_object.png)
+
+Aan de hand van volgende JavaScript code kunnen we nu het gewenste object bekomen:
+
+```js
+msg.payload = [{
+  series: ["Temperatuur"],
+  data: [ msg.payload ]
+}];
+
+return msg;
+```
+
+Het resultaat zou er nu zo moeten uitzien:
+
+![Chart Object](./img/chart_object_result.png)
+
+### Temperatuur Chart
+
+Het resultaat van de laatste `function` node kunnen we nu rechtstreeks aan onze `chart` node van voordien koppelen. Natuurlijk dien je dan wel de koppeling met de node `Filter temperatuur` te verwijderen.
+
+![Chart Result](./img/chart_result.png)
+
+Zodra er een nieuwe temperatuur binnenkomt zou de grafiek moeten worden voorzien van de laatste 60 waarden:
+
+![Chart Result Graph](./img/chart_result_temperature.png)
