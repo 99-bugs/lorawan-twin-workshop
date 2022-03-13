@@ -65,6 +65,10 @@ module.exports = {
             text: 'Een Rotary Sensor',
             link: '/sensors/rotary-sensor/'
           },
+          {
+            text: 'Een Light Sensor',
+            link: '/sensors/light-sensor/'
+          },
         ]
       },
 
