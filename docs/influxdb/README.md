@@ -321,3 +321,9 @@ Het resultaat van de laatste `function` node kunnen we nu rechtstreeks aan onze 
 Zodra er een nieuwe temperatuur binnenkomt zou de grafiek moeten worden voorzien van de laatste 60 waarden:
 
 ![Chart Result Graph](./img/chart_result_temperature.png)
+
+### Opkuis
+
+Als we de flow nu nog wat opkuisen en onze tussenliggende `debug` nodes verwijderen komen we aan een mooi eindresultaat:
+
+![FLow End Result](./img/flow_end_result.png)

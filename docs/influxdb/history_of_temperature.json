@@ -19,30 +19,13 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 270,
-        "y": 100,
+        "x": 290,
+        "y": 280,
         "wires": [
             [
-                "a15dc1f66cd2fd72",
                 "47518082ec776cea"
             ]
         ]
-    },
-    {
-        "id": "a15dc1f66cd2fd72",
-        "type": "debug",
-        "z": "f6f2187d.f17ca8",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 730,
-        "y": 100,
-        "wires": []
     },
     {
         "id": "47518082ec776cea",
@@ -56,31 +39,14 @@
         "finalize": "",
         "libs": [],
         "x": 650,
-        "y": 200,
+        "y": 280,
         "wires": [
             [
-                "a1bc8588ec717c95",
                 "181572502f149f36",
-                "a2a361e17937fbb5",
-                "99dee5f01aee644b"
+                "2287d49aa4ad2cdf",
+                "a1bc8588ec717c95"
             ]
         ]
-    },
-    {
-        "id": "a1bc8588ec717c95",
-        "type": "debug",
-        "z": "f6f2187d.f17ca8",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 870,
-        "y": 260,
-        "wires": []
     },
     {
         "id": "181572502f149f36",
@@ -105,8 +71,8 @@
         "seg1": "",
         "seg2": "",
         "className": "",
-        "x": 880,
-        "y": 360,
+        "x": 890,
+        "y": 280,
         "wires": []
     },
     {
@@ -147,179 +113,68 @@
         "outputs": 1,
         "useDifferentColor": false,
         "className": "",
-        "x": 890,
+        "x": 1110,
         "y": 440,
         "wires": [
             []
         ]
     },
     {
-        "id": "99dee5f01aee644b",
+        "id": "2287d49aa4ad2cdf",
         "type": "influxdb out",
         "z": "f6f2187d.f17ca8",
-        "influxdb": "f71c87430aa97039",
-        "name": "",
+        "influxdb": "678ac4bb98d80f0e",
+        "name": "temperatuur",
         "measurement": "temperatuur",
         "precision": "",
         "retentionPolicy": "",
         "database": "database",
         "precisionV18FluxV20": "ms",
         "retentionPolicyV18Flux": "",
-        "org": "vives",
+        "org": "workshop",
         "bucket": "iot",
-        "x": 900,
-        "y": 520,
+        "x": 890,
+        "y": 340,
         "wires": []
     },
     {
-        "id": "40ee0b788703a302",
+        "id": "157548da8b94609c",
+        "type": "complete",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "scope": [
+            "2287d49aa4ad2cdf"
+        ],
+        "uncaught": false,
+        "x": 140,
+        "y": 440,
+        "wires": [
+            [
+                "d9694388fcdf2dbf"
+            ]
+        ]
+    },
+    {
+        "id": "d9694388fcdf2dbf",
         "type": "influxdb in",
         "z": "f6f2187d.f17ca8",
-        "influxdb": "f71c87430aa97039",
-        "name": "",
+        "influxdb": "678ac4bb98d80f0e",
+        "name": "temperatuur",
         "query": "from(bucket: \"iot\")\n  |> range(start: -1d, stop: now())\n  |> filter(fn: (r) => r[\"_measurement\"] == \"temperatuur\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
         "rawOutput": false,
         "precision": "",
         "retentionPolicy": "",
-        "org": "vives",
-        "x": 520,
-        "y": 680,
+        "org": "workshop",
+        "x": 310,
+        "y": 440,
         "wires": [
             [
-                "5913acc87bcf86a1",
-                "c99209fa85919c71",
-                "d56ec03612e64c9d"
+                "c95f9e5d99f01e6d"
             ]
         ]
     },
     {
-        "id": "dae44fc28512a47d",
-        "type": "inject",
-        "z": "f6f2187d.f17ca8",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 210,
-        "y": 620,
-        "wires": [
-            [
-                "40ee0b788703a302"
-            ]
-        ]
-    },
-    {
-        "id": "5913acc87bcf86a1",
-        "type": "debug",
-        "z": "f6f2187d.f17ca8",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 750,
-        "y": 940,
-        "wires": []
-    },
-    {
-        "id": "ad0c170373257ebe",
-        "type": "ui_chart",
-        "z": "f6f2187d.f17ca8",
-        "name": "",
-        "group": "3fe1e52493d5c6d6",
-        "order": 2,
-        "width": 0,
-        "height": 0,
-        "label": "Temperatuur",
-        "chartType": "line",
-        "legend": "false",
-        "xformat": "HH:mm:ss",
-        "interpolate": "linear",
-        "nodata": "",
-        "dot": false,
-        "ymin": "",
-        "ymax": "",
-        "removeOlder": 1,
-        "removeOlderPoints": "",
-        "removeOlderUnit": "3600",
-        "cutout": 0,
-        "useOneColor": false,
-        "useUTC": true,
-        "colors": [
-            "#1f77b4",
-            "#aec7e8",
-            "#ff7f0e",
-            "#2ca02c",
-            "#98df8a",
-            "#d62728",
-            "#ff9896",
-            "#9467bd",
-            "#c5b0d5"
-        ],
-        "outputs": 1,
-        "useDifferentColor": false,
-        "className": "",
-        "x": 990,
-        "y": 700,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "c99209fa85919c71",
-        "type": "function",
-        "z": "f6f2187d.f17ca8",
-        "name": "",
-        "func": "let data_punten = msg.payload.map(m => {\n   return {\n       x: m._time,\n       y: m._value\n   } \n});\n\nmsg.payload = [{\n  series: [\"Temperatuur\"],\n  data: [ data_punten ],\n  labels: [\"\"],\n}];\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 740,
-        "y": 680,
-        "wires": [
-            [
-                "96ca4815719fe70d",
-                "ad0c170373257ebe"
-            ]
-        ]
-    },
-    {
-        "id": "96ca4815719fe70d",
-        "type": "debug",
-        "z": "f6f2187d.f17ca8",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 970,
-        "y": 620,
-        "wires": []
-    },
-    {
-        "id": "d56ec03612e64c9d",
+        "id": "c95f9e5d99f01e6d",
         "type": "split",
         "z": "f6f2187d.f17ca8",
         "name": "",
@@ -329,16 +184,35 @@
         "arraySpltType": "len",
         "stream": false,
         "addname": "",
-        "x": 780,
-        "y": 800,
+        "x": 470,
+        "y": 440,
         "wires": [
             [
-                "e296dd29af40dac0"
+                "41d4fb05167f8289"
             ]
         ]
     },
     {
-        "id": "62d254cededda51a",
+        "id": "41d4fb05167f8289",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "XY Object",
+        "func": "msg.payload = {\n   x: msg.payload._time,\n   y: msg.payload._value\n} \n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 440,
+        "wires": [
+            [
+                "06f406dc91d7392b"
+            ]
+        ]
+    },
+    {
+        "id": "06f406dc91d7392b",
         "type": "join",
         "z": "f6f2187d.f17ca8",
         "name": "",
@@ -353,112 +227,48 @@
         "timeout": "",
         "count": "",
         "reduceRight": false,
-        "x": 1100,
-        "y": 820,
+        "x": 770,
+        "y": 440,
         "wires": [
             [
-                "d186654c376ce6d5"
+                "56d7bd560bac42e6"
             ]
         ]
     },
     {
-        "id": "e296dd29af40dac0",
+        "id": "56d7bd560bac42e6",
         "type": "function",
         "z": "f6f2187d.f17ca8",
-        "name": "XY object",
-        "func": "msg.payload = {\n   x: msg.payload._time,\n   y: msg.payload._value\n} \n\nreturn msg;",
+        "name": "Chart Object",
+        "func": "msg.payload = [{\n  series: [\"Temperatuur\"],\n  data: [ msg.payload ]\n}];\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 940,
-        "y": 800,
+        "x": 930,
+        "y": 440,
         "wires": [
             [
-                "62d254cededda51a"
+                "a2a361e17937fbb5"
             ]
         ]
     },
     {
-        "id": "9ed11409fcb4d4ea",
+        "id": "a1bc8588ec717c95",
         "type": "debug",
         "z": "f6f2187d.f17ca8",
         "name": "",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1370,
-        "y": 800,
+        "x": 890,
+        "y": 220,
         "wires": []
-    },
-    {
-        "id": "d186654c376ce6d5",
-        "type": "function",
-        "z": "f6f2187d.f17ca8",
-        "name": "Chart Series",
-        "func": "msg.payload = [{\n  series: [\"Temperatuur\"],\n  data: [ msg.payload ],\n  labels: [\"\"],\n}];\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1250,
-        "y": 920,
-        "wires": [
-            [
-                "9ed11409fcb4d4ea",
-                "692d9015f42e1d61"
-            ]
-        ]
-    },
-    {
-        "id": "692d9015f42e1d61",
-        "type": "ui_chart",
-        "z": "f6f2187d.f17ca8",
-        "name": "",
-        "group": "3fe1e52493d5c6d6",
-        "order": 3,
-        "width": 0,
-        "height": 0,
-        "label": "Temperatuur",
-        "chartType": "line",
-        "legend": "false",
-        "xformat": "HH:mm:ss",
-        "interpolate": "linear",
-        "nodata": "",
-        "dot": false,
-        "ymin": "",
-        "ymax": "",
-        "removeOlder": 1,
-        "removeOlderPoints": "",
-        "removeOlderUnit": "3600",
-        "cutout": 0,
-        "useOneColor": false,
-        "useUTC": false,
-        "colors": [
-            "#1f77b4",
-            "#aec7e8",
-            "#ff7f0e",
-            "#2ca02c",
-            "#98df8a",
-            "#d62728",
-            "#ff9896",
-            "#9467bd",
-            "#c5b0d5"
-        ],
-        "outputs": 1,
-        "useDifferentColor": false,
-        "className": "",
-        "x": 1410,
-        "y": 1000,
-        "wires": [
-            []
-        ]
     },
     {
         "id": "72b7650225d6d480",
@@ -498,18 +308,18 @@
         "className": ""
     },
     {
-        "id": "f71c87430aa97039",
+        "id": "678ac4bb98d80f0e",
         "type": "influxdb",
         "hostname": "127.0.0.1",
         "port": "8086",
         "protocol": "http",
         "database": "database",
-        "name": "Local InfluxDB",
+        "name": "InfluxDB2",
         "usetls": false,
         "tls": "",
         "influxdbVersion": "2.0",
-        "url": "http://172.17.0.2:8086",
-        "rejectUnauthorized": false
+        "url": "http://myinflux:8086",
+        "rejectUnauthorized": true
     },
     {
         "id": "63c767d18524b0df",
