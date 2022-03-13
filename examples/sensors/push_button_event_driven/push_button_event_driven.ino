@@ -44,8 +44,7 @@ void loop() {
 //**********************************************************
 // Controleer of er op de knop PUSH_BUTTON_PIN werd gedrukt
 //**********************************************************
-bool has_button_been_pressed()
-{
+bool has_button_been_pressed() {
   currentState = digitalRead(PUSH_BUTTON_PIN);
 
   if (currentState != previousState) {

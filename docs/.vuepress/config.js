@@ -61,6 +61,10 @@ module.exports = {
             text: 'Een Push Button',
             link: '/sensors/push_button/'
           },
+          {
+            text: 'Een Rotary Sensor',
+            link: '/sensors/rotary-sensor/'
+          },
         ]
       },
 
