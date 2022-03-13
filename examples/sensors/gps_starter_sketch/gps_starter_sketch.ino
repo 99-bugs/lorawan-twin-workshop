@@ -2,7 +2,7 @@
 // Hier gaan we globale variabelen declareren.
 // Deze zijn beschikbaar doorheen de volledige sketch.
 //**********************************************************
-const int SIZE_OF_BUFFER = 64;
+const int SIZE_OF_BUFFER = 128;
 char buffer[SIZE_OF_BUFFER] = {};
 
 //**********************************************************
@@ -25,48 +25,56 @@ void setup() {
 // De main loop van Arduino, deze blijft telkens herhalen.
 //**********************************************************
 void loop() {
-  // // Lees de data van de GPS
-  // read_gps_data();   // Blokkeert tot GPS beschikbaar is
+  // Lees data lijn van de GPS
+  read_gps_data_line();   // Blokkeert tot GPS beschikbaar is
   
-  // SerialUSB.print("GPS data:");
+  // SerialUSB.println("GPS data:");
   // SerialUSB.println(buffer);   // buffer bevat GPS data
 
-
-  if (Serial.available()) {
-    SerialUSB.write(Serial.read());
+  String line(buffer);
+  if (line.startsWith("$GPGGA")) {
+    SerialUSB.print("GPS data: ");
+    SerialUSB.println(line);   // buffer bevat GPS data
   }
-
-
-  // // Welke tag werd gedetecteerd?
-  // if (!strcmp(buffer, "0A0069138AFA")) {
-  //   SerialUSB.println("Rode tag gedetecteerd");
-  // } else if (!strcmp(buffer, "380067B6739A")) {
-  //   SerialUSB.println("Blauwe tag gedetecteerd");
-  // } else if (!strcmp(buffer, "080066377821")) {
-  //   SerialUSB.println("Gele tag gedetecteerd");
-  // } else {
-  //   SerialUSB.println("Onbekende tag gedetecteerd");
-  // }
 }
 
-// int read_gps_data() {
-//   static int counter = 0;       // Een teller voor buffer
-//   int sizeOfId = 0;
+int read_gps_data_line() {
+  int counter = 0;      // Teller voor de buffer
+  bool startDetected = false;
+  bool done = false;
 
-//   while (sizeOfId != 12) {
-//     while(Serial.available()) {
-//       char newChar = Serial.read();   // Lees karakter van Serial
-//       // ASCII 02: STX (Start of Text)
-//       // ASCII 03: ETX (End of Text)
-//       if (newChar != 2 && newChar != 3 && counter < SIZE_OF_BUFFER) {
-//         buffer[counter++] = newChar;
-//         buffer[counter] = '\0';
-//         sizeOfId = counter;
-//       } else {
-//         counter = 0;
-//       }
-//     }
-//   }
- 
-//   return sizeOfId;
-// }
+  do {
+    if (Serial.available()) {
+      // Lees karakter van Serial
+      char newChar = Serial.read();
+            
+      // Kijk of dit het begin is van een lijn (start met dollar)
+      if (newChar == '$') {
+        clear_buffer();
+        startDetected = true;
+      }
+
+      // We negeren alle data tenzij start werd gedetecteerd
+      if (startDetected) {
+        buffer[counter++] = newChar;
+
+        // Look for the end of the datagram
+        if (newChar == '\n') {
+          startDetected = false;
+          buffer[counter] = '\0';   // Afsluiten van buffer met null-character
+          return true;      // Aangeven dat de buffer klaar is
+
+        } else if (counter >= SIZE_OF_BUFFER) {    // buffer overflow
+          clear_buffer();
+        }
+      }
+    }
+  } while (!done);
+}
+
+void clear_buffer() {
+  for (int i = 0; i < SIZE_OF_BUFFER; i++) {
+    buffer[i] = 0;
+  }
+}
+
