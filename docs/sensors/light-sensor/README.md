@@ -70,3 +70,5 @@ Dit type sensor komt overeen met een temperatuursensor. Je leest de waarde perio
 ## Meer informatie
 
 Meer informatie is beschikbaar op [http://wiki.seeedstudio.com/Grove-Light_Sensor](http://wiki.seeedstudio.com/Grove-Light_Sensor/)
+
+<!-- TODO: Things Network Decoder -->

@@ -149,3 +149,6 @@ Merk op dat je op deze manier nu kan kiezen op welke verandering je reageert. Op
 ## Meer informatie
 
 Meer informatie kan je terugvinden op de website van Seeed Studio: [https://wiki.seeedstudio.com/Grove-Button](https://wiki.seeedstudio.com/Grove-Button).
+
+
+<!-- TODO: Things Network Decoder -->
