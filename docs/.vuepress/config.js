@@ -73,6 +73,10 @@ module.exports = {
             text: 'Sound Sensor',
             link: '/sensors/sound-sensor/'
           },
+          {
+            text: 'Moisture Sensor',
+            link: '/sensors/moisture-sensor/'
+          },
         ]
       },
 

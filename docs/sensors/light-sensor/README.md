@@ -2,7 +2,7 @@
 
 De Light Sensor integreert een lichtafhankelijke weerstand om de intensiteit van het licht te detecteren. De weerstand van de fotoweerstand neemt af wanneer de intensiteit van het licht toeneemt. Een dubbele OpAmp-chip LM358 aan boord produceert een spanning die overeenkomt met de lichtintensiteit (d.w.z. gebaseerd op de weerstandswaarde). Het uitgangssignaal heeft een analoge waarde, hoe helderder het licht, hoe groter de waarde.
 
-![Light Angle Sensor](./img/light-sensor.jpg)
+![Light Sensor](./img/light-sensor.jpg)
 
 ## Aansluiten
 
