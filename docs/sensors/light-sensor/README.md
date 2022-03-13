@@ -2,13 +2,13 @@
 
 De Light Sensor integreert een lichtafhankelijke weerstand om de intensiteit van het licht te detecteren. De weerstand van de fotoweerstand neemt af wanneer de intensiteit van het licht toeneemt. Een dubbele OpAmp-chip LM358 aan boord produceert een spanning die overeenkomt met de lichtintensiteit (d.w.z. gebaseerd op de weerstandswaarde). Het uitgangssignaal heeft een analoge waarde, hoe helderder het licht, hoe groter de waarde.
 
-![Rotary Angle Sensor](./img/light-sensor.jpg)
+![Light Angle Sensor](./img/light-sensor.jpg)
 
 ## Aansluiten
 
 Om de lichtsensor te verbinden met het SODAQ bord dien je eerst en vooral een **4-pins connector** aan te sluiten op de PCB. Vervolgens sluit je de andere zijde van de connector aan op het SODAQ bord. Opgelet, je dient hier wel de connectie te maken met de correcte header op het SODAQ bord, namelijk deze **met de digitale/analoge pins**, niet de I2C header. In volgende afbeelding wordt dit nog eens weergegeven.
 
-![POT op het SODAQ bord aansluiten](./img/connecting_light_sensor_to_sodaq.png.png)
+![Light Sensor op het SODAQ bord aansluiten](./img/connecting_light_sensor_to_sodaq.png)
 
 Als je de markeringen op de PCB van de lichtsensor bekijkt en vergelijkt met deze op het SODAQ bord, zal je zien dat de output van de sensor (aangeduid met `SIG`) is aangesloten op `A8`. NC staat voor *Not Connected* of niet aangesloten.
 
@@ -63,9 +63,11 @@ void loop() {
 
 De output zou er dan als volgt moeten uitzien:
 
-![Rotary Sensor Output](./img/light_sensor_output.png)
+![Light Sensor Output](./img/light_sensor_output.png)
 
 Dit type sensor komt overeen met een temperatuursensor. Je leest de waarde periodiek in en stuurt deze dan door. Dus dit kan zonder veel aanpassing in de LoRaWAN sketch worden overgenomen.
+
+<!-- TODO: Eigenlijk kunnen we dit ook benaderen met events. Detecteren wanneer grens wordt overschreven. -->
 
 ## Meer informatie
 

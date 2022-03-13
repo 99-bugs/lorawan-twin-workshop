@@ -58,16 +58,20 @@ module.exports = {
         link: '/sensors/',
         children: [
           {
-            text: 'Een Push Button',
+            text: 'Push Button',
             link: '/sensors/push_button/'
           },
           {
-            text: 'Een Rotary Sensor',
+            text: 'Rotary Sensor',
             link: '/sensors/rotary-sensor/'
           },
           {
-            text: 'Een Light Sensor',
+            text: 'Light Sensor',
             link: '/sensors/light-sensor/'
+          },
+          {
+            text: 'Sound Sensor',
+            link: '/sensors/sound-sensor/'
           },
         ]
       },
