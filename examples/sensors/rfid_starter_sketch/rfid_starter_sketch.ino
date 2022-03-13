@@ -1,24 +1,49 @@
+//**********************************************************
+// Hier gaan we globale variabelen declareren.
+// Deze zijn beschikbaar doorheen de volledige sketch.
+//**********************************************************
 const int SIZE_OF_BUFFER = 32;
-uint8_t buffer[SIZE_OF_BUFFER];
+char buffer[SIZE_OF_BUFFER] = {};
 
+//**********************************************************
+// De setup van Arduino, wordt in het begin van je sketch
+// eenmalig uitgevoerd.
+// Als je sensor moet initialiseren, dan doe je dit hier
+//**********************************************************
 void setup() {
-    // put your setup code here, to run once:
-    SerialUSB.begin(115200);
-    while ((!SerialUSB) && (millis() < 5000));
-    SerialUSB.println("Starten van RFID demo");
-    Serial.begin(9600);         // Serial is verbonden met de RFID lezer
-}
- 
-void loop()
-{
-    // Lees het id van een RFID kaart
-    read_rfid_card();   // Blocking
-    
-    SerialUSB.print("Kaart gedetecteerd met ID = ");
-    SerialUSB.println((char*)buffer);
+  SerialUSB.begin(115200);
+
+  // 10 seconden wachten op SerialUSB. 
+  while ((!SerialUSB) && (millis() < 10000)) { }
+  
+  Serial.begin(9600);         // Serial is verbonden met de RFID lezer
+
+  SerialUSB.println("Starten van starter sketch RFID lezer.");
 }
 
-int  read_rfid_card() {
+//**********************************************************
+// De main loop van Arduino, deze blijft telkens herhalen.
+//**********************************************************
+void loop() {
+  // Lees het id van een RFID kaart
+  read_rfid_card();   // Blokkeert tot een ID is gedetecteerd
+  
+  SerialUSB.print("Kaart gedetecteerd met ID = ");
+  SerialUSB.println(buffer);   // buffer bevat ID
+
+  // Welke tag werd gedetecteerd?
+  if (!strcmp(buffer, "0A0069138AFA")) {
+    SerialUSB.println("Rode tag gedetecteerd");
+  } else if (!strcmp(buffer, "380067B6739A")) {
+    SerialUSB.println("Blauwe tag gedetecteerd");
+  } else if (!strcmp(buffer, "080066377821")) {
+    SerialUSB.println("Gele tag gedetecteerd");
+  } else {
+    SerialUSB.println("Onbekende tag gedetecteerd");
+  }
+}
+
+int read_rfid_card() {
   static int counter = 0;       // Een teller voor buffer
   int sizeOfId = 0;
 

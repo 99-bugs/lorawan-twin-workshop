@@ -77,6 +77,10 @@ module.exports = {
             text: 'Moisture Sensor',
             link: '/sensors/moisture-sensor/'
           },
+          {
+            text: 'RFID 125kHz Reader',
+            link: '/sensors/rfid/'
+          },
         ]
       },
 
